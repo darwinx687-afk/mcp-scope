@@ -9,18 +9,18 @@ inputs:
     description: Path to local exported MCP tool metadata JSON, relative to working-directory unless absolute.
     required: false
   report-format:
-    description: Report format to generate: markdown, json, or html.
+    description: "Report format to generate: markdown, json, or html."
     required: false
     default: markdown
   report-path:
     description: Output report path. Defaults to mcp-scope-report.md/json/html based on report-format.
     required: false
   lang:
-    description: Report language: en or zh-CN.
+    description: "Report language: en or zh-CN."
     required: false
     default: en
   fail-on:
-    description: Fail threshold: none, info, low, medium, or high.
+    description: "Fail threshold: none, info, low, medium, or high."
     required: false
     default: none
   working-directory:
