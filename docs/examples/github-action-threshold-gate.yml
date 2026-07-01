@@ -1,0 +1,34 @@
+name: MCP Scope Threshold Gate
+
+on:
+  pull_request:
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  mcp-scope:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      # This fails the job when high static findings exist.
+      - uses: ./
+        with:
+          config: examples/claude-code-project.mcp.json
+          tools: examples/tools/poisoned-description-tools.json
+          report-format: markdown
+          report-path: mcp-scope-report.md
+          include-html-viewer: "true"
+          fail-on: high
+          lang: en
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: mcp-scope-report
+          path: |
+            mcp-scope-report.md
+            mcp-scope-report.json
+            mcp-scope-report.html

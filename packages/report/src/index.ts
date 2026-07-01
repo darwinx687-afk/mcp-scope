@@ -16,6 +16,13 @@ import type {
 } from "@mcp-scope/core";
 import { renderHtmlViewer } from "./html.js";
 
+export {
+  compareSeverity,
+  isFailOnThreshold,
+  shouldFailOnSeverity,
+  summarizeReportForCi
+} from "./ci.js";
+export type { CiReportSummary, FailOnThreshold, ReportSeverity } from "./ci.js";
 export { escapeHtml, renderHtmlFromJsonReport, renderHtmlViewer } from "./html.js";
 
 export type ReportLanguage = "en" | "zh-CN";
@@ -120,7 +127,7 @@ export function renderFoundationStatusReport(): string {
     `- scanner: ${FOUNDATION_STATUS.scanner}`,
     `- externalApiCalls: ${String(FOUNDATION_STATUS.externalApiCalls)}`,
     "",
-    "Phase 4 adds a local self-contained HTML viewer. It does not execute MCP servers, call tools/list, or call external APIs."
+    "Phase 5 adds a GitHub Action quality gate. It does not execute MCP servers, call tools/list, or call external APIs."
   ].join("\n");
 }
 

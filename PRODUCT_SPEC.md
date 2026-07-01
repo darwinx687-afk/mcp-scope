@@ -36,9 +36,9 @@ Developers are connecting MCP servers to AI coding tools and agent environments.
 - Local self-contained HTML viewer.
 - GitHub Action quality gate.
 
-## Phase 4 Scope
+## Phase 5 Scope
 
-Phase 4 adds a local, static, read-only HTML viewer on top of the stable report system.
+Phase 5 adds a GitHub Action quality gate on top of the local CLI and stable report system.
 
 Included now:
 
@@ -61,6 +61,13 @@ Included now:
 - `view --report <path> --output <path>` for rendering an existing MCP Scope JSON report as HTML.
 - HTML viewer localization with `--lang en` and `--lang zh-CN`.
 - Inline CSS only; no CDN, external assets, tracking, telemetry, browser automation, or web server.
+- CLI severity threshold option: `--fail-on none|info|low|medium|high`.
+- Root composite GitHub Action in `action.yml`.
+- Action runner script that reuses the built local CLI and writes safe GitHub outputs.
+- GitHub job summary generation with counts and boundary language.
+- Optional workflow failure based on static highest severity threshold.
+- Documentation example workflows under `docs/examples`.
+- Repository CI workflow under `.github/workflows/ci.yml`.
 - Curated report examples under `examples/reports`.
 - Curated viewer examples under `examples/viewer`.
 - Example configs and tests.
@@ -73,9 +80,10 @@ Not included now:
 - External MCP registry connections.
 - Remote metadata fetching.
 - Hosted web dashboard.
-- GitHub Actions.
 - npm publishing.
 - External AI APIs.
 - Login, database, billing, or cloud services.
 - Production-grade security claims.
-- Threshold or fail-on behavior.
+- GitHub Marketplace publication.
+- Remote repository creation or push.
+- Automatic artifact upload from the action itself.

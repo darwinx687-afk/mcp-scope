@@ -9,6 +9,7 @@ import {
 import {
   buildScanReportModel,
   buildToolMetadataReportModel,
+  compareSeverity,
   renderFoundationStatusReport,
   renderHtmlFromJsonReport,
   renderHtmlViewer,
@@ -17,15 +18,17 @@ import {
   renderScanResultMarkdown,
   renderToolMetadataHtml,
   renderToolMetadataJson,
-  renderToolMetadataMarkdown
+  renderToolMetadataMarkdown,
+  shouldFailOnSeverity,
+  summarizeReportForCi
 } from "../src/index.js";
 
 describe("renderFoundationStatusReport", () => {
-  it("renders honest Phase 4 status", () => {
+  it("renders honest Phase 5 status", () => {
     const report = renderFoundationStatusReport();
 
     expect(report).toContain("MCP Scope Foundation Status");
-    expect(report).toContain("scanner: static-config-tool-metadata-html-viewer");
+    expect(report).toContain("scanner: static-config-tool-metadata-ci-gate");
     expect(report).toContain("externalApiCalls: false");
     expect(report).toContain("does not execute MCP servers");
   });
@@ -276,5 +279,43 @@ describe("scan result renderers", () => {
     expect(html).toContain("[query-redacted]");
     expect(html).not.toContain("secret-header-value");
     expect(html).not.toContain("secret-query-token");
+  });
+});
+
+describe("CI threshold utilities", () => {
+  it("orders severities from info to high", () => {
+    expect(compareSeverity("high", "medium")).toBeGreaterThan(0);
+    expect(compareSeverity("medium", "low")).toBeGreaterThan(0);
+    expect(compareSeverity("low", "info")).toBeGreaterThan(0);
+    expect(compareSeverity("unknown", "info")).toBeLessThan(0);
+  });
+
+  it("applies fail-on thresholds conservatively", () => {
+    expect(shouldFailOnSeverity("high", "none", 10)).toBe(false);
+    expect(shouldFailOnSeverity("high", "high", 10)).toBe(true);
+    expect(shouldFailOnSeverity("high", "medium", 10)).toBe(true);
+    expect(shouldFailOnSeverity("medium", "high", 10)).toBe(false);
+    expect(shouldFailOnSeverity("low", "low", 10)).toBe(true);
+    expect(shouldFailOnSeverity("info", "info", 1)).toBe(true);
+    expect(shouldFailOnSeverity("info", "info", 0)).toBe(false);
+    expect(shouldFailOnSeverity("unknown", "low", 1)).toBe(false);
+  });
+
+  it("summarizes report fields for CI output", () => {
+    const scanResult = createMcpConfigFingerprint(
+      parseMcpConfig({ mcpServers: { local: { command: "node", args: ["server.js"] } } })
+    );
+    const model = buildScanReportModel(scanResult);
+    const summary = summarizeReportForCi(model);
+
+    expect(summary).toMatchObject({
+      findingCount: model.summary.findingCount,
+      serverCount: 1,
+      toolCount: 0,
+      scanMode: "config-only",
+      externalApiCalls: false,
+      mcpServerExecution: false,
+      secretValuesRedacted: true
+    });
   });
 });

@@ -52,9 +52,9 @@ describe("mcp-scope CLI", () => {
     expect(parsed).toMatchObject({
       project: "mcp-scope",
       name: "MCP Scope",
-      phase: 4,
-      status: "html-viewer-ready",
-      scanner: "static-config-tool-metadata-html-viewer",
+      phase: 5,
+      status: "github-action-gate-ready",
+      scanner: "static-config-tool-metadata-ci-gate",
       externalApiCalls: false,
       serverExecution: false
     });
@@ -88,6 +88,54 @@ describe("mcp-scope CLI", () => {
     expect(result.stdout).toContain('"tools"');
     expect(result.stdout).toContain("metadata_injection_phrase");
     expect(result.stdout).not.toContain("Bearer REDACTED_EXAMPLE_TOKEN");
+  });
+
+  it("passes fail-on none even with high findings", async () => {
+    const configPath = fileURLToPath(
+      new URL("../../../examples/claude-code-project.mcp.json", import.meta.url)
+    );
+    const toolsPath = fileURLToPath(
+      new URL("../../../examples/tools/poisoned-description-tools.json", import.meta.url)
+    );
+    const result = await runCli([
+      "scan",
+      "--config",
+      configPath,
+      "--tools",
+      toolsPath,
+      "--format",
+      "json",
+      "--fail-on",
+      "none"
+    ]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain('"highestSeverity": "high"');
+    expect(result.stderr).toBe("");
+  });
+
+  it("fails fail-on high after generating output", async () => {
+    const configPath = fileURLToPath(
+      new URL("../../../examples/claude-code-project.mcp.json", import.meta.url)
+    );
+    const toolsPath = fileURLToPath(
+      new URL("../../../examples/tools/poisoned-description-tools.json", import.meta.url)
+    );
+    const result = await runCli([
+      "scan",
+      "--config",
+      configPath,
+      "--tools",
+      toolsPath,
+      "--format",
+      "json",
+      "--fail-on",
+      "high"
+    ]);
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stdout).toContain('"highestSeverity": "high"');
+    expect(result.stderr).toContain("MCP Scope fail-on threshold reached");
   });
 
   it("runs combined scan with Chinese Markdown", async () => {
@@ -147,6 +195,39 @@ describe("mcp-scope CLI", () => {
     expect(result.exitCode).toBe(0);
     expect(result.stdout).toContain("credential_exposure_signal");
     expect(result.stdout).not.toContain("example-api-key-do-not-use");
+  });
+
+  it("fails fail-on medium for medium tool findings", async () => {
+    const toolsPath = fileURLToPath(
+      new URL("../../../examples/tools/credential-network-tools.json", import.meta.url)
+    );
+    const result = await runCli(["inspect-tools", "--tools", toolsPath, "--format", "json", "--fail-on", "medium"]);
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stdout).toContain('"highestSeverity": "medium"');
+    expect(result.stderr).toContain("meets medium");
+  });
+
+  it("fails fail-on low when low or higher findings exist", async () => {
+    const configPath = fileURLToPath(
+      new URL("../../../examples/risky-local-command.json", import.meta.url)
+    );
+    const result = await runCli(["scan", "--config", configPath, "--format", "json", "--fail-on", "low"]);
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stdout).toContain('"findingCount"');
+    expect(result.stderr).toContain("meets low");
+  });
+
+  it("fails fail-on info when any finding exists", async () => {
+    const toolsPath = fileURLToPath(
+      new URL("../../../examples/tools/schema-quality-tools.json", import.meta.url)
+    );
+    const result = await runCli(["inspect-tools", "--tools", toolsPath, "--format", "json", "--fail-on", "info"]);
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stdout).toContain('"findingCount"');
+    expect(result.stderr).toContain("meets info");
   });
 
   it("runs inspect-tools with Chinese Markdown", async () => {
@@ -227,6 +308,13 @@ describe("mcp-scope CLI", () => {
 
     expect(result.exitCode).toBe(1);
     expect(result.stderr).toContain('Unsupported --format "xml"');
+  });
+
+  it("errors on unsupported fail-on threshold", async () => {
+    const result = await runCli(["scan", "--config", "example.json", "--fail-on", "critical"]);
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain('Unsupported --fail-on "critical"');
   });
 
   it("errors clearly when HTML output is missing", async () => {

@@ -2,11 +2,11 @@
 
 A local-first transparency and risk audit tool for MCP tool metadata, server configs, and AI agent tool permissions.
 
-MCP Scope is in Phase 4 / early preview. It is not production-ready, does not make complete security claims, and does not execute MCP servers.
+MCP Scope is in Phase 5 / early preview. It is not production-ready, does not make complete security claims, and does not execute MCP servers.
 
 ## Current Guarantees
 
-- No external API calls in the core Phase 4 checks.
+- No external API calls in the core Phase 5 checks.
 - No login.
 - No database.
 - No cloud service by default.
@@ -19,6 +19,7 @@ MCP Scope is in Phase 4 / early preview. It is not production-ready, does not ma
 - JSON reports keep stable English machine-readable keys.
 - HTML reports are self-contained local files with inline CSS and no external assets.
 - HTML reports require `--output`; MCP Scope does not open a browser or start a server.
+- GitHub Action support wraps the local CLI; it does not upload files automatically.
 
 ## CLI
 
@@ -36,6 +37,7 @@ mcp-scope scan --config <path> --format markdown --output reports/mcp-scope-repo
 mcp-scope scan --config <path> --tools <path> --format html --output reports/mcp-scope-report.html
 mcp-scope inspect-tools --tools <path> --format markdown --lang zh-CN
 mcp-scope inspect-tools --tools <path> --format html --output reports/mcp-scope-tools.html
+mcp-scope scan --config <path> --tools <path> --fail-on high
 mcp-scope view --report examples/reports/sample-combined-report.json --output reports/sample-viewer.html
 ```
 
@@ -45,9 +47,9 @@ mcp-scope view --report examples/reports/sample-combined-report.json --output re
 {
   "project": "mcp-scope",
   "name": "MCP Scope",
-  "phase": 4,
-  "status": "html-viewer-ready",
-  "scanner": "static-config-tool-metadata-html-viewer",
+  "phase": 5,
+  "status": "github-action-gate-ready",
+  "scanner": "static-config-tool-metadata-ci-gate",
   "externalApiCalls": false,
   "serverExecution": false
 }
@@ -75,7 +77,7 @@ node apps/cli/dist/index.js inspect-tools --tools examples/tools/poisoned-descri
 
 ## Reports
 
-Phase 4 reports include an executive summary, checked/not-checked sections, severity legend, config summary, tool metadata summary, sorted findings, redaction guarantees, and limitations. Markdown, JSON, and self-contained HTML are available.
+MCP Scope reports include an executive summary, checked/not-checked sections, severity legend, config summary, tool metadata summary, sorted findings, redaction guarantees, and limitations. Markdown, JSON, and self-contained HTML are available.
 
 Example Markdown excerpt:
 
@@ -102,8 +104,34 @@ Report docs:
 - `docs/REPORT_GUIDE.zh-CN.md`
 - `docs/VIEWER_GUIDE.md`
 - `docs/VIEWER_GUIDE.zh-CN.md`
+- `docs/GITHUB_ACTION.md`
+- `docs/GITHUB_ACTION.zh-CN.md`
 
 MCP Scope reports transparency notes and static risk signals. It does not prove compromise, prove safety, run MCP servers, or inspect live tool metadata.
+
+## GitHub Action
+
+Use the root composite action from this repository in local workflows. MCP Scope is not published to GitHub Marketplace yet.
+
+```yaml
+- uses: ./
+  with:
+    config: examples/claude-desktop-filesystem.json
+    tools: examples/tools/filesystem-tools.json
+    report-format: markdown
+    report-path: mcp-scope-report.md
+    fail-on: high
+    lang: en
+```
+
+Recommended permissions:
+
+```yaml
+permissions:
+  contents: read
+```
+
+See `docs/GITHUB_ACTION.md` for inputs, outputs, threshold behavior, job summaries, and artifact upload examples.
 
 ## Examples
 
@@ -123,6 +151,9 @@ MCP Scope reports transparency notes and static risk signals. It does not prove 
 - `examples/viewer/sample-combined-viewer.html`
 - `examples/viewer/sample-combined-viewer.zh-CN.html`
 - `examples/viewer/sample-tools-only-viewer.html`
+- `docs/examples/github-action-basic.yml`
+- `docs/examples/github-action-threshold-gate.yml`
+- `docs/examples/github-action-zh-CN.yml`
 
 ## Development
 
@@ -134,7 +165,7 @@ pnpm check
 ## Roadmap Preview
 
 - Phase 4: local read-only viewer. Implemented.
-- Phase 5: GitHub Action quality gate.
+- Phase 5: GitHub Action quality gate. Implemented.
 - Phase 6: tool metadata diff and approval memory.
 
 See `ROADMAP.md` for the full roadmap.

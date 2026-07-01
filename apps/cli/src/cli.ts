@@ -13,14 +13,17 @@ import {
   readMcpConfigFile
 } from "@mcp-scope/core";
 import {
+  buildScanReportModel,
+  buildToolMetadataReportModel,
+  type FailOnThreshold,
   type ReportLanguage,
+  type TransparencyReportModel,
+  isFailOnThreshold,
   renderHtmlFromJsonReport,
-  renderScanResultHtml,
-  renderScanResultJson,
-  renderScanResultMarkdown,
-  renderToolMetadataHtml,
-  renderToolMetadataJson,
-  renderToolMetadataMarkdown
+  renderHtmlViewer,
+  renderTransparencyReportMarkdown,
+  shouldFailOnSeverity,
+  summarizeReportForCi
 } from "@mcp-scope/report";
 
 export type CliWriter = {
@@ -40,13 +43,13 @@ Usage:
   mcp-scope --help
   mcp-scope --version
   mcp-scope status
-  mcp-scope scan --config <path> [--tools <path>] [--format markdown|json|html] [--lang en|zh-CN] [--output <path>]
-  mcp-scope inspect-tools --tools <path> [--format markdown|json|html] [--lang en|zh-CN] [--output <path>]
+  mcp-scope scan --config <path> [--tools <path>] [--format markdown|json|html] [--lang en|zh-CN] [--output <path>] [--fail-on none|info|low|medium|high]
+  mcp-scope inspect-tools --tools <path> [--format markdown|json|html] [--lang en|zh-CN] [--output <path>] [--fail-on none|info|low|medium|high]
   mcp-scope view --report <path> --output <path> [--lang en|zh-CN]
 
-Phase 4 note:
+Phase 5 note:
   MCP Scope statically reads local JSON config and exported tool metadata files.
-  HTML output is a self-contained local file.
+  GitHub Action support wraps the local CLI and can fail on static severity thresholds.
   It does not execute MCP servers, call tools/list, start a web server, or call external APIs.
 `;
 
@@ -58,6 +61,7 @@ type ScanCommandOptions = {
   readonly format: ScanFormat;
   readonly lang: ReportLanguage;
   readonly outputPath?: string;
+  readonly failOn: FailOnThreshold;
 };
 
 type InspectToolsOptions = {
@@ -65,6 +69,7 @@ type InspectToolsOptions = {
   readonly format: ScanFormat;
   readonly lang: ReportLanguage;
   readonly outputPath?: string;
+  readonly failOn: FailOnThreshold;
 };
 
 type ViewCommandOptions = {
@@ -130,22 +135,23 @@ async function runScanCommand(args: readonly string[], io: CliIO): Promise<numbe
         : evaluateToolManifest(await readMcpToolMetadataFile(options.toolsPath));
     const parsedConfig = await readMcpConfigFile(options.configPath);
     const result = createMcpConfigFingerprint(parsedConfig, { toolMetadata });
+    const report = buildScanReportModel(result);
     const rendered =
       options.format === "json"
-        ? renderScanResultJson(result)
+        ? `${JSON.stringify(report, null, 2)}\n`
         : options.format === "html"
-          ? renderScanResultHtml(result, { lang: options.lang })
-          : renderScanResultMarkdown(result, { lang: options.lang });
+          ? renderHtmlViewer(report, { lang: options.lang })
+          : renderTransparencyReportMarkdown(report, { lang: options.lang });
 
     if (options.outputPath !== undefined) {
       await mkdir(dirname(options.outputPath), { recursive: true });
       await writeFile(options.outputPath, rendered, "utf8");
       io.stdout.write(`Wrote MCP Scope ${options.format} report to ${options.outputPath}\n`);
-      return 0;
+      return applyFailOn(report, options.failOn, io);
     }
 
     io.stdout.write(rendered.endsWith("\n") ? rendered : `${rendered}\n`);
-    return 0;
+    return applyFailOn(report, options.failOn, io);
   } catch (error) {
     if (error instanceof McpScopeConfigError || error instanceof McpToolMetadataError) {
       io.stderr.write(`${error.message}\n`);
@@ -173,22 +179,23 @@ async function runInspectToolsCommand(args: readonly string[], io: CliIO): Promi
 
   try {
     const result = evaluateToolManifest(await readMcpToolMetadataFile(options.toolsPath));
+    const report = buildToolMetadataReportModel(result);
     const rendered =
       options.format === "json"
-        ? renderToolMetadataJson(result)
+        ? `${JSON.stringify(report, null, 2)}\n`
         : options.format === "html"
-          ? renderToolMetadataHtml(result, { lang: options.lang })
-          : renderToolMetadataMarkdown(result, { lang: options.lang });
+          ? renderHtmlViewer(report, { lang: options.lang })
+          : renderTransparencyReportMarkdown(report, { lang: options.lang });
 
     if (options.outputPath !== undefined) {
       await mkdir(dirname(options.outputPath), { recursive: true });
       await writeFile(options.outputPath, rendered, "utf8");
       io.stdout.write(`Wrote MCP Scope ${options.format} tool metadata report to ${options.outputPath}\n`);
-      return 0;
+      return applyFailOn(report, options.failOn, io);
     }
 
     io.stdout.write(rendered.endsWith("\n") ? rendered : `${rendered}\n`);
-    return 0;
+    return applyFailOn(report, options.failOn, io);
   } catch (error) {
     if (error instanceof McpToolMetadataError) {
       io.stderr.write(`${error.message}\n`);
@@ -199,6 +206,24 @@ async function runInspectToolsCommand(args: readonly string[], io: CliIO): Promi
     io.stderr.write(`MCP Scope tool metadata inspection failed: ${message}\n`);
     return 1;
   }
+}
+
+function applyFailOn(report: TransparencyReportModel, threshold: FailOnThreshold, io: CliIO): number {
+  if (threshold === "none") {
+    return 0;
+  }
+
+  const summary = summarizeReportForCi(report);
+  const failed = shouldFailOnSeverity(summary.highestSeverity, threshold, summary.findingCount);
+
+  if (!failed) {
+    return 0;
+  }
+
+  io.stderr.write(
+    `MCP Scope fail-on threshold reached: highest severity ${summary.highestSeverity} meets ${threshold} (${summary.findingCount} finding(s)).\n`
+  );
+  return 1;
 }
 
 async function runViewCommand(args: readonly string[], io: CliIO): Promise<number> {
@@ -238,6 +263,7 @@ function parseScanArgs(args: readonly string[]): ScanCommandOptions | string {
   let format: ScanFormat = "markdown";
   let lang: ReportLanguage = "en";
   let outputPath: string | undefined;
+  let failOn: FailOnThreshold = "none";
 
   for (let index = 0; index < args.length; index += 1) {
     const arg = args[index];
@@ -302,6 +328,22 @@ function parseScanArgs(args: readonly string[]): ScanCommandOptions | string {
       continue;
     }
 
+    if (arg === "--fail-on") {
+      const value = args[index + 1];
+
+      if (value === undefined || value.startsWith("--")) {
+        return 'Missing value for --fail-on <none|info|low|medium|high>';
+      }
+
+      if (!isFailOnThreshold(value)) {
+        return `Unsupported --fail-on "${value}". Use "none", "info", "low", "medium", or "high".`;
+      }
+
+      failOn = value;
+      index += 1;
+      continue;
+    }
+
     return `Unknown scan option: ${arg ?? ""}`;
   }
 
@@ -318,7 +360,8 @@ function parseScanArgs(args: readonly string[]): ScanCommandOptions | string {
     toolsPath,
     format,
     lang,
-    outputPath
+    outputPath,
+    failOn
   };
 }
 
@@ -327,6 +370,7 @@ function parseInspectToolsArgs(args: readonly string[]): InspectToolsOptions | s
   let format: ScanFormat = "markdown";
   let lang: ReportLanguage = "en";
   let outputPath: string | undefined;
+  let failOn: FailOnThreshold = "none";
 
   for (let index = 0; index < args.length; index += 1) {
     const arg = args[index];
@@ -379,6 +423,22 @@ function parseInspectToolsArgs(args: readonly string[]): InspectToolsOptions | s
       continue;
     }
 
+    if (arg === "--fail-on") {
+      const value = args[index + 1];
+
+      if (value === undefined || value.startsWith("--")) {
+        return 'Missing value for --fail-on <none|info|low|medium|high>';
+      }
+
+      if (!isFailOnThreshold(value)) {
+        return `Unsupported --fail-on "${value}". Use "none", "info", "low", "medium", or "high".`;
+      }
+
+      failOn = value;
+      index += 1;
+      continue;
+    }
+
     return `Unknown inspect-tools option: ${arg ?? ""}`;
   }
 
@@ -394,7 +454,8 @@ function parseInspectToolsArgs(args: readonly string[]): InspectToolsOptions | s
     toolsPath,
     format,
     lang,
-    outputPath
+    outputPath,
+    failOn
   };
 }
 

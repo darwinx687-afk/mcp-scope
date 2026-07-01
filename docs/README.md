@@ -9,3 +9,11 @@ Current report docs:
 - `REPORT_GUIDE.zh-CN.md`
 - `VIEWER_GUIDE.md`
 - `VIEWER_GUIDE.zh-CN.md`
+- `GITHUB_ACTION.md`
+- `GITHUB_ACTION.zh-CN.md`
+
+Workflow examples:
+
+- `examples/github-action-basic.yml`
+- `examples/github-action-threshold-gate.yml`
+- `examples/github-action-zh-CN.yml`

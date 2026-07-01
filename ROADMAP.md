@@ -30,6 +30,8 @@ Status: implemented as self-contained HTML output plus `view --report`.
 
 Add optional CI checks for committed MCP config and metadata snapshots.
 
+Status: implemented as a local composite action and CLI `--fail-on` threshold.
+
 ## Phase 6: Tool Metadata Diff and Approval Memory
 
 Track approved fingerprints and report meaningful changes.

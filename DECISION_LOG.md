@@ -34,3 +34,9 @@
 - HTML output requires `--output` to avoid dumping viewer markup to stdout.
 - The `view` command renders an existing MCP Scope JSON report and does not execute MCP servers, start a web server, open a browser, or call external APIs.
 - Curated viewer examples live under `examples/viewer`; generated smoke reports remain ignored under `reports/`.
+
+## 2026-07-01 Phase 5
+
+- Phase 5 uses a composite GitHub Action that wraps the local CLI and writes summary/output without publishing to GitHub Marketplace.
+- The action generates JSON internally for CI evaluation, but artifact upload remains an explicit workflow step.
+- Severity gates use static report severity only; findings remain risk signals, not confirmed vulnerabilities.

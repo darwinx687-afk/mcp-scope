@@ -1,11 +1,11 @@
 # MCP Scope Report Schema
 
-MCP Scope Phase 4 reports use a stable JSON shape for automation, localized Markdown for human review, and self-contained HTML for local read-only viewing.
+MCP Scope reports use a stable JSON shape for automation, localized Markdown for human review, self-contained HTML for local read-only viewing, and GitHub Action threshold evaluation.
 
 ## Version Fields
 
-- `reportVersion`: report contract version. Phase 4 uses `0.3.0`.
-- `schemaVersion`: machine-readable schema version. Phase 4 uses `1`.
+- `reportVersion`: report contract version. Current reports use `0.3.0`.
+- `schemaVersion`: machine-readable schema version. Current reports use `1`.
 - `generatedAt`: ISO timestamp from the local scan run.
 
 ## Stable vs Display Fields

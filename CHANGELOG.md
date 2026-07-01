@@ -18,3 +18,6 @@
 - Added Phase 4 self-contained local HTML viewer rendering.
 - Added `scan --format html --output`, `inspect-tools --format html --output`, and `view --report --output`.
 - Added HTML viewer docs and curated viewer examples.
+- Added Phase 5 root composite GitHub Action quality gate.
+- Added CLI `--fail-on none|info|low|medium|high` threshold behavior for `scan` and `inspect-tools`.
+- Added GitHub Action docs, example workflows, repository CI, and action runner tests.

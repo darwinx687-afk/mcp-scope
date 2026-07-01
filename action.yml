@@ -1,0 +1,99 @@
+name: MCP Scope
+description: Local-first MCP transparency report and severity gate for GitHub Actions.
+
+inputs:
+  config:
+    description: Path to a local MCP config JSON file, relative to working-directory unless absolute.
+    required: false
+  tools:
+    description: Path to local exported MCP tool metadata JSON, relative to working-directory unless absolute.
+    required: false
+  report-format:
+    description: Report format to generate: markdown, json, or html.
+    required: false
+    default: markdown
+  report-path:
+    description: Output report path. Defaults to mcp-scope-report.md/json/html based on report-format.
+    required: false
+  lang:
+    description: Report language: en or zh-CN.
+    required: false
+    default: en
+  fail-on:
+    description: Fail threshold: none, info, low, medium, or high.
+    required: false
+    default: none
+  working-directory:
+    description: Base directory for config, tools, and report paths.
+    required: false
+    default: .
+  include-html-viewer:
+    description: Generate an HTML viewer next to the main report when the main report is not HTML.
+    required: false
+    default: "false"
+  summary:
+    description: Append a concise Markdown summary to the GitHub job summary.
+    required: false
+    default: "true"
+
+outputs:
+  report-path:
+    description: Path to the requested report.
+    value: ${{ steps.mcp-scope.outputs.report-path }}
+  json-report-path:
+    description: Path to the JSON report used for CI evaluation.
+    value: ${{ steps.mcp-scope.outputs.json-report-path }}
+  html-report-path:
+    description: Path to the generated HTML viewer, when available.
+    value: ${{ steps.mcp-scope.outputs.html-report-path }}
+  highest-severity:
+    description: Highest static finding severity in the report.
+    value: ${{ steps.mcp-scope.outputs.highest-severity }}
+  finding-count:
+    description: Number of static findings in the report.
+    value: ${{ steps.mcp-scope.outputs.finding-count }}
+  server-count:
+    description: Number of MCP server entries in the report.
+    value: ${{ steps.mcp-scope.outputs.server-count }}
+  tool-count:
+    description: Number of tool metadata entries in the report.
+    value: ${{ steps.mcp-scope.outputs.tool-count }}
+  passed:
+    description: Whether the fail-on threshold passed.
+    value: ${{ steps.mcp-scope.outputs.passed }}
+  failed-threshold:
+    description: Whether the fail-on threshold was reached.
+    value: ${{ steps.mcp-scope.outputs.failed-threshold }}
+
+runs:
+  using: composite
+  steps:
+    - name: Enable corepack
+      shell: bash
+      run: corepack enable
+
+    - name: Install MCP Scope dependencies
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: pnpm install --frozen-lockfile
+
+    - name: Build MCP Scope
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: pnpm build
+
+    - name: Run MCP Scope
+      id: mcp-scope
+      shell: bash
+      env:
+        GITHUB_ACTION_PATH: ${{ github.action_path }}
+        INPUT_CONFIG: ${{ inputs.config }}
+        INPUT_TOOLS: ${{ inputs.tools }}
+        INPUT_REPORT_FORMAT: ${{ inputs.report-format }}
+        INPUT_REPORT_PATH: ${{ inputs.report-path }}
+        INPUT_LANG: ${{ inputs.lang }}
+        INPUT_FAIL_ON: ${{ inputs.fail-on }}
+        INPUT_WORKING_DIRECTORY: ${{ inputs.working-directory }}
+        INPUT_INCLUDE_HTML_VIEWER: ${{ inputs.include-html-viewer }}
+        INPUT_SUMMARY: ${{ inputs.summary }}
+      run: node "${{ github.action_path }}/scripts/github-action-runner.mjs"

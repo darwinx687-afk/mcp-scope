@@ -13,11 +13,11 @@ describe("core constants", () => {
     expect(PROJECT_VERSION).toBe("0.0.0");
   });
 
-  it("marks Phase 4 viewer behavior as static-only", () => {
+  it("marks Phase 5 CI gate behavior as static-only", () => {
     expect(FOUNDATION_STATUS).toMatchObject({
-      phase: 4,
-      status: "html-viewer-ready",
-      scanner: "static-config-tool-metadata-html-viewer",
+      phase: 5,
+      status: "github-action-gate-ready",
+      scanner: "static-config-tool-metadata-ci-gate",
       externalApiCalls: false,
       serverExecution: false
     });

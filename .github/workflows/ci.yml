@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
+
+      - name: Check
+        run: pnpm check
+
+      - name: CLI smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          node apps/cli/dist/index.js scan --config examples/claude-desktop-filesystem.json --tools examples/tools/filesystem-tools.json --fail-on none
+          node apps/cli/dist/index.js inspect-tools --tools examples/tools/poisoned-description-tools.json --format json --fail-on none
+          node apps/cli/dist/index.js scan --config examples/claude-desktop-filesystem.json --tools examples/tools/filesystem-tools.json --format html --output reports/action-smoke.html
+
+          set +e
+          threshold_output="$(node apps/cli/dist/index.js scan --config examples/claude-code-project.mcp.json --tools examples/tools/poisoned-description-tools.json --fail-on high 2>&1)"
+          threshold_status="$?"
+          set -e
+          echo "$threshold_output"
+          if [ "$threshold_status" -eq 0 ]; then
+            echo "Expected fail-on high to fail for poisoned-description example."
+            exit 1
+          fi
+          echo "$threshold_output" | grep -q "MCP Scope fail-on threshold reached"
+
+      - name: MCP Scope local action
+        id: mcp-scope
+        uses: ./
+        with:
+          config: examples/claude-desktop-filesystem.json
+          tools: examples/tools/filesystem-tools.json
+          report-format: markdown
+          report-path: reports/ci-mcp-scope-report.md
+          fail-on: none
+          lang: en
+          include-html-viewer: "true"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: mcp-scope-report
+          path: |
+            reports/ci-mcp-scope-report.md
+            reports/ci-mcp-scope-report.json
+            reports/ci-mcp-scope-report.html
+            reports/action-smoke.html

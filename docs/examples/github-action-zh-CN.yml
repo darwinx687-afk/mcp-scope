@@ -1,0 +1,29 @@
+name: MCP Scope zh-CN
+
+on:
+  pull_request:
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  mcp-scope:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      # Local repository usage with Chinese report headings.
+      - uses: ./
+        with:
+          config: examples/claude-desktop-filesystem.json
+          tools: examples/tools/filesystem-tools.json
+          report-format: markdown
+          report-path: mcp-scope-report.zh-CN.md
+          fail-on: none
+          lang: zh-CN
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: mcp-scope-report-zh-CN
+          path: mcp-scope-report.zh-CN.md
