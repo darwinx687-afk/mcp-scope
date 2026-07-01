@@ -17,6 +17,29 @@ import type {
 import { renderHtmlViewer } from "./html.js";
 
 export {
+  buildMcpScopeSnapshot,
+  diffMcpScopeSnapshot,
+  parseMcpScopeSnapshotJson,
+  renderDiffHtml,
+  renderDiffJson,
+  renderDiffMarkdown,
+  shouldFailOnDiffSeverity
+} from "./approval-memory.js";
+export type {
+  DiffCategory,
+  DiffChange,
+  DiffChangeType,
+  DiffSeverity,
+  EntityKind,
+  McpScopeDiffResult,
+  McpScopeSnapshot,
+  McpScopeSnapshotEntry,
+  SnapshotCreationOptions,
+  SnapshotDigest,
+  SnapshotDiffOptions,
+  SnapshotSource
+} from "./approval-memory.js";
+export {
   compareSeverity,
   isFailOnThreshold,
   shouldFailOnSeverity,
@@ -127,7 +150,7 @@ export function renderFoundationStatusReport(): string {
     `- scanner: ${FOUNDATION_STATUS.scanner}`,
     `- externalApiCalls: ${String(FOUNDATION_STATUS.externalApiCalls)}`,
     "",
-    "Phase 5 adds a GitHub Action quality gate. It does not execute MCP servers, call tools/list, or call external APIs."
+    "Phase 6 adds local approval-memory snapshots and static diffing. It does not execute MCP servers, call tools/list, or call external APIs."
   ].join("\n");
 }
 

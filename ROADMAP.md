@@ -36,6 +36,8 @@ Status: implemented as a local composite action and CLI `--fail-on` threshold.
 
 Track approved fingerprints and report meaningful changes.
 
+Status: implemented as local redacted approval-memory snapshots and static diff reports.
+
 ## Phase 7: Ecosystem Examples
 
 Add examples for Claude Desktop, Claude Code, Cursor, Cline, Continue, and Gemini CLI.

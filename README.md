@@ -2,11 +2,11 @@
 
 A local-first transparency and risk audit tool for MCP tool metadata, server configs, and AI agent tool permissions.
 
-MCP Scope is in Phase 5 / early preview. It is not production-ready, does not make complete security claims, and does not execute MCP servers.
+MCP Scope is in Phase 6 / early preview. It is not production-ready, does not make complete security claims, and does not execute MCP servers.
 
 ## Current Guarantees
 
-- No external API calls in the core Phase 5 checks.
+- No external API calls in the core Phase 6 checks.
 - No login.
 - No database.
 - No cloud service by default.
@@ -20,6 +20,7 @@ MCP Scope is in Phase 5 / early preview. It is not production-ready, does not ma
 - HTML reports are self-contained local files with inline CSS and no external assets.
 - HTML reports require `--output`; MCP Scope does not open a browser or start a server.
 - GitHub Action support wraps the local CLI; it does not upload files automatically.
+- Approval memory snapshots are local redacted JSON files, not safety certification.
 
 ## CLI
 
@@ -39,6 +40,9 @@ mcp-scope inspect-tools --tools <path> --format markdown --lang zh-CN
 mcp-scope inspect-tools --tools <path> --format html --output reports/mcp-scope-tools.html
 mcp-scope scan --config <path> --tools <path> --fail-on high
 mcp-scope view --report examples/reports/sample-combined-report.json --output reports/sample-viewer.html
+mcp-scope snapshot --config <path> --tools <path> --output snapshots/approved.snapshot.json --label "reviewed"
+mcp-scope diff --baseline snapshots/approved.snapshot.json --config <path> --tools <path>
+mcp-scope diff --baseline snapshots/approved.snapshot.json --config <path> --tools <path> --fail-on-change high
 ```
 
 `mcp-scope status` reports the current static scanner state:
@@ -47,9 +51,9 @@ mcp-scope view --report examples/reports/sample-combined-report.json --output re
 {
   "project": "mcp-scope",
   "name": "MCP Scope",
-  "phase": 5,
-  "status": "github-action-gate-ready",
-  "scanner": "static-config-tool-metadata-ci-gate",
+  "phase": 6,
+  "status": "approval-memory-diff-ready",
+  "scanner": "static-config-tool-metadata-approval-memory",
   "externalApiCalls": false,
   "serverExecution": false
 }
@@ -106,6 +110,8 @@ Report docs:
 - `docs/VIEWER_GUIDE.zh-CN.md`
 - `docs/GITHUB_ACTION.md`
 - `docs/GITHUB_ACTION.zh-CN.md`
+- `docs/APPROVAL_MEMORY.md`
+- `docs/APPROVAL_MEMORY.zh-CN.md`
 
 MCP Scope reports transparency notes and static risk signals. It does not prove compromise, prove safety, run MCP servers, or inspect live tool metadata.
 
@@ -133,6 +139,26 @@ permissions:
 
 See `docs/GITHUB_ACTION.md` for inputs, outputs, threshold behavior, job summaries, and artifact upload examples.
 
+## Approval Memory Diff
+
+Create a local redacted snapshot after a review, then compare a future config and tool metadata export against that baseline:
+
+```bash
+node apps/cli/dist/index.js snapshot \
+  --config examples/claude-desktop-filesystem.json \
+  --tools examples/tools/filesystem-tools.json \
+  --output examples/snapshots/filesystem-approved.snapshot.json \
+  --label "filesystem review"
+
+node apps/cli/dist/index.js diff \
+  --baseline examples/snapshots/filesystem-approved.snapshot.json \
+  --config examples/claude-desktop-filesystem.json \
+  --tools examples/tools/filesystem-tools.changed-description.json \
+  --format markdown
+```
+
+Use `--fail-on-change none|info|low|medium|high` to make local scripts or CI fail when static drift reaches a chosen severity. See `docs/APPROVAL_MEMORY.md` for the full workflow.
+
 ## Examples
 
 - `examples/claude-desktop-filesystem.json`
@@ -144,6 +170,10 @@ See `docs/GITHUB_ACTION.md` for inputs, outputs, threshold behavior, job summari
 - `examples/tools/credential-network-tools.json`
 - `examples/tools/schema-quality-tools.json`
 - `examples/tools/multi-tool-suspicious-fragments.json`
+- `examples/tools/filesystem-tools.changed-description.json`
+- `examples/tools/filesystem-tools.changed-schema.json`
+- `examples/tools/filesystem-tools.added-dangerous-tool.json`
+- `examples/configs/claude-desktop-filesystem.changed-command.json`
 - `examples/reports/sample-combined-report.md`
 - `examples/reports/sample-combined-report.zh-CN.md`
 - `examples/reports/sample-combined-report.json`
@@ -151,6 +181,11 @@ See `docs/GITHUB_ACTION.md` for inputs, outputs, threshold behavior, job summari
 - `examples/viewer/sample-combined-viewer.html`
 - `examples/viewer/sample-combined-viewer.zh-CN.html`
 - `examples/viewer/sample-tools-only-viewer.html`
+- `examples/snapshots/filesystem-approved.snapshot.json`
+- `examples/diffs/filesystem-description-change.diff.md`
+- `examples/diffs/filesystem-description-change.diff.zh-CN.md`
+- `examples/diffs/filesystem-added-dangerous-tool.diff.json`
+- `examples/diffs/filesystem-added-dangerous-tool.diff.html`
 - `docs/examples/github-action-basic.yml`
 - `docs/examples/github-action-threshold-gate.yml`
 - `docs/examples/github-action-zh-CN.yml`
@@ -166,6 +201,6 @@ pnpm check
 
 - Phase 4: local read-only viewer. Implemented.
 - Phase 5: GitHub Action quality gate. Implemented.
-- Phase 6: tool metadata diff and approval memory.
+- Phase 6: approval memory snapshots and static diffing. Implemented.
 
 See `ROADMAP.md` for the full roadmap.

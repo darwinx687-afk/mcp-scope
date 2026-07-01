@@ -15,13 +15,20 @@ import {
 import {
   buildScanReportModel,
   buildToolMetadataReportModel,
+  buildMcpScopeSnapshot,
+  diffMcpScopeSnapshot,
   type FailOnThreshold,
   type ReportLanguage,
   type TransparencyReportModel,
   isFailOnThreshold,
+  parseMcpScopeSnapshotJson,
+  renderDiffHtml,
+  renderDiffJson,
+  renderDiffMarkdown,
   renderHtmlFromJsonReport,
   renderHtmlViewer,
   renderTransparencyReportMarkdown,
+  shouldFailOnDiffSeverity,
   shouldFailOnSeverity,
   summarizeReportForCi
 } from "@mcp-scope/report";
@@ -46,14 +53,17 @@ Usage:
   mcp-scope scan --config <path> [--tools <path>] [--format markdown|json|html] [--lang en|zh-CN] [--output <path>] [--fail-on none|info|low|medium|high]
   mcp-scope inspect-tools --tools <path> [--format markdown|json|html] [--lang en|zh-CN] [--output <path>] [--fail-on none|info|low|medium|high]
   mcp-scope view --report <path> --output <path> [--lang en|zh-CN]
+  mcp-scope snapshot [--config <path>] [--tools <path>] --output <path> [--label <text>]
+  mcp-scope diff --baseline <snapshot-path> [--config <path>] [--tools <path>] [--format markdown|json|html] [--lang en|zh-CN] [--output <path>] [--fail-on-change none|info|low|medium|high]
 
-Phase 5 note:
+Phase 6 note:
   MCP Scope statically reads local JSON config and exported tool metadata files.
-  GitHub Action support wraps the local CLI and can fail on static severity thresholds.
+  Approval memory stores local redacted snapshots and compares future static scans.
   It does not execute MCP servers, call tools/list, start a web server, or call external APIs.
 `;
 
 type ScanFormat = "markdown" | "json" | "html";
+type DiffFormat = ScanFormat;
 
 type ScanCommandOptions = {
   readonly configPath: string;
@@ -76,6 +86,23 @@ type ViewCommandOptions = {
   readonly reportPath: string;
   readonly outputPath: string;
   readonly lang: ReportLanguage;
+};
+
+type SnapshotCommandOptions = {
+  readonly configPath?: string;
+  readonly toolsPath?: string;
+  readonly outputPath: string;
+  readonly label?: string;
+};
+
+type DiffCommandOptions = {
+  readonly baselinePath: string;
+  readonly configPath?: string;
+  readonly toolsPath?: string;
+  readonly format: DiffFormat;
+  readonly lang: ReportLanguage;
+  readonly outputPath?: string;
+  readonly failOnChange: FailOnThreshold;
 };
 
 export async function handleCli(args = process.argv.slice(2), io: CliIO = process): Promise<number> {
@@ -106,6 +133,14 @@ export async function handleCli(args = process.argv.slice(2), io: CliIO = proces
 
   if (command === "view") {
     return runViewCommand(args.slice(1), io);
+  }
+
+  if (command === "snapshot") {
+    return runSnapshotCommand(args.slice(1), io);
+  }
+
+  if (command === "diff") {
+    return runDiffCommand(args.slice(1), io);
   }
 
   io.stderr.write(`Unknown MCP Scope command: ${command}\n`);
@@ -255,6 +290,126 @@ async function runViewCommand(args: readonly string[], io: CliIO): Promise<numbe
     io.stderr.write(`MCP Scope view failed: ${message}\n`);
     return 1;
   }
+}
+
+async function runSnapshotCommand(args: readonly string[], io: CliIO): Promise<number> {
+  const options = parseSnapshotArgs(args);
+
+  if (typeof options === "string") {
+    io.stderr.write(`${options}\n`);
+    return 1;
+  }
+
+  try {
+    const report = await buildReportFromSources(options);
+    const snapshot = buildMcpScopeSnapshot(report, { label: options.label });
+    const rendered = `${JSON.stringify(snapshot, null, 2)}\n`;
+
+    await mkdir(dirname(options.outputPath), { recursive: true });
+    await writeFile(options.outputPath, rendered, "utf8");
+    io.stdout.write(`Wrote MCP Scope snapshot to ${options.outputPath}\n`);
+    io.stdout.write(`- server count: ${snapshot.riskSummary.serverCount}\n`);
+    io.stdout.write(`- tool count: ${snapshot.riskSummary.toolCount}\n`);
+    io.stdout.write(`- highest severity: ${snapshot.riskSummary.highestSeverity}\n`);
+    io.stdout.write(`- secret values redacted: ${String(snapshot.scan.secretValuesRedacted)}\n`);
+    return 0;
+  } catch (error) {
+    if (error instanceof McpScopeConfigError || error instanceof McpToolMetadataError) {
+      io.stderr.write(`${error.message}\n`);
+      return 1;
+    }
+
+    const message = error instanceof Error ? error.message : String(error);
+    io.stderr.write(`MCP Scope snapshot failed: ${message}\n`);
+    return 1;
+  }
+}
+
+async function runDiffCommand(args: readonly string[], io: CliIO): Promise<number> {
+  const options = parseDiffArgs(args);
+
+  if (typeof options === "string") {
+    io.stderr.write(`${options}\n`);
+    return 1;
+  }
+
+  if (options.format === "html" && options.outputPath === undefined) {
+    io.stderr.write("HTML format requires --output <path>.\n");
+    return 1;
+  }
+
+  try {
+    let snapshotText: string;
+
+    try {
+      snapshotText = await readFile(options.baselinePath, "utf8");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      io.stderr.write(`Unable to read baseline snapshot "${options.baselinePath}": ${message}\n`);
+      return 1;
+    }
+
+    const baseline = parseMcpScopeSnapshotJson(snapshotText);
+    const currentReport = await buildReportFromSources(options);
+    const diff = diffMcpScopeSnapshot(baseline, currentReport, { snapshotPath: options.baselinePath });
+    const rendered =
+      options.format === "json"
+        ? renderDiffJson(diff)
+        : options.format === "html"
+          ? renderDiffHtml(diff, { lang: options.lang })
+          : renderDiffMarkdown(diff, { lang: options.lang });
+
+    if (options.outputPath !== undefined) {
+      await mkdir(dirname(options.outputPath), { recursive: true });
+      await writeFile(options.outputPath, rendered, "utf8");
+      io.stdout.write(`Wrote MCP Scope ${options.format} diff report to ${options.outputPath}\n`);
+    } else {
+      io.stdout.write(rendered.endsWith("\n") ? rendered : `${rendered}\n`);
+    }
+
+    if (shouldFailOnDiffSeverity(diff, options.failOnChange)) {
+      io.stderr.write(
+        `MCP Scope fail-on-change threshold reached: highest diff severity ${diff.summary.highestDiffSeverity} meets ${options.failOnChange} (${diff.summary.changeCount} change(s)).\n`
+      );
+      return 1;
+    }
+
+    return 0;
+  } catch (error) {
+    if (error instanceof McpScopeConfigError || error instanceof McpToolMetadataError) {
+      io.stderr.write(`${error.message}\n`);
+      return 1;
+    }
+
+    const message = error instanceof Error ? error.message : String(error);
+    io.stderr.write(`MCP Scope diff failed: ${message}\n`);
+    return 1;
+  }
+}
+
+async function buildReportFromSources(options: {
+  readonly configPath?: string;
+  readonly toolsPath?: string;
+}): Promise<TransparencyReportModel> {
+  if (options.configPath === undefined && options.toolsPath === undefined) {
+    throw new Error("Provide at least one input: --config <path> or --tools <path>.");
+  }
+
+  const toolMetadata =
+    options.toolsPath === undefined
+      ? undefined
+      : evaluateToolManifest(await readMcpToolMetadataFile(options.toolsPath));
+
+  if (options.configPath !== undefined) {
+    const parsedConfig = await readMcpConfigFile(options.configPath);
+    return buildScanReportModel(createMcpConfigFingerprint(parsedConfig, { toolMetadata }));
+  }
+
+  if (toolMetadata === undefined) {
+    throw new Error("Provide at least one input: --config <path> or --tools <path>.");
+  }
+
+  return buildToolMetadataReportModel(toolMetadata);
 }
 
 function parseScanArgs(args: readonly string[]): ScanCommandOptions | string {
@@ -518,5 +673,218 @@ function parseViewArgs(args: readonly string[]): ViewCommandOptions | string {
     reportPath,
     outputPath,
     lang
+  };
+}
+
+function parseSnapshotArgs(args: readonly string[]): SnapshotCommandOptions | string {
+  let configPath: string | undefined;
+  let toolsPath: string | undefined;
+  let outputPath: string | undefined;
+  let label: string | undefined;
+
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index];
+
+    if (arg === "--config") {
+      const value = args[index + 1];
+
+      if (value === undefined || value.startsWith("--")) {
+        return 'Missing value for --config <path>';
+      }
+
+      configPath = value;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--tools") {
+      const value = args[index + 1];
+
+      if (value === undefined || value.startsWith("--")) {
+        return 'Missing value for --tools <path>';
+      }
+
+      toolsPath = value;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--output") {
+      const value = args[index + 1];
+
+      if (value === undefined || value.startsWith("--")) {
+        return 'Missing value for --output <path>';
+      }
+
+      outputPath = value;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--label") {
+      const value = args[index + 1];
+
+      if (value === undefined || value.startsWith("--")) {
+        return 'Missing value for --label <text>';
+      }
+
+      label = value;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--format") {
+      const value = args[index + 1];
+
+      if (value !== "json") {
+        return `Unsupported --format "${value ?? ""}". Snapshot output is JSON.`;
+      }
+
+      index += 1;
+      continue;
+    }
+
+    return `Unknown snapshot option: ${arg ?? ""}`;
+  }
+
+  if (configPath === undefined && toolsPath === undefined) {
+    return 'Missing input: provide --config <path>, --tools <path>, or both.';
+  }
+
+  if (outputPath === undefined || outputPath.trim() === "") {
+    return 'Missing required option: --output <path>';
+  }
+
+  return {
+    configPath,
+    toolsPath,
+    outputPath,
+    label
+  };
+}
+
+function parseDiffArgs(args: readonly string[]): DiffCommandOptions | string {
+  let baselinePath: string | undefined;
+  let configPath: string | undefined;
+  let toolsPath: string | undefined;
+  let format: DiffFormat = "markdown";
+  let lang: ReportLanguage = "en";
+  let outputPath: string | undefined;
+  let failOnChange: FailOnThreshold = "none";
+
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index];
+
+    if (arg === "--baseline") {
+      const value = args[index + 1];
+
+      if (value === undefined || value.startsWith("--")) {
+        return 'Missing value for --baseline <snapshot-path>';
+      }
+
+      baselinePath = value;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--config") {
+      const value = args[index + 1];
+
+      if (value === undefined || value.startsWith("--")) {
+        return 'Missing value for --config <path>';
+      }
+
+      configPath = value;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--tools") {
+      const value = args[index + 1];
+
+      if (value === undefined || value.startsWith("--")) {
+        return 'Missing value for --tools <path>';
+      }
+
+      toolsPath = value;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--format") {
+      const value = args[index + 1];
+
+      if (value !== "json" && value !== "markdown" && value !== "html") {
+        return `Unsupported --format "${value ?? ""}". Use "markdown", "json", or "html".`;
+      }
+
+      format = value;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--lang") {
+      const value = args[index + 1];
+
+      if (value !== "en" && value !== "zh-CN") {
+        return `Unsupported --lang "${value ?? ""}". Use "en" or "zh-CN".`;
+      }
+
+      lang = value;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--output") {
+      const value = args[index + 1];
+
+      if (value === undefined || value.startsWith("--")) {
+        return 'Missing value for --output <path>';
+      }
+
+      outputPath = value;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--fail-on-change") {
+      const value = args[index + 1];
+
+      if (value === undefined || value.startsWith("--")) {
+        return 'Missing value for --fail-on-change <none|info|low|medium|high>';
+      }
+
+      if (!isFailOnThreshold(value)) {
+        return `Unsupported --fail-on-change "${value}". Use "none", "info", "low", "medium", or "high".`;
+      }
+
+      failOnChange = value;
+      index += 1;
+      continue;
+    }
+
+    return `Unknown diff option: ${arg ?? ""}`;
+  }
+
+  if (baselinePath === undefined || baselinePath.trim() === "") {
+    return 'Missing required option: --baseline <snapshot-path>';
+  }
+
+  if (configPath === undefined && toolsPath === undefined) {
+    return 'Missing input: provide --config <path>, --tools <path>, or both.';
+  }
+
+  if (outputPath !== undefined && outputPath.trim() === "") {
+    return 'Invalid empty value for --output <path>';
+  }
+
+  return {
+    baselinePath,
+    configPath,
+    toolsPath,
+    format,
+    lang,
+    outputPath,
+    failOnChange
   };
 }

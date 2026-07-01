@@ -11,7 +11,7 @@ MCP Scope starts as a small TypeScript pnpm monorepo.
 - `examples`: intentionally committed examples only.
 - `assets`: brand and visual assets later.
 
-## Phase 5 Runtime Boundaries
+## Phase 6 Runtime Boundaries
 
 - No external API calls in core checks.
 - No database, cloud service, or login by default.
@@ -25,10 +25,12 @@ MCP Scope starts as a small TypeScript pnpm monorepo.
 - GitHub Action support is a composite action that wraps the local CLI.
 - The action writes local report files, GitHub outputs, and optional job summary only.
 - The action does not upload artifacts unless the workflow adds an upload step.
+- Approval memory snapshots and diffs are local files only.
+- Approval memory does not certify safety or confirm compromise.
 
 ## Current Scanner Direction
 
-The Phase 5 scanner remains static-first. It reads local JSON config files with a top-level `mcpServers` object and local exported tool metadata files. It produces stable JSON reports, bilingual Markdown reports, self-contained HTML viewers, and CI threshold outputs without executing commands, connecting to MCP servers, sending `tools/list` requests, starting a web server, or calling external APIs.
+The Phase 6 scanner remains static-first. It reads local JSON config files with a top-level `mcpServers` object and local exported tool metadata files. It produces stable JSON reports, bilingual Markdown reports, self-contained HTML viewers, approval-memory snapshots, static diff reports, and CI threshold outputs without executing commands, connecting to MCP servers, sending `tools/list` requests, starting a web server, or calling external APIs.
 
 The scanner redacts env/header values and reports only key names. URL query strings are redacted in displayed output. Tool metadata schemas are sanitized before rendering so obvious example secret values are not emitted.
 
@@ -42,9 +44,19 @@ Any future dynamic checks must be explicitly gated, documented, and visible to t
 
 `packages/core` owns stable names, shared types, MCP config parsing, local tool metadata parsing, static fingerprinting, rule evaluation, capability hints, risk levels, and transparency notes.
 
-`packages/report` owns the stable report model, JSON rendering, bilingual Markdown rendering, and self-contained HTML viewer rendering. It must avoid exposing raw env/header values or secret-like tool metadata examples.
+`packages/report` owns the stable report model, JSON rendering, bilingual Markdown rendering, self-contained HTML viewer rendering, approval-memory snapshot generation, and static diff rendering. It must avoid exposing raw env/header values or secret-like tool metadata examples.
 
 `apps/cli` owns user commands, argument parsing, exit codes, terminal output, report file writes, and the local `view` command.
+
+## Approval Memory Architecture
+
+Phase 6 adds local approval memory through the existing CLI and report package.
+
+`mcp-scope snapshot` builds the same stable transparency report used by `scan` and `inspect-tools`, then converts it into a redacted approval-memory JSON snapshot. The snapshot records reviewed config server fingerprints, tool metadata fingerprints, finding rule IDs, risk summaries, limitation flags, and SHA-256 digests. It does not store env values or header values.
+
+`mcp-scope diff` reads a baseline snapshot from disk, builds a new static report from local inputs, converts that current report to an in-memory snapshot, and compares the two snapshots. Diff output can be Markdown, JSON, or self-contained HTML. The command can optionally fail with `--fail-on-change` after output generation.
+
+The diff layer is still static analysis. It reports drift in visible metadata and risk signals; it does not execute tools, prove behavior, certify safety, or prove compromise.
 
 ## GitHub Action Architecture
 

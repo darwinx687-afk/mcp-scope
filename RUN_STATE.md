@@ -1,18 +1,21 @@
 # Run State
 
-- Current phase: Phase 5
-- Current status: GitHub Action quality gate ready
-- Next loop: Phase 6 tool metadata diff and approval memory
-- Current scope guard: local CI/report integration only; no new scanning categories, no MCP server execution, no live tools/list requests
+- Current phase: Phase 6
+- Current status: Approval memory snapshots and static diffing ready
+- Next loop: Phase 7 ecosystem examples
+- Current scope guard: local snapshot/diff integration only; no new scanning categories, no MCP server execution, no live tools/list requests, no external APIs
 
 ## Latest Loop
 
-- Objective: add a local composite GitHub Action quality gate and CLI fail-on threshold.
-- Scanner state: unchanged static config fingerprint plus local exported tool metadata analysis.
+- Objective: add local approval-memory snapshots and static diff reports.
+- Scanner state: unchanged static config fingerprint plus local exported tool metadata analysis, with snapshot/diff comparison layered on top.
 - External API calls: false.
 - MCP server execution: false.
 - Live `tools/list` requests: false.
 - Web server: not started.
 - Browser auto-open: false.
-- GitHub Actions: root composite action and repository CI workflow created.
+- GitHub Actions: unchanged Phase 5 root composite action; Phase 6 diff integration not added.
 - Artifact upload: only via explicit workflow step.
+- Approval memory: local redacted JSON snapshots under user-chosen paths.
+- Diff outputs: Markdown, JSON, and self-contained HTML.
+- Thresholds: `--fail-on-change none|info|low|medium|high`.

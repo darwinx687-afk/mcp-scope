@@ -40,3 +40,9 @@
 - Phase 5 uses a composite GitHub Action that wraps the local CLI and writes summary/output without publishing to GitHub Marketplace.
 - The action generates JSON internally for CI evaluation, but artifact upload remains an explicit workflow step.
 - Severity gates use static report severity only; findings remain risk signals, not confirmed vulnerabilities.
+
+## 2026-07-01 Phase 6
+
+- Phase 6 stores local redacted approval-memory snapshots as JSON and compares future local static scans against them.
+- Approval-memory snapshots are review artifacts, not safety certificates or public trust badges.
+- Diffing stays in the local CLI for this phase; GitHub Action diff integration and `scan --compare-to` remain out of scope until the core workflow has more usage feedback.

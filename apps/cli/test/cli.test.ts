@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -33,6 +33,8 @@ describe("mcp-scope CLI", () => {
       expect(result.stdout).toContain("mcp-scope status");
       expect(result.stdout).toContain("mcp-scope scan --config <path>");
       expect(result.stdout).toContain("mcp-scope inspect-tools --tools <path>");
+      expect(result.stdout).toContain("mcp-scope snapshot");
+      expect(result.stdout).toContain("mcp-scope diff");
       expect(result.stdout).toContain("does not execute MCP servers");
     });
   });
@@ -52,9 +54,9 @@ describe("mcp-scope CLI", () => {
     expect(parsed).toMatchObject({
       project: "mcp-scope",
       name: "MCP Scope",
-      phase: 5,
-      status: "github-action-gate-ready",
-      scanner: "static-config-tool-metadata-ci-gate",
+      phase: 6,
+      status: "approval-memory-diff-ready",
+      scanner: "static-config-tool-metadata-approval-memory",
       externalApiCalls: false,
       serverExecution: false
     });
@@ -181,6 +183,226 @@ describe("mcp-scope CLI", () => {
       expect(html).toContain("<title>MCP Scope Report</title>");
       expect(html).toContain("Summary");
       expect(html).toContain("Tool Metadata");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  it("writes an approval snapshot for config plus tools", async () => {
+    const configPath = fileURLToPath(
+      new URL("../../../examples/claude-desktop-filesystem.json", import.meta.url)
+    );
+    const toolsPath = fileURLToPath(
+      new URL("../../../examples/tools/filesystem-tools.json", import.meta.url)
+    );
+    const tempDir = await mkdtemp(join(tmpdir(), "mcp-scope-cli-"));
+    const outputPath = join(tempDir, "filesystem.snapshot.json");
+
+    try {
+      const result = await runCli([
+        "snapshot",
+        "--config",
+        configPath,
+        "--tools",
+        toolsPath,
+        "--output",
+        outputPath,
+        "--label",
+        "filesystem review"
+      ]);
+      const snapshot = await readFile(outputPath, "utf8");
+
+      expect(result.exitCode).toBe(0);
+      expect(result.stdout).toContain("Wrote MCP Scope snapshot");
+      expect(result.stdout).toContain("secret values redacted: true");
+      expect(snapshot).toContain('"snapshotVersion": "0.1.0"');
+      expect(snapshot).toContain('"label": "filesystem review"');
+      expect(snapshot).toContain('"configServers"');
+      expect(snapshot).toContain('"tools"');
+      expect(snapshot).not.toContain("REDACTED_EXAMPLE_TOKEN");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  it("writes a tools-only approval snapshot", async () => {
+    const toolsPath = fileURLToPath(
+      new URL("../../../examples/tools/filesystem-tools.json", import.meta.url)
+    );
+    const tempDir = await mkdtemp(join(tmpdir(), "mcp-scope-cli-"));
+    const outputPath = join(tempDir, "tools.snapshot.json");
+
+    try {
+      const result = await runCli(["snapshot", "--tools", toolsPath, "--output", outputPath]);
+      const snapshot = await readFile(outputPath, "utf8");
+
+      expect(result.exitCode).toBe(0);
+      expect(snapshot).toContain('"mode": "tools-only"');
+      expect(snapshot).toContain('"serverCount": 0');
+      expect(snapshot).toContain('"toolCount": 2');
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  it("errors clearly when snapshot has no inputs", async () => {
+    const result = await runCli(["snapshot", "--output", "snapshot.json"]);
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("Missing input: provide --config <path>, --tools <path>, or both.");
+  });
+
+  it("diffs an approval snapshot and reports no changes by default", async () => {
+    const configPath = fileURLToPath(
+      new URL("../../../examples/claude-desktop-filesystem.json", import.meta.url)
+    );
+    const toolsPath = fileURLToPath(
+      new URL("../../../examples/tools/filesystem-tools.json", import.meta.url)
+    );
+    const tempDir = await mkdtemp(join(tmpdir(), "mcp-scope-cli-"));
+    const snapshotPath = join(tempDir, "filesystem.snapshot.json");
+
+    try {
+      const snapshotResult = await runCli(["snapshot", "--config", configPath, "--tools", toolsPath, "--output", snapshotPath]);
+      const diffResult = await runCli(["diff", "--baseline", snapshotPath, "--config", configPath, "--tools", toolsPath]);
+
+      expect(snapshotResult.exitCode).toBe(0);
+      expect(diffResult.exitCode).toBe(0);
+      expect(diffResult.stdout).toContain("# MCP Scope Diff Report");
+      expect(diffResult.stdout).toContain("Change count: 0");
+      expect(diffResult.stdout).toContain("No static changes detected.");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  it("renders diff JSON and applies fail-on-change thresholds", async () => {
+    const configPath = fileURLToPath(
+      new URL("../../../examples/claude-desktop-filesystem.json", import.meta.url)
+    );
+    const toolsPath = fileURLToPath(
+      new URL("../../../examples/tools/filesystem-tools.json", import.meta.url)
+    );
+    const changedToolsPath = fileURLToPath(
+      new URL("../../../examples/tools/filesystem-tools.added-dangerous-tool.json", import.meta.url)
+    );
+    const tempDir = await mkdtemp(join(tmpdir(), "mcp-scope-cli-"));
+    const snapshotPath = join(tempDir, "filesystem.snapshot.json");
+
+    try {
+      const snapshotResult = await runCli(["snapshot", "--config", configPath, "--tools", toolsPath, "--output", snapshotPath]);
+      const diffResult = await runCli([
+        "diff",
+        "--baseline",
+        snapshotPath,
+        "--config",
+        configPath,
+        "--tools",
+        changedToolsPath,
+        "--format",
+        "json",
+        "--fail-on-change",
+        "none"
+      ]);
+      const failResult = await runCli([
+        "diff",
+        "--baseline",
+        snapshotPath,
+        "--config",
+        configPath,
+        "--tools",
+        changedToolsPath,
+        "--fail-on-change",
+        "high"
+      ]);
+
+      expect(snapshotResult.exitCode).toBe(0);
+      expect(diffResult.exitCode).toBe(0);
+      expect(diffResult.stdout).toContain('"addedTools": 1');
+      expect(diffResult.stdout).toContain('"highestDiffSeverity": "high"');
+      expect(diffResult.stdout).not.toContain("example-api-key-do-not-use");
+      expect(failResult.exitCode).toBe(1);
+      expect(failResult.stdout).toContain("# MCP Scope Diff Report");
+      expect(failResult.stderr).toContain("MCP Scope fail-on-change threshold reached");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  it("writes Chinese Markdown and HTML diff reports", async () => {
+    const configPath = fileURLToPath(
+      new URL("../../../examples/claude-desktop-filesystem.json", import.meta.url)
+    );
+    const toolsPath = fileURLToPath(
+      new URL("../../../examples/tools/filesystem-tools.json", import.meta.url)
+    );
+    const changedToolsPath = fileURLToPath(
+      new URL("../../../examples/tools/filesystem-tools.changed-description.json", import.meta.url)
+    );
+    const tempDir = await mkdtemp(join(tmpdir(), "mcp-scope-cli-"));
+    const snapshotPath = join(tempDir, "filesystem.snapshot.json");
+    const markdownPath = join(tempDir, "diff.zh-CN.md");
+    const htmlPath = join(tempDir, "diff.html");
+
+    try {
+      const snapshotResult = await runCli(["snapshot", "--config", configPath, "--tools", toolsPath, "--output", snapshotPath]);
+      const markdownResult = await runCli([
+        "diff",
+        "--baseline",
+        snapshotPath,
+        "--config",
+        configPath,
+        "--tools",
+        changedToolsPath,
+        "--lang",
+        "zh-CN",
+        "--output",
+        markdownPath
+      ]);
+      const htmlResult = await runCli([
+        "diff",
+        "--baseline",
+        snapshotPath,
+        "--config",
+        configPath,
+        "--tools",
+        changedToolsPath,
+        "--format",
+        "html",
+        "--output",
+        htmlPath
+      ]);
+      const markdown = await readFile(markdownPath, "utf8");
+      const html = await readFile(htmlPath, "utf8");
+
+      expect(snapshotResult.exitCode).toBe(0);
+      expect(markdownResult.exitCode).toBe(0);
+      expect(htmlResult.exitCode).toBe(0);
+      expect(markdown).toContain("## 摘要");
+      expect(markdown).toContain("description-changed");
+      expect(html).toContain("<title>MCP Scope Diff Report</title>");
+      expect(html).not.toContain("<script");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  it("errors clearly for missing or invalid diff baselines", async () => {
+    const configPath = fileURLToPath(
+      new URL("../../../examples/claude-desktop-filesystem.json", import.meta.url)
+    );
+    const tempDir = await mkdtemp(join(tmpdir(), "mcp-scope-cli-"));
+    const invalidSnapshotPath = join(tempDir, "invalid.snapshot.json");
+
+    try {
+      await writeFile(invalidSnapshotPath, "{bad json", "utf8");
+      const missing = await runCli(["diff", "--baseline", join(tempDir, "missing.json"), "--config", configPath]);
+      const invalid = await runCli(["diff", "--baseline", invalidSnapshotPath, "--config", configPath]);
+
+      expect(missing.exitCode).toBe(1);
+      expect(missing.stderr).toContain("Unable to read baseline snapshot");
+      expect(invalid.exitCode).toBe(1);
+      expect(invalid.stderr).toContain("Invalid MCP Scope snapshot JSON");
     } finally {
       await rm(tempDir, { recursive: true, force: true });
     }

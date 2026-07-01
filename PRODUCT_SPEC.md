@@ -32,13 +32,14 @@ Developers are connecting MCP servers to AI coding tools and agent environments.
 - Network endpoint risk notes.
 - Capability classification.
 - Tool-change diff after approval.
+- Local approval-memory snapshots.
 - Markdown and JSON reports.
 - Local self-contained HTML viewer.
 - GitHub Action quality gate.
 
-## Phase 5 Scope
+## Phase 6 Scope
 
-Phase 5 adds a GitHub Action quality gate on top of the local CLI and stable report system.
+Phase 6 adds local approval-memory snapshots and static diffing on top of the local CLI, stable report system, HTML viewer, and GitHub Action quality gate.
 
 Included now:
 
@@ -47,6 +48,8 @@ Included now:
 - CLI command: `mcp-scope scan --config <path>`.
 - CLI command: `mcp-scope scan --config <path> --tools <path>`.
 - CLI command: `mcp-scope inspect-tools --tools <path>`.
+- CLI command: `mcp-scope snapshot [--config <path>] [--tools <path>] --output <path> [--label <text>]`.
+- CLI command: `mcp-scope diff --baseline <snapshot-path> [--config <path>] [--tools <path>]`.
 - Static parsing for JSON files with a top-level `mcpServers` object.
 - Static parsing for local exported MCP `tools/list` JSON-RPC responses.
 - Static parsing for MCP Scope portable local tool manifests.
@@ -62,6 +65,7 @@ Included now:
 - HTML viewer localization with `--lang en` and `--lang zh-CN`.
 - Inline CSS only; no CDN, external assets, tracking, telemetry, browser automation, or web server.
 - CLI severity threshold option: `--fail-on none|info|low|medium|high`.
+- Diff severity threshold option: `--fail-on-change none|info|low|medium|high`.
 - Root composite GitHub Action in `action.yml`.
 - Action runner script that reuses the built local CLI and writes safe GitHub outputs.
 - GitHub job summary generation with counts and boundary language.
@@ -70,6 +74,11 @@ Included now:
 - Repository CI workflow under `.github/workflows/ci.yml`.
 - Curated report examples under `examples/reports`.
 - Curated viewer examples under `examples/viewer`.
+- Curated approval snapshot and diff examples under `examples/snapshots` and `examples/diffs`.
+- Snapshot fingerprints for reviewed config servers, tool metadata, finding rule IDs, redaction guarantees, limitations, and SHA-256 digests.
+- Static diff reports for added/removed servers, added/removed tools, command/args/key/URL drift, tool description/schema/annotation drift, severity changes, and finding-rule changes.
+- Diff output formats: Markdown, JSON, and self-contained HTML.
+- Bilingual diff Markdown with `--lang en` and `--lang zh-CN`.
 - Example configs and tests.
 
 Not included now:
@@ -87,3 +96,6 @@ Not included now:
 - GitHub Marketplace publication.
 - Remote repository creation or push.
 - Automatic artifact upload from the action itself.
+- GitHub Action approval-memory diff integration.
+- `scan --compare-to` shortcut.
+- Treating snapshots as approval certificates or safety badges.

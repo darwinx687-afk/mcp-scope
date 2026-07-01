@@ -2,11 +2,11 @@
 
 MCP Scope 是一个本地优先的 MCP 工具元数据、服务配置与 AI Agent 工具权限透明化审计工具。
 
-当前项目处于 Phase 5 / 早期预览阶段。它还不是可用于生产环境的完整安全产品，不做完整安全保证，也不会执行 MCP 服务。
+当前项目处于 Phase 6 / 早期预览阶段。它还不是可用于生产环境的完整安全产品，不做完整安全保证，也不会执行 MCP 服务。
 
 ## 当前边界
 
-- 核心 Phase 5 检查不调用外部 API。
+- 核心 Phase 6 检查不调用外部 API。
 - 不需要登录。
 - 不使用数据库。
 - 默认不依赖云服务。
@@ -20,6 +20,7 @@ MCP Scope 是一个本地优先的 MCP 工具元数据、服务配置与 AI Agen
 - HTML 报告是本地自包含文件，使用内联 CSS，不依赖外部资源。
 - HTML 报告需要 `--output`；MCP Scope 不会自动打开浏览器，也不会启动服务。
 - GitHub Action 支持只是包装本地 CLI，不会自动上传文件。
+- 审批记忆 snapshot 是本地脱敏 JSON 文件，不是安全认证。
 
 ## CLI
 
@@ -39,6 +40,9 @@ mcp-scope inspect-tools --tools <path> --format markdown --lang zh-CN
 mcp-scope inspect-tools --tools <path> --format html --output reports/mcp-scope-tools.html
 mcp-scope scan --config <path> --tools <path> --fail-on high
 mcp-scope view --report examples/reports/sample-combined-report.json --output reports/sample-viewer.html
+mcp-scope snapshot --config <path> --tools <path> --output snapshots/approved.snapshot.json --label "reviewed"
+mcp-scope diff --baseline snapshots/approved.snapshot.json --config <path> --tools <path>
+mcp-scope diff --baseline snapshots/approved.snapshot.json --config <path> --tools <path> --fail-on-change high
 ```
 
 `mcp-scope status` 输出当前静态扫描状态：
@@ -47,9 +51,9 @@ mcp-scope view --report examples/reports/sample-combined-report.json --output re
 {
   "project": "mcp-scope",
   "name": "MCP Scope",
-  "phase": 5,
-  "status": "github-action-gate-ready",
-  "scanner": "static-config-tool-metadata-ci-gate",
+  "phase": 6,
+  "status": "approval-memory-diff-ready",
+  "scanner": "static-config-tool-metadata-approval-memory",
   "externalApiCalls": false,
   "serverExecution": false
 }
@@ -106,6 +110,8 @@ Markdown 输出片段示例：
 - `docs/VIEWER_GUIDE.zh-CN.md`
 - `docs/GITHUB_ACTION.md`
 - `docs/GITHUB_ACTION.zh-CN.md`
+- `docs/APPROVAL_MEMORY.md`
+- `docs/APPROVAL_MEMORY.zh-CN.md`
 
 MCP Scope 输出的是透明度提示和静态风险信号。它不会证明某个配置已经被攻击，也不会证明某个配置绝对安全；它不执行 MCP 服务，也不检查实时工具元数据。
 
@@ -133,6 +139,27 @@ permissions:
 
 输入、输出、阈值、job summary 和 artifact 上传示例见 `docs/GITHUB_ACTION.zh-CN.md`。
 
+## 审批记忆 Diff
+
+审查完成后可以生成一个本地脱敏 snapshot，之后把新的 config 和 tool metadata 导出文件与它做静态 diff：
+
+```bash
+node apps/cli/dist/index.js snapshot \
+  --config examples/claude-desktop-filesystem.json \
+  --tools examples/tools/filesystem-tools.json \
+  --output examples/snapshots/filesystem-approved.snapshot.json \
+  --label "filesystem review"
+
+node apps/cli/dist/index.js diff \
+  --baseline examples/snapshots/filesystem-approved.snapshot.json \
+  --config examples/claude-desktop-filesystem.json \
+  --tools examples/tools/filesystem-tools.changed-description.json \
+  --format markdown \
+  --lang zh-CN
+```
+
+`--fail-on-change none|info|low|medium|high` 可以让本地脚本或 CI 在静态变化达到指定严重程度时失败。完整说明见 `docs/APPROVAL_MEMORY.zh-CN.md`。
+
 ## 示例
 
 - `examples/claude-desktop-filesystem.json`
@@ -144,6 +171,10 @@ permissions:
 - `examples/tools/credential-network-tools.json`
 - `examples/tools/schema-quality-tools.json`
 - `examples/tools/multi-tool-suspicious-fragments.json`
+- `examples/tools/filesystem-tools.changed-description.json`
+- `examples/tools/filesystem-tools.changed-schema.json`
+- `examples/tools/filesystem-tools.added-dangerous-tool.json`
+- `examples/configs/claude-desktop-filesystem.changed-command.json`
 - `examples/reports/sample-combined-report.md`
 - `examples/reports/sample-combined-report.zh-CN.md`
 - `examples/reports/sample-combined-report.json`
@@ -151,6 +182,11 @@ permissions:
 - `examples/viewer/sample-combined-viewer.html`
 - `examples/viewer/sample-combined-viewer.zh-CN.html`
 - `examples/viewer/sample-tools-only-viewer.html`
+- `examples/snapshots/filesystem-approved.snapshot.json`
+- `examples/diffs/filesystem-description-change.diff.md`
+- `examples/diffs/filesystem-description-change.diff.zh-CN.md`
+- `examples/diffs/filesystem-added-dangerous-tool.diff.json`
+- `examples/diffs/filesystem-added-dangerous-tool.diff.html`
 - `docs/examples/github-action-basic.yml`
 - `docs/examples/github-action-threshold-gate.yml`
 - `docs/examples/github-action-zh-CN.yml`
@@ -166,6 +202,6 @@ pnpm check
 
 - Phase 4：本地只读查看器。已实现。
 - Phase 5：GitHub Action 质量门禁。已实现。
-- Phase 6：工具元数据差异与审批记忆。
+- Phase 6：审批记忆 snapshot 与静态 diff。已实现。
 
 完整路线见 `ROADMAP.md`。

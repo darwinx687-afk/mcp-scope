@@ -1,6 +1,6 @@
 # MCP Scope Report Schema
 
-MCP Scope reports use a stable JSON shape for automation, localized Markdown for human review, self-contained HTML for local read-only viewing, and GitHub Action threshold evaluation.
+MCP Scope reports use a stable JSON shape for automation, localized Markdown for human review, self-contained HTML for local read-only viewing, GitHub Action threshold evaluation, and approval-memory diffing.
 
 ## Version Fields
 
@@ -109,6 +109,75 @@ Viewer requirements:
 - Do not render env values, header values, or obvious secret-like example values.
 - Do not start a web server or open a browser.
 
+## Approval Memory Snapshot Model
+
+`mcp-scope snapshot` writes a local redacted JSON snapshot. Snapshot files are separate from scan reports and currently use:
+
+- `snapshotVersion: "0.1.0"`
+- `schemaVersion: 1`
+
+Top-level snapshot shape:
+
+```json
+{
+  "snapshotVersion": "0.1.0",
+  "schemaVersion": 1,
+  "createdAt": "2026-07-01T00:00:00.000Z",
+  "label": "filesystem review",
+  "project": {},
+  "scan": {},
+  "sources": {},
+  "redaction": {},
+  "configServers": [],
+  "tools": [],
+  "manifest": {},
+  "riskSummary": {},
+  "findingSummary": {},
+  "digests": {},
+  "limitations": {}
+}
+```
+
+Snapshots record redacted static fingerprints only. They do not store env values or header values. They may still contain tool names, descriptions, schemas, local path hints, server names, and review labels.
+
+## Approval Memory Diff Model
+
+`mcp-scope diff` compares a baseline snapshot to a fresh local static scan and can render Markdown, JSON, or self-contained HTML. JSON diff files currently use:
+
+- `diffVersion: "0.1.0"`
+- `schemaVersion: 1`
+
+Top-level diff shape:
+
+```json
+{
+  "diffVersion": "0.1.0",
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-01T00:00:00.000Z",
+  "baseline": {},
+  "current": {},
+  "summary": {},
+  "changes": [],
+  "redaction": {},
+  "limitations": {}
+}
+```
+
+Each `changes` item includes:
+
+- `id`
+- `changeType`
+- `severity`
+- `category`
+- `entity`
+- `message`
+- `evidence`
+- `recommendation`
+- optional `before`
+- optional `after`
+
+Diff severities use the same `info`, `low`, `medium`, and `high` scale. Diff findings remain static drift signals, not proof of compromise or proof of safety.
+
 ## Limitations Model
 
 `limitations` includes:
@@ -122,6 +191,6 @@ Viewer requirements:
 
 ## Compatibility Expectations
 
-Future GitHub Action work should treat `reportVersion`, `schemaVersion`, `scan`, `summary`, `findings`, `redaction`, and `limitations` as compatibility-sensitive fields.
+Future GitHub Action and approval-memory work should treat `reportVersion`, `snapshotVersion`, `diffVersion`, `schemaVersion`, `scan`, `summary`, `findings`, `changes`, `redaction`, and `limitations` as compatibility-sensitive fields.
 
 New fields may be added in later phases, but existing keys should remain stable unless `reportVersion` changes.

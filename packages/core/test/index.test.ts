@@ -13,11 +13,11 @@ describe("core constants", () => {
     expect(PROJECT_VERSION).toBe("0.0.0");
   });
 
-  it("marks Phase 5 CI gate behavior as static-only", () => {
+  it("marks Phase 6 approval-memory diff behavior as static-only", () => {
     expect(FOUNDATION_STATUS).toMatchObject({
-      phase: 5,
-      status: "github-action-gate-ready",
-      scanner: "static-config-tool-metadata-ci-gate",
+      phase: 6,
+      status: "approval-memory-diff-ready",
+      scanner: "static-config-tool-metadata-approval-memory",
       externalApiCalls: false,
       serverExecution: false
     });

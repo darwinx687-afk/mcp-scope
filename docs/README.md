@@ -11,6 +11,8 @@ Current report docs:
 - `VIEWER_GUIDE.zh-CN.md`
 - `GITHUB_ACTION.md`
 - `GITHUB_ACTION.zh-CN.md`
+- `APPROVAL_MEMORY.md`
+- `APPROVAL_MEMORY.zh-CN.md`
 
 Workflow examples:
 

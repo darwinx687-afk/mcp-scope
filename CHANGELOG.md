@@ -21,3 +21,8 @@
 - Added Phase 5 root composite GitHub Action quality gate.
 - Added CLI `--fail-on none|info|low|medium|high` threshold behavior for `scan` and `inspect-tools`.
 - Added GitHub Action docs, example workflows, repository CI, and action runner tests.
+- Added Phase 6 approval-memory snapshots with `mcp-scope snapshot`.
+- Added static snapshot diffing with `mcp-scope diff`.
+- Added `--fail-on-change none|info|low|medium|high` threshold behavior for diffs.
+- Added Markdown, JSON, and self-contained HTML diff rendering.
+- Added approval-memory docs and curated snapshot/diff examples.

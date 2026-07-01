@@ -1,0 +1,264 @@
+{
+  "snapshotVersion": "0.1.0",
+  "schemaVersion": 1,
+  "createdAt": "2026-07-01T13:59:51.549Z",
+  "label": "filesystem review",
+  "project": {
+    "name": "MCP Scope",
+    "slug": "mcp-scope",
+    "version": "0.0.0"
+  },
+  "scan": {
+    "mode": "combined",
+    "externalApiCalls": false,
+    "mcpServerExecution": false,
+    "dynamicAnalysis": false,
+    "secretValuesRedacted": true
+  },
+  "sources": {
+    "configPath": "examples/claude-desktop-filesystem.json",
+    "toolsPath": "examples/tools/filesystem-tools.json",
+    "metadataSourceType": "mcp-scope-tool-manifest"
+  },
+  "redaction": {
+    "envValuesRendered": false,
+    "headerValuesRendered": false,
+    "secretLikeValuesRendered": false,
+    "notes": [
+      "Environment variable values are never stored or rendered.",
+      "Header values are never stored or rendered.",
+      "Secret-like values in tool metadata examples are redacted before snapshot and diff rendering.",
+      "Snapshots may contain tool metadata text and should be reviewed before committing publicly."
+    ]
+  },
+  "configServers": [
+    {
+      "entityKind": "config-server",
+      "name": "filesystem",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "4997af5f860d1dd7da58786a9dab888ba0cd79c29ca4377b466424a79ecded0d"
+      },
+      "fingerprint": {
+        "transport": "stdio",
+        "hasCommand": true,
+        "commandSummary": "npx",
+        "argCount": 3,
+        "argsPreview": [
+          "-y",
+          "@modelcontextprotocol/server-filesystem",
+          "~/Documents/demo-project"
+        ],
+        "envKeys": [],
+        "headerKeys": [],
+        "hasUrl": false,
+        "capabilityHints": [
+          "filesystem",
+          "shell"
+        ],
+        "riskLevel": "medium",
+        "transparencyNotes": [
+          {
+            "id": "broad_path_argument",
+            "category": "config-transparency",
+            "severity": "medium"
+          },
+          {
+            "id": "inferred_stdio_transport",
+            "category": "config-transparency",
+            "severity": "info"
+          },
+          {
+            "id": "local_stdio_command",
+            "category": "config-transparency",
+            "severity": "low"
+          }
+        ]
+      }
+    }
+  ],
+  "tools": [
+    {
+      "entityKind": "tool",
+      "name": "read_file",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "aed3877793f995ae6691d3992bd3033cbdba2e717399e82e83e7c711ed772ba5"
+      },
+      "fingerprint": {
+        "title": "Read File",
+        "description": "Read a file from the local filesystem",
+        "inputSchema": {
+          "properties": {
+            "path": {
+              "description": "Path to read",
+              "type": "string"
+            }
+          },
+          "required": [
+            "path"
+          ],
+          "type": "object"
+        },
+        "outputSchema": {
+          "type": "object"
+        },
+        "annotations": {
+          "readOnlyHint": true
+        },
+        "inputParameters": [
+          {
+            "name": "path",
+            "type": "string",
+            "description": "Path to read",
+            "required": true
+          }
+        ],
+        "capabilityHints": [
+          "filesystem"
+        ],
+        "findingCount": 2,
+        "highestSeverity": "medium",
+        "findingRules": [
+          {
+            "id": "annotation_trust_note",
+            "category": "annotation-trust",
+            "severity": "info"
+          },
+          {
+            "id": "filesystem_access_signal",
+            "category": "filesystem-access",
+            "severity": "medium"
+          }
+        ]
+      }
+    },
+    {
+      "entityKind": "tool",
+      "name": "write_file",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "243bdb4f0574a2016d8b5763de2fe26a2064a77018540f91fb47947051cfefa4"
+      },
+      "fingerprint": {
+        "title": "Write File",
+        "description": "Write text to a file path in the current workspace",
+        "inputSchema": {
+          "properties": {
+            "content": {
+              "description": "Text content to write",
+              "type": "string"
+            },
+            "path": {
+              "description": "Destination file path",
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "content"
+          ],
+          "type": "object"
+        },
+        "annotations": {
+          "destructiveHint": true,
+          "openWorldHint": true
+        },
+        "inputParameters": [
+          {
+            "name": "path",
+            "type": "string",
+            "description": "Destination file path",
+            "required": true
+          },
+          {
+            "name": "content",
+            "type": "string",
+            "description": "Text content to write",
+            "required": true
+          }
+        ],
+        "capabilityHints": [
+          "filesystem"
+        ],
+        "findingCount": 2,
+        "highestSeverity": "medium",
+        "findingRules": [
+          {
+            "id": "annotation_trust_note",
+            "category": "annotation-trust",
+            "severity": "info"
+          },
+          {
+            "id": "filesystem_access_signal",
+            "category": "filesystem-access",
+            "severity": "medium"
+          }
+        ]
+      }
+    }
+  ],
+  "manifest": {
+    "entityKind": "manifest",
+    "name": "tool-metadata-manifest",
+    "digest": {
+      "algorithm": "sha256",
+      "value": "73755b1b5dc9c5810db71500fa4fa616622f6474818e5d7e372a532efe4b999f"
+    },
+    "fingerprint": {
+      "sourceType": "mcp-scope-tool-manifest",
+      "findingRules": []
+    }
+  },
+  "riskSummary": {
+    "highestSeverity": "medium",
+    "serverCount": 1,
+    "toolCount": 2,
+    "findingCount": 7,
+    "severityCounts": {
+      "info": 3,
+      "low": 1,
+      "medium": 3,
+      "high": 0
+    },
+    "categoryCounts": {
+      "config-transparency": 3,
+      "filesystem-access": 2,
+      "annotation-trust": 2
+    }
+  },
+  "findingSummary": {
+    "ruleIds": [
+      "annotation_trust_note",
+      "broad_path_argument",
+      "filesystem_access_signal",
+      "inferred_stdio_transport",
+      "local_stdio_command"
+    ],
+    "categories": [
+      "annotation-trust",
+      "config-transparency",
+      "filesystem-access"
+    ]
+  },
+  "limitations": {
+    "staticOnly": true,
+    "noRuntimeVerification": true,
+    "noExternalRegistryCheck": true,
+    "notProofOfCompromise": true,
+    "approvalMemoryIsNotSafetyCertification": true,
+    "notes": [
+      "This snapshot and diff are static analysis of local files only.",
+      "MCP Scope did not execute MCP servers or tools.",
+      "MCP Scope did not connect to live tools/list endpoints.",
+      "MCP Scope did not call external AI APIs or registries.",
+      "Approval memory records a reviewed state; it is not safety certification."
+    ]
+  },
+  "digests": {
+    "snapshot": {
+      "algorithm": "sha256",
+      "value": "879740427108d3961f5251b60ed649a72096af6698501fa173f4590369eb6c11"
+    }
+  }
+}
