@@ -6,7 +6,7 @@ Date: 2026-07-01
 
 Status: ready for human maintainer review before any public launch step.
 
-MCP Scope is ready for a manual `v0.1.0-preview` launch review. The repository, draft prerelease, CI, launch copy, SVG assets, feedback playbook, and posting tracker are prepared. Nothing was published automatically during this review.
+MCP Scope is ready for a manual `v0.1.0-preview` launch review. The repository, draft prerelease, CI, launch copy, SVG assets, feedback playbook, channel strategy, image asset map, and posting tracker are prepared. Nothing was published automatically during this review.
 
 Recommended decision:
 
@@ -20,10 +20,12 @@ Recommended decision:
 - Expected remote: `https://github.com/darwinx687-afk/mcp-scope.git`.
 - GitHub release: `v0.1.0-preview` exists as draft/prerelease.
 - Release publication state: `publishedAt` is `null`.
-- Latest `main` CI before this report: passed for `chore: prepare bilingual launch pack`.
+- Latest `main` CI before this report: passed for `chore: add final human launch review`.
 - Local checks: `pnpm check` passed; `pnpm check:launch` passed.
 - CLI smoke: `discover` and `scan` passed.
 - Required launch assets and platform copy drafts exist.
+- Chinese platforms map to Chinese copy and zh-CN image assets.
+- English platforms map to English copy and en image assets, except text-only Hacker News.
 - Unsafe claim scan: no launch-blocking positive claim found. Boundary statements such as "not published to npm" and "not an official integration" are intentional.
 
 ## GitHub Release Status
@@ -37,32 +39,41 @@ Do not publish the release from automation.
 Recommended first-post order:
 
 1. GitHub prerelease, after human review.
-2. V2EX or Juejin for Chinese developer feedback.
-3. LinkedIn for English builder feedback.
-4. Xiaohongshu only after checking the Chinese image/card and making the post less technical.
-5. Reddit and Hacker News only after explicit human approval.
+2. Juejin and LinkedIn as the safer first public posts after GitHub prerelease.
+3. X / Twitter for a concise English feedback request.
+4. Xiaohongshu after the Chinese card is checked and the wording is made less technical.
+5. Jike, WeChat group, and WeChat moments for Chinese community sharing.
+6. Hacker News only after the GitHub page and README are manually checked.
+7. Dev.to after LinkedIn/X or as long-tail content.
+
+V2EX is skipped for this launch wave. Reddit remains optional later and requires explicit human approval.
 
 ## Files And Images To Use
 
 | Platform | Copy file | Image path | Notes |
 | --- | --- | --- | --- |
 | GitHub prerelease | `launch/copy/github_release_final_review.md` | `launch/assets/release-banner-en.svg` | Review manually before making draft public. |
-| V2EX | `launch/copy/v2ex.md` | none | Keep low-promo and direct. |
-| Juejin | `launch/copy/juejin.md` | `launch/assets/release-banner-zh-CN.svg` | Use technical article style. |
-| LinkedIn | `launch/copy/linkedin.md` | `launch/assets/social-card-en.svg` | Builder audience. |
-| Xiaohongshu | `launch/copy/xiaohongshu.md` | `launch/assets/social-card-zh-CN.svg` or `launch/assets/social-card-square-zh-CN.svg` | Make less technical before posting. |
-| X / Twitter | `launch/copy/x_twitter.md` | `launch/assets/social-card-en.svg` | Use only after the first manual channels are reviewed. |
+| Juejin | `launch/copy/juejin.md` | `launch/assets/release-banner-zh-CN.svg` | Safer first Chinese technical post. |
+| LinkedIn | `launch/copy/linkedin.md` | `launch/assets/social-card-en.svg` | Safer first English builder post. |
+| X / Twitter | `launch/copy/x_twitter.md` | `launch/assets/social-card-en.svg` | Short post or thread. |
+| Xiaohongshu | `launch/copy/xiaohongshu.md` | `launch/assets/social-card-square-zh-CN.svg` | Broader Chinese reach after technical launch is checked. |
+| Jike | `launch/copy/jike.md` | `launch/assets/social-card-zh-CN.svg` | Short Chinese builder update. |
+| WeChat group | `launch/copy/wechat_group.md` | `launch/assets/social-card-zh-CN.svg` | Share only in relevant groups. |
+| WeChat moments | `launch/copy/wechat_moments.md` | `launch/assets/social-card-square-zh-CN.svg` | Personal reflection style. |
+| Hacker News | `launch/copy/hackernews.md` | none | Text-only Show HN unless manually decided otherwise. |
 | Dev.to | `launch/copy/devto.md` | `launch/assets/release-banner-en.svg` | Technical article draft. |
-| Reddit | `launch/copy/reddit.md` | none | Requires explicit human approval. |
-| Hacker News | `launch/copy/hackernews.md` | none | Requires explicit human approval. |
+| Reddit | `launch/copy/reddit.md` | none | Optional later, requires explicit human approval. |
+| V2EX | `launch/copy/v2ex.md` | none | Skipped; keep copy archived only. |
 
 ## Manual Posting Reminders
 
 - Preview every release or post before publishing.
 - Pause for manual login, captcha, 2FA, and security checks.
 - Do not save passwords in browser automation.
+- Chinese platforms must use Chinese copy and zh-CN image assets.
+- Overseas platforms must use English copy and en image assets.
 - Use only the prepared SVG assets from `launch/assets/`.
-- Do not use personal photos or random album images.
+- Do not use personal photos, random album photos, external images, or remote images.
 - Do not claim npm availability, GitHub Marketplace availability, official MCP client integration, mature security protection, or user traction.
 - Do not paste secrets, full private configs, internal paths, or sensitive report excerpts into public threads.
 - Keep findings framed as static risk signals, warnings, and review evidence.

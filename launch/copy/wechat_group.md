@@ -1,32 +1,37 @@
 # WeChat Group Draft
 
-Do not post automatically.
+Language: zh-CN
 
-## Suggested Image
+Selected image asset: `launch/assets/social-card-zh-CN.svg`
 
-None, or `launch/assets/social-card-square-zh-CN.svg` if the group expects an image.
+Do not post automatically. Preview manually before publishing.
 
-## Message
+## GitHub Repo
 
-我最近做了一个很早期的小开源项目：MCP Scope / MCP 透镜。
+https://github.com/darwinx687-afk/mcp-scope
 
-一句话：在信任 MCP 工具前，先本地看清配置和工具元数据里暴露了什么、变了什么、哪些地方值得审查。
+## Main Post
 
-它不执行 MCP server，不请求实时 `tools/list`，只生成本地透明度报告。
+我最近做了一个很早期的开源小工具：MCP Scope / MCP 透镜。
+
+它主要解决一个问题：MCP 工具接进 AI coding 工具前，先在本地看清配置会启动什么、工具元数据声明了什么、哪些地方值得人工审查。
+
+现在支持本地 discovery、scan、tool metadata 检查、Markdown / JSON / HTML 报告、snapshot/diff，还有 GitHub Action。
+
+边界也明确：不执行 MCP server，不请求实时 `tools/list`，不调用外部 AI API，发现项只是静态风险信号。
 
 GitHub:
 https://github.com/darwinx687-afk/mcp-scope
 
-如果你最近在用 MCP / AI coding 工具，方便的话帮我试一下，看看报告是否清楚、规则是否太吵。
+如果群里有人在用 MCP / Claude Code / Cursor-like 工具，欢迎帮忙看看报告是否清楚、规则是否太吵、还缺哪些 config 形态。
 
-## Shorter Version
+## Shorter Variant
 
-做了个早期小开源项目 MCP Scope，用来本地审查 MCP 配置和工具元数据，不执行 server，只生成透明度报告。
+发一个早期小项目：MCP Scope / MCP 透镜。
 
-GitHub: https://github.com/darwinx687-afk/mcp-scope
+本地读取 MCP 配置和导出的工具元数据，生成透明度报告。不执行 server，不请求实时工具列表。
 
-欢迎帮忙试一下，提点反馈。
+GitHub:
+https://github.com/darwinx687-afk/mcp-scope
 
-## Posting Note
-
-Send manually only. Do not forward repeatedly.
+欢迎正在用 MCP 或 AI coding 工具的朋友提反馈。

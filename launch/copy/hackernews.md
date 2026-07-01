@@ -1,10 +1,14 @@
 # Hacker News Draft
 
-Do not post automatically.
+Language: en
 
-## Suggested Image
+Selected image asset: none; Show HN is text-only unless a human decides otherwise.
 
-None.
+Do not post automatically. Preview manually before publishing.
+
+## GitHub Repo
+
+https://github.com/darwinx687-afk/mcp-scope
 
 ## Show HN Title
 
@@ -23,6 +27,17 @@ https://github.com/darwinx687-afk/mcp-scope
 
 I would appreciate feedback on report clarity, noisy findings, and config shapes worth supporting.
 
+## Shorter Variant
+
+Show HN: MCP Scope, an early local-first CLI for MCP config and tool metadata transparency reports.
+
+It reads local files, generates reviewable reports, and does not execute MCP servers or call external APIs.
+
+GitHub:
+https://github.com/darwinx687-afk/mcp-scope
+
+Feedback welcome.
+
 ## Posting Note
 
-Post only with explicit approval. Do not auto-post.
+Post only after the GitHub prerelease is public and the README has been manually checked.

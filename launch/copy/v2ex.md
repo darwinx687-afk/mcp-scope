@@ -1,6 +1,14 @@
-# V2EX Draft
+# V2EX Archived Draft
 
-Do not post automatically.
+Language: zh-CN
+
+Selected image asset: none; V2EX is skipped for this launch wave.
+
+Do not post automatically. Preview manually before publishing.
+
+## Status
+
+Do not post. This copy is kept only as an archive.
 
 ## Suggested Node
 
@@ -53,4 +61,4 @@ GitHub: https://github.com/darwinx687-afk/mcp-scope
 
 ## Posting Note
 
-Post only after manual approval. Keep the tone low-promo.
+Do not post this in the first launch wave. Keep the tone low-promo if a future human review reopens the channel.

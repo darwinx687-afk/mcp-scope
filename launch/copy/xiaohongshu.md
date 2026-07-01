@@ -1,12 +1,12 @@
 # Xiaohongshu Draft
 
-Do not post automatically.
+Language: zh-CN
 
-## Suggested Image
+Selected image asset: `launch/assets/social-card-square-zh-CN.svg`
 
-`launch/assets/social-card-zh-CN.svg`
+Do not post automatically. Preview manually before publishing.
 
-## Link
+## GitHub Repo
 
 https://github.com/darwinx687-afk/mcp-scope
 
@@ -17,9 +17,6 @@ https://github.com/darwinx687-afk/mcp-scope
 3. 一个很早期的开源项目：MCP Scope
 4. 给 MCP 配置和工具元数据做一份本地透明度报告
 5. AI Agent 用工具前，能不能先看一眼风险信号
-6. 我做了 MCP 透镜，想请大家帮忙看看
-7. 本地优先的 MCP 配置审查小工具
-8. MCP 工具越来越多，我想先解决“看不清”的问题
 
 ## Main Post
 
@@ -38,20 +35,20 @@ https://github.com/darwinx687-afk/mcp-scope
 - 做本地审批记忆 snapshot 和静态 diff
 - 在 GitHub Actions 里作为质量门禁使用
 
-几个边界也先说清楚：
+边界也先说清楚：
 
 - 不执行 MCP server
 - 不请求实时 `tools/list`
 - 不调用外部 AI API
-- secret 值会脱敏
-- 发现项只是静态风险信号，不是安全证明
+- secret 值会隐藏
+- 发现项只是静态风险信号
 
 项目地址：
 https://github.com/darwinx687-afk/mcp-scope
 
 如果你正在用 MCP、Claude Code、Cursor-like 工具或其他 AI coding 工具，欢迎帮我看看：报告是否看得懂、规则是否太吵、还缺哪些 config 形态。
 
-## Shorter Version
+## Shorter Variant
 
 做了一个很早期的小开源项目：MCP Scope / MCP 透镜。
 
@@ -67,7 +64,3 @@ https://github.com/darwinx687-afk/mcp-scope
 ## Tags
 
 `#MCP` `#AI工具` `#开源项目` `#AI编程` `#本地优先`
-
-## Posting Note
-
-Wait until the GitHub draft prerelease is reviewed. Do not use personal photos.

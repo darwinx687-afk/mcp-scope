@@ -8,6 +8,9 @@
 
 - `copy/`：不同平台的文案草稿和回复模板。
 - `assets/`：SVG 社交卡片和 release banner。使用这些图片，不要用个人照片或随机相册图片。
+- `CHANNEL_STRATEGY.md`：首批渠道、发布顺序、跳过或之后再说的渠道。
+- `IMAGE_ASSET_MAP.md`：每个平台对应的语言和图片。
+- `FINAL_HUMAN_REVIEW.md`：最终人工发布审查报告。
 - `RELEASE_REVIEW_CHECKLIST.md`：让 draft prerelease 转为正式发布前的检查清单。
 - `POSTING_TRACKER.md`：记录哪些平台已发、跳过或失败。
 - `FEEDBACK_MONITORING_PLAYBOOK.md`：前 24 小时、72 小时、7 天要看什么。
@@ -19,9 +22,10 @@
 ## 怎么用
 
 1. 先人工审查 GitHub draft prerelease 和 release notes。
-2. 先选一个平台试发，不要一次发满所有地方。
-3. 使用对应 copy 文件和建议 SVG 图片。
-4. 发布前手动预览。
-5. 把链接和反馈摘要记录到 `POSTING_TRACKER.md`。
+2. 按 `CHANNEL_STRATEGY.md` 走：先 GitHub prerelease，再用掘金和 LinkedIn 做更稳妥的首批帖子。
+3. 按 `IMAGE_ASSET_MAP.md` 选图：中文平台使用 zh-CN 图片，海外平台使用 en 图片。
+4. 不发布 V2EX。Reddit 只有明确人工批准后再考虑。
+5. 发布前手动预览。
+6. 把链接和反馈摘要记录到 `POSTING_TRACKER.md`。
 
 本轮不要发布 npm，不要发布 GitHub Marketplace，也不要用自动化发社交平台。

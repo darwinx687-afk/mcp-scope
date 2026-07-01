@@ -1,34 +1,36 @@
 # Juejin Draft
 
-Do not post automatically.
+Language: zh-CN
 
-## Suggested Image
+Selected image asset: `launch/assets/release-banner-zh-CN.svg`
 
-`launch/assets/release-banner-zh-CN.svg`
+Do not post automatically. Preview manually before publishing.
 
-## Link
+## GitHub Repo
 
 https://github.com/darwinx687-afk/mcp-scope
 
 ## Title
 
-我做了一个本地优先的 MCP 配置和工具元数据透明度报告工具：MCP Scope
+我做了一个本地优先的 MCP 配置和工具元数据透明度报告工具
 
-## Body
+## Main Post
 
 ### 背景
 
-越来越多开发者开始把 MCP server 接入 AI coding 工具。问题是，工具被 Agent 信任之前，我们经常看不清几个基础问题：
+最近越来越多开发者把 MCP server 接到 AI coding 工具里。这个过程里，我最想先看清几件事：
 
 - 配置会启动什么命令？
-- 会传入哪些路径或 URL？
+- 会传入哪些路径、URL 或权限提示？
 - 工具元数据里声明了哪些能力？
-- 工具描述、schema、annotation 里有没有值得人工审查的信号？
+- 描述、schema、annotation 里有没有值得人工审查的风险信号？
 - 审批后这些信息有没有变化？
 
-### MCP Scope 做什么
+所以我做了 MCP Scope / MCP 透镜，一个很早期的本地优先开源工具。
 
-MCP Scope / MCP 透镜是一个早期、本地优先的开源项目。它读取本地 JSON 配置和本地导出的工具元数据，生成可审查的透明度报告。
+### 它现在能做什么
+
+MCP Scope 读取本地 JSON 配置和本地导出的工具元数据，生成可以审查的透明度报告。
 
 当前支持：
 
@@ -56,22 +58,17 @@ node apps/cli/dist/index.js diff \
   --tools examples/tools/filesystem-tools.changed-description.json
 ```
 
-### 报告示例
-
-- Markdown: `examples/reports/sample-combined-report.md`
-- JSON: `examples/reports/sample-combined-report.json`
-- HTML viewer: `examples/viewer/sample-combined-viewer.html`
-
-### 当前边界
+### 边界
 
 - 不执行 MCP server
 - 不请求实时 `tools/list`
 - 不调用外部 AI API
 - 不上传报告
+- secret 值会隐藏
 - 发现项是静态风险信号，不是被攻击或安全的证明
 - 还没有发布 npm，也没有 GitHub Marketplace action
 
-### 希望收到的反馈
+### 想请大家看什么
 
 如果你正在使用 MCP 或 AI coding 工具，欢迎帮忙看：
 
@@ -84,10 +81,19 @@ node apps/cli/dist/index.js diff \
 GitHub:
 https://github.com/darwinx687-afk/mcp-scope
 
+## Shorter Variant
+
+做了一个很早期的开源项目：MCP Scope / MCP 透镜。
+
+它读取本地 MCP 配置和本地导出的工具元数据，生成 Markdown / JSON / HTML 透明度报告，帮助开发者在信任 MCP 工具前看清配置、能力和变化。
+
+不执行 MCP server，不请求实时 `tools/list`，不调用外部 AI API。发现项只是静态风险信号。
+
+GitHub:
+https://github.com/darwinx687-afk/mcp-scope
+
+欢迎正在用 MCP 或 AI coding 工具的朋友反馈。
+
 ## Tags
 
 `MCP`, `AI`, `TypeScript`, `CLI`, `GitHub Actions`, `开源`
-
-## Posting Note
-
-Wait until release finalization is approved. Do not publish automatically.

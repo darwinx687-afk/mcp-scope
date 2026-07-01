@@ -1,12 +1,12 @@
 # LinkedIn Draft
 
-Do not post automatically.
+Language: en
 
-## Suggested Image
+Selected image asset: `launch/assets/social-card-en.svg`
 
-`launch/assets/social-card-en.svg`
+Do not post automatically. Preview manually before publishing.
 
-## Link
+## GitHub Repo
 
 https://github.com/darwinx687-afk/mcp-scope
 
@@ -20,7 +20,7 @@ I have been working on a small open-source project called MCP Scope.
 
 The problem is simple: as developers connect MCP servers to AI coding tools and agents, it can be hard to see what a tool exposes before trusting it.
 
-MCP Scope is a local-first CLI that reads local MCP config files and exported tool metadata, then generates transparency reports.
+MCP Scope is an early local-first CLI that reads local MCP config files and exported tool metadata, then generates transparency reports.
 
 The preview includes:
 
@@ -50,14 +50,11 @@ I built MCP Scope, an early local-first CLI for MCP config and tool metadata tra
 
 It does not execute MCP servers or call external APIs. It reads local files and helps reviewers see what is exposed, what changed, and what looks worth checking before tools are trusted by AI agents.
 
-GitHub: https://github.com/darwinx687-afk/mcp-scope
+GitHub:
+https://github.com/darwinx687-afk/mcp-scope
 
 Feedback welcome.
 
 ## Hashtags
 
 `#opensource` `#AIEngineering` `#MCP` `#DeveloperTools`
-
-## Posting Note
-
-Wait for human release approval before posting.

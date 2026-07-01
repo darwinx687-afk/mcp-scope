@@ -2,16 +2,19 @@
 
 Status values: `not-started`, `drafted`, `posted`, `failed`, `skipped`.
 
+All publishing remains manual. Do not add fake URLs.
+
 | Platform | Language | Status | Planned date | Post URL | Image used | Copy file | Notes | Feedback summary | Follow-up issue created? |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| GitHub release | en | drafted | TBD |  | `launch/assets/release-banner-en.svg` | `launch/copy/github_release_final_review.md` | Draft prerelease only. |  | no |
-| Xiaohongshu | zh-CN | drafted | TBD |  | `launch/assets/social-card-zh-CN.svg` | `launch/copy/xiaohongshu.md` | Do not use personal photos. |  | no |
-| Juejin | zh-CN | drafted | TBD |  | `launch/assets/release-banner-zh-CN.svg` | `launch/copy/juejin.md` | Technical article style. |  | no |
-| V2EX | zh-CN | drafted | TBD |  | none | `launch/copy/v2ex.md` | Low-promo, direct. |  | no |
-| WeChat group | zh-CN | drafted | TBD |  | none | `launch/copy/wechat_group.md` | Conversational. |  | no |
-| WeChat moments | zh-CN | drafted | TBD |  | `launch/assets/social-card-square-zh-CN.svg` | `launch/copy/wechat_moments.md` | Personal reflection style. |  | no |
-| LinkedIn | en | drafted | TBD |  | `launch/assets/social-card-en.svg` | `launch/copy/linkedin.md` | Builder update. |  | no |
-| X / Twitter | en | drafted | TBD |  | `launch/assets/social-card-en.svg` | `launch/copy/x_twitter.md` | Short post and thread. |  | no |
-| Dev.to | en | drafted | TBD |  | `launch/assets/release-banner-en.svg` | `launch/copy/devto.md` | Technical article draft. |  | no |
-| Reddit | en | drafted | TBD |  | none | `launch/copy/reddit.md` | Post only with explicit approval. |  | no |
-| Hacker News | en | drafted | TBD |  | none | `launch/copy/hackernews.md` | Show HN style. Post only with explicit approval. |  | no |
+| GitHub release | en | not-started | TBD |  | `launch/assets/release-banner-en.svg` | `launch/copy/github_release_final_review.md` | Publish draft prerelease manually only after final review. |  | no |
+| Juejin | zh-CN | not-started | TBD |  | `launch/assets/release-banner-zh-CN.svg` | `launch/copy/juejin.md` | First Chinese technical channel. |  | no |
+| Xiaohongshu | zh-CN | not-started | TBD |  | `launch/assets/social-card-square-zh-CN.svg` | `launch/copy/xiaohongshu.md` | Broader Chinese reach after technical launch is checked. |  | no |
+| Jike | zh-CN | not-started | TBD |  | `launch/assets/social-card-zh-CN.svg` | `launch/copy/jike.md` | Short Chinese builder update. |  | no |
+| WeChat group | zh-CN | not-started | TBD |  | `launch/assets/social-card-zh-CN.svg` | `launch/copy/wechat_group.md` | Manual share to relevant groups only. |  | no |
+| WeChat moments | zh-CN | not-started | TBD |  | `launch/assets/social-card-square-zh-CN.svg` | `launch/copy/wechat_moments.md` | Personal reflection style. |  | no |
+| LinkedIn | en | not-started | TBD |  | `launch/assets/social-card-en.svg` | `launch/copy/linkedin.md` | First English builder channel after GitHub release. |  | no |
+| X / Twitter | en | not-started | TBD |  | `launch/assets/social-card-en.svg` | `launch/copy/x_twitter.md` | Short post or thread. |  | no |
+| Hacker News | en | not-started | TBD |  | none | `launch/copy/hackernews.md` | High-reach Show HN channel; post only after GitHub page and README are manually checked. |  | no |
+| Dev.to | en | not-started | TBD |  | `launch/assets/release-banner-en.svg` | `launch/copy/devto.md` | Long-tail technical article. |  | no |
+| Reddit | en | not-started | TBD |  | none | `launch/copy/reddit.md` | Optional later only after explicit human approval. |  | no |
+| V2EX | zh-CN | skipped | TBD |  | none | `launch/copy/v2ex.md` | Do not post. Keep copy archived only. |  | no |

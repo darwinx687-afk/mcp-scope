@@ -1,18 +1,22 @@
 # Dev.to Draft
 
-Do not post automatically.
+Language: en
 
-## Suggested Image
+Selected image asset: `launch/assets/release-banner-en.svg`
 
-`launch/assets/release-banner-en.svg`
+Do not post automatically. Preview manually before publishing.
 
-## Tags
+## GitHub Repo
 
-`opensource`, `typescript`, `githubactions`, `ai`
+https://github.com/darwinx687-afk/mcp-scope
 
 ## Title
 
 MCP Scope: local-first transparency reports for MCP tools
+
+## Tags
+
+`opensource`, `typescript`, `githubactions`, `ai`
 
 ## Article
 
@@ -80,6 +84,11 @@ I am looking for feedback on:
 
 Please redact secrets and private configs before opening issues.
 
-## Posting Note
+## Shorter Variant
 
-Publish manually only after the draft prerelease is approved.
+MCP Scope is an early local-first CLI for MCP config and exported tool metadata transparency reports.
+
+It generates Markdown, JSON, and static HTML reports, supports snapshots/diffs, and can run as a GitHub Action quality gate.
+
+GitHub:
+https://github.com/darwinx687-afk/mcp-scope

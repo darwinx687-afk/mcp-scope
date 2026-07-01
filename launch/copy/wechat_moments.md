@@ -1,39 +1,35 @@
 # WeChat Moments Draft
 
-Do not post automatically.
+Language: zh-CN
 
-## Suggested Image
+Selected image asset: `launch/assets/social-card-square-zh-CN.svg`
 
-`launch/assets/social-card-square-zh-CN.svg`
+Do not post automatically. Preview manually before publishing.
 
-## Body
+## GitHub Repo
 
-最近做了一个小开源项目，叫 MCP Scope / MCP 透镜。
+https://github.com/darwinx687-afk/mcp-scope
 
-起因很简单：我在看 MCP 工具接入 AI Agent 时，发现很多时候我们太快点了“信任”。但一个工具背后会启动什么命令、暴露哪些路径、工具描述里写了什么、之后有没有变化，其实都值得先看清楚。
+## Main Post
 
-所以我先做了一个很朴素的版本：本地读配置和已导出的工具元数据，生成 Markdown / JSON / HTML 透明度报告。
+最近做了一个很早期的开源项目：MCP Scope / MCP 透镜。
 
-它现在还很早期，也不做安全保证：
+起因是我在看 MCP 工具接入 AI Agent 时，发现“信任一个工具之前到底能不能先看清它暴露了什么”这件事很重要。
 
-- 不执行 MCP server
-- 不请求实时 `tools/list`
-- 不调用外部 AI API
-- 发现项只是静态风险信号
+所以先做了一个本地优先的小工具：读取本地 MCP 配置和本地导出的工具元数据，生成透明度报告，也能做 snapshot 和 diff。
+
+它不执行 MCP server，不请求实时 `tools/list`，不调用外部 AI API。发现项只是静态风险信号，不是安全证明。
 
 GitHub:
 https://github.com/darwinx687-afk/mcp-scope
 
-如果你也在用 MCP 或 AI coding 工具，欢迎帮我看看。尤其想知道报告是否读得明白、哪些规则太吵、还缺什么场景。
+如果你也在用 MCP 或 AI coding 工具，欢迎帮忙看看。
 
-## Shorter Version
+## Shorter Variant
 
-做了一个早期小项目 MCP Scope / MCP 透镜：在信任 MCP 工具前，先本地看清配置和工具元数据。
+做了一个早期小项目：MCP Scope / MCP 透镜。
 
-不执行 server，不联网请求实时工具列表，只生成本地报告。欢迎正在用 MCP 的朋友帮忙试试。
+本地优先，生成 MCP 配置和工具元数据透明度报告。想解决的是：AI Agent 信任工具前，先看清它暴露了什么。
 
-GitHub: https://github.com/darwinx687-afk/mcp-scope
-
-## Posting Note
-
-Post manually only after the draft prerelease is reviewed. Use the prepared SVG, not personal photos.
+GitHub:
+https://github.com/darwinx687-afk/mcp-scope

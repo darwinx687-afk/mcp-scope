@@ -2,30 +2,52 @@
 
 Check current platform limits before posting. Limits and formatting rules change over time.
 
-## Xiaohongshu
+## First-Wave Chinese Channels
 
-Use the Chinese social card. Write a natural story about why the project exists. Avoid heavy promotion, personal photos, and random album images.
+### Juejin
 
-## Juejin
+Use a technical article style. Include background, commands, report examples, limitations, and GitHub link. Use `launch/assets/release-banner-zh-CN.svg`.
 
-Use a technical article style. Include background, commands, report examples, limitations, and GitHub link.
+### Xiaohongshu
 
-## V2EX
+Use a natural project-note style. Make the post less technical than Juejin. Avoid heavy promotion, personal photos, random album images, and external images. Use `launch/assets/social-card-square-zh-CN.svg`.
 
-Keep it concise and low-promo. Explain what was built and ask for feedback from people using MCP or AI coding tools.
+### Jike
 
-## LinkedIn
+Use a short builder update. Keep it direct, reflective, and feedback-oriented. Use `launch/assets/social-card-zh-CN.svg`.
 
-Use a builder update. Focus on the problem, local-first choice, preview scope, and feedback request.
+### WeChat
 
-## X / Twitter
+Use shorter conversational copy. For Moments, a more personal reflection is fine. Use only prepared zh-CN SVG image paths.
 
-Use either one short post or a short thread. Attach the English social card if useful.
+## First-Wave English Channels
 
-## Reddit And Hacker News
+### GitHub Prerelease
 
-Do not post unless specifically approved. Keep the tone simple, direct, and community-feedback oriented.
+Publish manually only after final review. Use `launch/assets/release-banner-en.svg` if an image is needed.
 
-## WeChat
+### LinkedIn
 
-Use shorter conversational copy. For Moments, a more personal reflection is fine. Use only the prepared SVG image paths.
+Use a builder update. Focus on the problem, local-first choice, preview scope, and feedback request. Use `launch/assets/social-card-en.svg`.
+
+### X / Twitter
+
+Use either one short post or a short thread. Attach `launch/assets/social-card-en.svg` if useful.
+
+### Hacker News
+
+High reach, strict norms. Use Show HN only after the GitHub prerelease is public and README is manually checked. Treat as text-only unless a human decides otherwise.
+
+### Dev.to
+
+Use a technical article style after LinkedIn/X or as long-tail content. Use `launch/assets/release-banner-en.svg`.
+
+## Skipped Or Later
+
+### V2EX
+
+Skip V2EX for this first wave. Keep `launch/copy/v2ex.md` archived but do not post it.
+
+### Reddit
+
+Reddit is optional later. Post only after explicit human approval and current subreddit rule review.

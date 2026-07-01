@@ -28,6 +28,10 @@ const requiredFiles = [
   "examples/README.zh-CN.md",
   "launch/README.md",
   "launch/README.zh-CN.md",
+  "launch/CHANNEL_STRATEGY.md",
+  "launch/CHANNEL_STRATEGY.zh-CN.md",
+  "launch/IMAGE_ASSET_MAP.md",
+  "launch/IMAGE_ASSET_MAP.zh-CN.md",
   "launch/RELEASE_REVIEW_CHECKLIST.md",
   "launch/RELEASE_REVIEW_CHECKLIST.zh-CN.md",
   "launch/POSTING_TRACKER.md",
@@ -48,6 +52,7 @@ const requiredFiles = [
   "launch/copy/github_release_final_review.zh-CN.md",
   "launch/copy/xiaohongshu.md",
   "launch/copy/juejin.md",
+  "launch/copy/jike.md",
   "launch/copy/v2ex.md",
   "launch/copy/wechat_group.md",
   "launch/copy/wechat_moments.md",
@@ -101,6 +106,8 @@ const zhLaunchFiles = [
   "docs/FAQ.zh-CN.md",
   "examples/README.zh-CN.md",
   "launch/README.zh-CN.md",
+  "launch/CHANNEL_STRATEGY.zh-CN.md",
+  "launch/IMAGE_ASSET_MAP.zh-CN.md",
   "launch/RELEASE_REVIEW_CHECKLIST.zh-CN.md",
   "launch/POSTING_TRACKER.zh-CN.md",
   "launch/FINAL_HUMAN_REVIEW.zh-CN.md",
@@ -112,6 +119,7 @@ const zhLaunchFiles = [
   "launch/copy/github_release_final_review.zh-CN.md",
   "launch/copy/xiaohongshu.md",
   "launch/copy/juejin.md",
+  "launch/copy/jike.md",
   "launch/copy/v2ex.md",
   "launch/copy/wechat_group.md",
   "launch/copy/wechat_moments.md",
@@ -144,6 +152,10 @@ const claimFiles = [
   "examples/README.zh-CN.md",
   "launch/README.md",
   "launch/README.zh-CN.md",
+  "launch/CHANNEL_STRATEGY.md",
+  "launch/CHANNEL_STRATEGY.zh-CN.md",
+  "launch/IMAGE_ASSET_MAP.md",
+  "launch/IMAGE_ASSET_MAP.zh-CN.md",
   "launch/RELEASE_REVIEW_CHECKLIST.md",
   "launch/RELEASE_REVIEW_CHECKLIST.zh-CN.md",
   "launch/POSTING_TRACKER.md",
@@ -164,6 +176,7 @@ const claimFiles = [
   "launch/copy/github_release_final_review.zh-CN.md",
   "launch/copy/xiaohongshu.md",
   "launch/copy/juejin.md",
+  "launch/copy/jike.md",
   "launch/copy/v2ex.md",
   "launch/copy/wechat_group.md",
   "launch/copy/wechat_moments.md",
@@ -183,6 +196,7 @@ const launchCopyFiles = [
   "launch/copy/github_release_final_review.zh-CN.md",
   "launch/copy/xiaohongshu.md",
   "launch/copy/juejin.md",
+  "launch/copy/jike.md",
   "launch/copy/v2ex.md",
   "launch/copy/wechat_group.md",
   "launch/copy/wechat_moments.md",
@@ -210,6 +224,7 @@ const trackerPlatforms = [
   "GitHub release",
   "Xiaohongshu",
   "Juejin",
+  "Jike",
   "V2EX",
   "WeChat group",
   "WeChat moments",
@@ -218,6 +233,29 @@ const trackerPlatforms = [
   "Dev.to",
   "Reddit",
   "Hacker News"
+];
+
+const chineseTrackerRows = [
+  ["Juejin", "launch/assets/release-banner-zh-CN.svg"],
+  ["Xiaohongshu", "launch/assets/social-card-square-zh-CN.svg"],
+  ["Jike", "launch/assets/social-card-zh-CN.svg"],
+  ["WeChat group", "launch/assets/social-card-zh-CN.svg"],
+  ["WeChat moments", "launch/assets/social-card-square-zh-CN.svg"]
+];
+
+const englishTrackerRows = [
+  ["GitHub release", "launch/assets/release-banner-en.svg"],
+  ["LinkedIn", "launch/assets/social-card-en.svg"],
+  ["X / Twitter", "launch/assets/social-card-en.svg"],
+  ["Dev.to", "launch/assets/release-banner-en.svg"]
+];
+
+const zhChineseTrackerRows = [
+  ["掘金", "launch/assets/release-banner-zh-CN.svg"],
+  ["小红书", "launch/assets/social-card-square-zh-CN.svg"],
+  ["即刻", "launch/assets/social-card-zh-CN.svg"],
+  ["微信群", "launch/assets/social-card-zh-CN.svg"],
+  ["朋友圈", "launch/assets/social-card-square-zh-CN.svg"]
 ];
 
 const docsIndexRequired = [
@@ -317,10 +355,46 @@ for (const platform of trackerPlatforms) {
     fail(`launch/POSTING_TRACKER.md is missing platform: ${platform}`);
   }
 }
+for (const [platform, asset] of chineseTrackerRows) {
+  const pattern = new RegExp(`\\| ${platform} \\| zh-CN \\| not-started \\|[^\\n]*${asset.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`);
+  if (!pattern.test(postingTracker)) {
+    fail(`launch/POSTING_TRACKER.md must map ${platform} to zh-CN and ${asset}`);
+  }
+}
+for (const [platform, asset] of englishTrackerRows) {
+  const pattern = new RegExp(`\\| ${platform} \\| en \\| not-started \\|[^\\n]*${asset.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`);
+  if (!pattern.test(postingTracker)) {
+    fail(`launch/POSTING_TRACKER.md must map ${platform} to en and ${asset}`);
+  }
+}
+if (!/\| V2EX \| zh-CN \| skipped \|/.test(postingTracker)) {
+  fail("launch/POSTING_TRACKER.md must mark V2EX as skipped");
+}
+if (!/\| Hacker News \| en \| not-started \|[^\n]*\| none \|/.test(postingTracker)) {
+  fail("launch/POSTING_TRACKER.md must keep Hacker News text-only unless manually changed");
+}
+if (!/\| Reddit \| en \| not-started \|[^\n]*\| none \|/.test(postingTracker)) {
+  fail("launch/POSTING_TRACKER.md must keep Reddit optional and image-free by default");
+}
 const zhPostingTracker = read("launch/POSTING_TRACKER.zh-CN.md");
-for (const platform of ["GitHub release", "小红书", "掘金", "V2EX", "微信群", "朋友圈", "LinkedIn", "X / Twitter", "Dev.to", "Reddit", "Hacker News"]) {
+for (const platform of ["GitHub release", "小红书", "掘金", "即刻", "V2EX", "微信群", "朋友圈", "LinkedIn", "X / Twitter", "Dev.to", "Reddit", "Hacker News"]) {
   if (!zhPostingTracker.includes(platform)) {
     fail(`launch/POSTING_TRACKER.zh-CN.md is missing platform: ${platform}`);
+  }
+}
+if (!/\| V2EX \| zh-CN \| skipped \|/.test(zhPostingTracker)) {
+  fail("launch/POSTING_TRACKER.zh-CN.md must mark V2EX as skipped");
+}
+for (const [platform, asset] of zhChineseTrackerRows) {
+  const pattern = new RegExp(`\\| ${platform} \\| zh-CN \\| not-started \\|[^\\n]*${asset.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`);
+  if (!pattern.test(zhPostingTracker)) {
+    fail(`launch/POSTING_TRACKER.zh-CN.md must map ${platform} to zh-CN and ${asset}`);
+  }
+}
+for (const [platform, asset] of englishTrackerRows) {
+  const pattern = new RegExp(`\\| ${platform} \\| en \\| not-started \\|[^\\n]*${asset.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`);
+  if (!pattern.test(zhPostingTracker)) {
+    fail(`launch/POSTING_TRACKER.zh-CN.md must map ${platform} to en and ${asset}`);
   }
 }
 

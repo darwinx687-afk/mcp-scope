@@ -69,3 +69,4 @@
 
 - Phase 10 treats launch materials as prepared drafts and static assets only; no social platform posting or release publication is automated.
 - Feedback monitoring is tracked through repository files under `launch/` so Phase 11 can prioritize evidence from issues, comments, and review friction without expanding scope too quickly.
+- The refined first-wave launch plan prioritizes GitHub prerelease, Juejin, LinkedIn, X / Twitter, Xiaohongshu, Jike, WeChat, Hacker News, and Dev.to; V2EX is skipped for this wave and Reddit remains optional later with explicit human approval.

@@ -1,14 +1,18 @@
 # X / Twitter Draft
 
-Do not post automatically.
+Language: en
 
-## Suggested Image
+Selected image asset: `launch/assets/social-card-en.svg`
 
-`launch/assets/social-card-en.svg`
+Do not post automatically. Preview manually before publishing.
 
-## Link
+## GitHub Repo
 
 https://github.com/darwinx687-afk/mcp-scope
+
+## Headline
+
+MCP Scope: local-first transparency reports for MCP tools
 
 ## Short Post
 
@@ -41,14 +45,11 @@ It is early, local-first, and focused on review evidence rather than big securit
 
 6/ There is also a composite GitHub Action quality gate for local repository workflows.
 
-7/ GitHub: https://github.com/darwinx687-afk/mcp-scope
+7/ GitHub:
+https://github.com/darwinx687-afk/mcp-scope
 
 If you use MCP or AI coding tools, I would love feedback on report clarity, noisy findings, and missing config shapes.
 
 ## Hashtags
 
 `#MCP` `#OpenSource` `#AIEngineering`
-
-## Posting Note
-
-Post manually only after release review. Do not auto-post.
