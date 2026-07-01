@@ -1,6 +1,6 @@
 # GitHub Release 最终审查文案
 
-不要自动发布。维护者没有明确确认前，不要把 draft prerelease 转为正式发布。
+不要自动发布。GitHub prerelease 已公开；维护者没有明确确认前，不要把它转为正式稳定版。
 
 ## 标题
 
@@ -10,9 +10,10 @@
 
 以 `docs/RELEASE_DRAFT.md` 作为 release notes 来源。
 
-发布前确认：
+继续扩大发布前确认：
 
-- Draft prerelease 仍是 `isDraft: true`。
+- GitHub release 仍是 `isPrerelease: true`。
+- GitHub release 使用 tag `v0.1.0-preview`。
 - 最新 `main` CI 已通过。
 - Tag CI 已通过。
 - README 和文档没有 npm、Marketplace、生产级安全保证等说法。
@@ -29,4 +30,4 @@ https://github.com/darwinx687-afk/mcp-scope
 
 ## 发布备注
 
-等待 release 最终确认。本文件只是审查辅助，不是发布命令。
+等待扩大发布确认。本文件只是审查辅助，不是发布命令。

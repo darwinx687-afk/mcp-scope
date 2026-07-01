@@ -1,6 +1,6 @@
 # MCP Scope Launch Checklist
 
-MCP Scope now has a public GitHub repository and a draft prerelease. Use this checklist before making the draft release final or posting launch announcements.
+MCP Scope now has a public GitHub repository and a public prerelease. Use this checklist before wider social/community posting or any future final/stable release decision.
 
 ## Local Checks
 
@@ -67,10 +67,10 @@ mcp, model-context-protocol, ai-security, agent-safety, tool-use, ai-agents, cli
 - `main` pushed and set as default branch.
 - GitHub Actions verified on `main`.
 - `v0.1.0-preview` tag created and pushed.
-- Draft prerelease created as prerelease/draft only.
+- Public prerelease created for `v0.1.0-preview`.
 - Tag CI verified.
 - npm and GitHub Marketplace remain unpublished.
 - Phase 10 bilingual launch pack prepared under `launch/`.
 - Posting tracker and feedback monitoring playbooks prepared.
 
-Do not make the draft release final, publish npm, publish GitHub Marketplace, or post launch announcements until human review is complete.
+Do not make the prerelease final/stable, publish npm, publish GitHub Marketplace, or post launch announcements until human review is complete.

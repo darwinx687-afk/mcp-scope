@@ -95,7 +95,7 @@ See [GitHub Action docs](docs/GITHUB_ACTION.md) for inputs, outputs, threshold b
 
 ## Launch / Feedback
 
-The public repository is available at [github.com/darwinx687-afk/mcp-scope](https://github.com/darwinx687-afk/mcp-scope). The `v0.1.0-preview` prerelease remains draft-only until maintainer review.
+The public repository is available at [github.com/darwinx687-afk/mcp-scope](https://github.com/darwinx687-afk/mcp-scope). The `v0.1.0-preview` release is public as a prerelease, not a final/stable release.
 
 - [Launch notes](LAUNCH_NOTES.md)
 - [Feedback guide](docs/FEEDBACK_GUIDE.md)

@@ -1,6 +1,6 @@
-# Release 草稿: v0.1.0-preview
+# Release Notes: v0.1.0-preview
 
-这是一份未来 GitHub release 的草稿。它还没有发布。
+这是公开 GitHub prerelease 的 release notes 来源。该 release 是 prerelease，不是正式稳定版。
 
 ## 摘要
 

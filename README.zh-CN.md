@@ -95,7 +95,7 @@ jobs:
 
 ## 发布 / 反馈
 
-公开仓库在 [github.com/darwinx687-afk/mcp-scope](https://github.com/darwinx687-afk/mcp-scope)。`v0.1.0-preview` prerelease 仍是 draft，维护者审查前不会转为正式发布。
+公开仓库在 [github.com/darwinx687-afk/mcp-scope](https://github.com/darwinx687-afk/mcp-scope)。`v0.1.0-preview` 已公开为 prerelease，不是正式稳定版。
 
 - [发布说明](LAUNCH_NOTES.zh-CN.md)
 - [反馈指南](docs/FEEDBACK_GUIDE.zh-CN.md)

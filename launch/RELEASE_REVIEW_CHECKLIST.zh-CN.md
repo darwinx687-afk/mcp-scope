@@ -1,8 +1,8 @@
 # Release 审查清单
 
-在把 `v0.1.0-preview` draft prerelease 转为公开前，先按这份清单检查。
+在围绕公开的 `v0.1.0-preview` prerelease 继续发社交或社区帖前，先按这份清单检查。
 
-- [ ] GitHub draft prerelease 已审查。
+- [ ] 公开 GitHub prerelease 已审查。
 - [ ] Release notes 已和 `docs/RELEASE_DRAFT.md` 对齐。
 - [ ] README 和 README.zh-CN.md 已检查。
 - [ ] 仓库 description 和 topics 已检查。
@@ -18,6 +18,6 @@
 - [ ] 已选好第一个发布平台。
 - [ ] 已准备反馈监控。
 - [ ] Issue template 已准备好。
-- [ ] 决定是否把 prerelease 转为公开。
+- [ ] 决定是否继续进行更大范围的手动发布。
 
-有任何不确定就暂停。维护者明确确认前，release 继续保持 draft。
+有任何不确定就暂停。Release 继续保持 prerelease，不要在维护者确认前发布社交平台内容。

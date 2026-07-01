@@ -1,6 +1,6 @@
 # MCP Scope 发布检查清单
 
-MCP Scope 还没有发布。创建公开 remote、预发布版本或发布说明前，先按这份清单检查。
+MCP Scope 现在有公开 GitHub 仓库和公开 prerelease。继续发社交或社区帖、或未来决定是否转为正式稳定版前，先按这份清单检查。
 
 ## 本地检查
 
@@ -61,4 +61,16 @@ mcp, model-context-protocol, ai-security, agent-safety, tool-use, ai-agents, cli
 - 维护者确认本轮不发布 npm。
 - 维护者确认本轮不发布 GitHub Marketplace。
 
-未完成人工审查前，不要 publish、打 tag、发公告或 push remote。
+## Phase 9 已记录状态
+
+- 公开 GitHub repo 已创建：`https://github.com/darwinx687-afk/mcp-scope`。
+- `main` 已 push，并设为默认分支。
+- GitHub Actions 已在 `main` 上验证。
+- `v0.1.0-preview` tag 已创建并 push。
+- `v0.1.0-preview` 已公开为 prerelease。
+- Tag CI 已验证。
+- npm 和 GitHub Marketplace 仍未发布。
+- Phase 10 双语发布素材包已准备在 `launch/` 下。
+- 发布记录表和反馈监控手册已准备。
+
+未完成人工审查前，不要把 prerelease 转为正式稳定版，不要发布 npm，不要发布 GitHub Marketplace，也不要发布社交平台公告。

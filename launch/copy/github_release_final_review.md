@@ -1,6 +1,6 @@
 # GitHub Release Final Review Copy
 
-Do not post automatically. Do not make the draft prerelease final until a human maintainer approves.
+Do not post automatically. The GitHub prerelease is public; do not make it final/stable until a human maintainer approves.
 
 ## Title
 
@@ -10,9 +10,10 @@ Do not post automatically. Do not make the draft prerelease final until a human 
 
 Use `docs/RELEASE_DRAFT.md` as the release notes source.
 
-Before publishing, verify:
+Before any wider launch posting, verify:
 
-- Draft prerelease is still `isDraft: true`.
+- GitHub release is still `isPrerelease: true`.
+- GitHub release uses tag `v0.1.0-preview`.
 - Latest `main` CI passed.
 - Tag CI passed.
 - README and docs still avoid npm, Marketplace, and production-ready security claims.
@@ -29,4 +30,4 @@ https://github.com/darwinx687-afk/mcp-scope
 
 ## Posting Note
 
-Wait for release finalization approval. This file is a review aid, not a publishing command.
+Wait for wider launch approval. This file is a review aid, not a publishing command.

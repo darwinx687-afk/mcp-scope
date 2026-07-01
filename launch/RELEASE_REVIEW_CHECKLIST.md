@@ -1,8 +1,8 @@
 # Release Review Checklist
 
-Use this before making the `v0.1.0-preview` draft prerelease public.
+Use this before wider social/community posting for the public `v0.1.0-preview` prerelease.
 
-- [ ] GitHub draft prerelease reviewed.
+- [ ] Public GitHub prerelease reviewed.
 - [ ] Release notes checked against `docs/RELEASE_DRAFT.md`.
 - [ ] README and README.zh-CN.md checked.
 - [ ] Repo description and topics checked.
@@ -18,6 +18,6 @@ Use this before making the `v0.1.0-preview` draft prerelease public.
 - [ ] First post platform chosen.
 - [ ] Feedback monitoring prepared.
 - [ ] Issue templates ready.
-- [ ] Decide whether to make the prerelease public.
+- [ ] Decide whether to continue with wider manual posting.
 
-Stop if any item is uncertain. Keep the release draft until a human maintainer approves.
+Stop if any item is uncertain. Keep the release as prerelease and do not publish social posts until a human maintainer approves.

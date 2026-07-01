@@ -2,7 +2,7 @@
 
 This directory contains prepared launch materials for MCP Scope `v0.1.0-preview`.
 
-Nothing here should be posted automatically. The GitHub prerelease is still draft/prerelease until a human maintainer explicitly publishes it.
+Nothing here should be posted automatically. The GitHub prerelease is public, but it is still a prerelease and not a final/stable release.
 
 ## Contents
 
@@ -11,7 +11,7 @@ Nothing here should be posted automatically. The GitHub prerelease is still draf
 - `CHANNEL_STRATEGY.md`: selected first-wave channels, posting order, and skipped/later channels.
 - `IMAGE_ASSET_MAP.md`: language-to-image mapping for each platform.
 - `FINAL_HUMAN_REVIEW.md`: concise final human launch gate report.
-- `RELEASE_REVIEW_CHECKLIST.md`: final review gate before making the draft prerelease public.
+- `RELEASE_REVIEW_CHECKLIST.md`: review gate for keeping the public prerelease honest before wider posting.
 - `POSTING_TRACKER.md`: record what was posted, skipped, or failed.
 - `FEEDBACK_MONITORING_PLAYBOOK.md`: what to watch in the first 24 hours, 72 hours, and 7 days.
 - `FEEDBACK_TO_ROADMAP_REVIEW.md`: weekly review template for Phase 11.
@@ -21,7 +21,7 @@ Nothing here should be posted automatically. The GitHub prerelease is still draf
 
 ## How To Use
 
-1. Review the GitHub draft prerelease and release notes.
+1. Review the public GitHub prerelease and release notes.
 2. Follow `CHANNEL_STRATEGY.md`: GitHub prerelease first, then Juejin and LinkedIn as safer first posts.
 3. Use `IMAGE_ASSET_MAP.md`: Chinese platforms use zh-CN assets; overseas platforms use en assets.
 4. Do not post V2EX. Keep Reddit optional until explicit human approval.

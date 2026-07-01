@@ -1,8 +1,8 @@
-# Draft Release Notes: v0.1.0-preview
+# Release Notes: v0.1.0-preview
 
-This is the release-note source for the draft GitHub prerelease. The release remains draft/prerelease until a human maintainer explicitly publishes it.
+This is the release-note source for the public GitHub prerelease. The release is a prerelease, not a final/stable release.
 
-Launch copy and feedback tracking materials are prepared under `launch/`. They are drafts only and should not be posted automatically.
+Launch copy and feedback tracking materials are prepared under `launch/`. Social and community posts remain manual and should not be posted automatically.
 
 ## Summary
 

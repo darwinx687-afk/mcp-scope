@@ -2,7 +2,7 @@
 
 这里放的是 MCP Scope `v0.1.0-preview` 的发布准备材料。
 
-所有内容都只是草稿，不要自动发布。GitHub prerelease 仍然是 draft/prerelease，只有维护者明确确认后才可以转为正式发布。
+所有社交平台内容都只是草稿，不要自动发布。GitHub prerelease 已公开，但它仍是 prerelease，不是正式稳定版。
 
 ## 包含什么
 
@@ -11,7 +11,7 @@
 - `CHANNEL_STRATEGY.md`：首批渠道、发布顺序、跳过或之后再说的渠道。
 - `IMAGE_ASSET_MAP.md`：每个平台对应的语言和图片。
 - `FINAL_HUMAN_REVIEW.md`：最终人工发布审查报告。
-- `RELEASE_REVIEW_CHECKLIST.md`：让 draft prerelease 转为正式发布前的检查清单。
+- `RELEASE_REVIEW_CHECKLIST.md`：扩大发布前，用来确认公开 prerelease 表述安全、准确的检查清单。
 - `POSTING_TRACKER.md`：记录哪些平台已发、跳过或失败。
 - `FEEDBACK_MONITORING_PLAYBOOK.md`：前 24 小时、72 小时、7 天要看什么。
 - `FEEDBACK_TO_ROADMAP_REVIEW.md`：Phase 11 每周反馈复盘模板。
@@ -21,7 +21,7 @@
 
 ## 怎么用
 
-1. 先人工审查 GitHub draft prerelease 和 release notes。
+1. 先人工审查公开 GitHub prerelease 和 release notes。
 2. 按 `CHANNEL_STRATEGY.md` 走：先 GitHub prerelease，再用掘金和 LinkedIn 做更稳妥的首批帖子。
 3. 按 `IMAGE_ASSET_MAP.md` 选图：中文平台使用 zh-CN 图片，海外平台使用 en 图片。
 4. 不发布 V2EX。Reddit 只有明确人工批准后再考虑。
