@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "remote-docs": {
+      "type": "http",
+      "url": "https://example.com/mcp?api_key=REDACTED_EXAMPLE_TOKEN",
+      "headers": {
+        "Authorization": "Bearer REDACTED_EXAMPLE_TOKEN",
+        "X-Request-Source": "mcp-scope-example"
+      }
+    }
+  }
+}

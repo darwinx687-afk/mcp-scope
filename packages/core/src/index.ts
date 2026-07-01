@@ -5,7 +5,8 @@ export const PROJECT_VERSION = "0.0.0" as const;
 export type PhaseStatus =
   | "foundation-in-progress"
   | "foundation-ready"
-  | "scanner-not-implemented";
+  | "scanner-not-implemented"
+  | "config-fingerprint-ready";
 
 export type RiskLevel = "info" | "low" | "medium" | "high" | "unknown";
 
@@ -29,8 +30,11 @@ export type McpScopeTarget = {
 export const FOUNDATION_STATUS = {
   project: PROJECT_SLUG,
   name: PROJECT_NAME,
-  phase: 0,
-  status: "foundation-ready",
-  scanner: "not-implemented-yet",
-  externalApiCalls: false
+  phase: 1,
+  status: "config-fingerprint-ready",
+  scanner: "static-config-fingerprint",
+  externalApiCalls: false,
+  serverExecution: false
 } as const;
+
+export * from "./scan.js";

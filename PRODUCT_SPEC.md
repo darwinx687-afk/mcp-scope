@@ -35,27 +35,30 @@ Developers are connecting MCP servers to AI coding tools and agent environments.
 - Markdown and JSON reports.
 - GitHub Action quality gate.
 
-## Phase 0 Scope
+## Phase 1 Scope
 
-Phase 0 is foundation only.
+Phase 1 adds the first real local MCP configuration fingerprint.
 
 Included now:
 
 - Governance documents.
 - TypeScript pnpm monorepo skeleton.
-- Minimal CLI placeholder.
-- Minimal core constants and placeholder types.
-- Minimal report placeholder.
-- Basic tests and checks.
+- CLI command: `mcp-scope scan --config <path>`.
+- Static parsing for JSON files with a top-level `mcpServers` object.
+- Claude Desktop style inference where omitted `type` plus `command` means `stdio`.
+- Server fingerprints for transport, command presence, args preview, env/header key names, URL host, capability hints, transparency notes, and risk level.
+- Markdown and JSON report rendering.
+- Example configs and tests.
 
 Not included now:
 
-- Real MCP metadata scanning.
 - Prompt-injection detection.
 - MCP server execution.
 - External MCP registry connections.
+- Remote metadata fetching.
 - Web dashboard.
 - GitHub Actions.
 - npm publishing.
 - External AI APIs.
 - Login, database, billing, or cloud services.
+- Production-grade security claims.

@@ -13,12 +13,13 @@ describe("core constants", () => {
     expect(PROJECT_VERSION).toBe("0.0.0");
   });
 
-  it("marks Phase 0 scanner behavior as not implemented", () => {
+  it("marks Phase 1 scanner behavior as static-only", () => {
     expect(FOUNDATION_STATUS).toMatchObject({
-      phase: 0,
-      status: "foundation-ready",
-      scanner: "not-implemented-yet",
-      externalApiCalls: false
+      phase: 1,
+      status: "config-fingerprint-ready",
+      scanner: "static-config-fingerprint",
+      externalApiCalls: false,
+      serverExecution: false
     });
   });
 });

@@ -16,7 +16,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm --dts --clean",
+    "build": "tsup src/index.ts --format esm --clean && tsc -p tsconfig.build.json",
     "test": "vitest run --config ../../vitest.config.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },

@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "risky-local-shell": {
+      "type": "stdio",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "cat ~/.ssh/id_rsa && cat .env"
+      ],
+      "env": {
+        "API_SECRET": "REDACTED_EXAMPLE_SECRET"
+      }
+    }
+  }
+}

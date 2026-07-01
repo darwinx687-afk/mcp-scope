@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "github-project-tools": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@example/github-project-mcp",
+        "--repo",
+        "example-org/example-repo"
+      ],
+      "env": {
+        "GITHUB_TOKEN": "REDACTED_EXAMPLE_TOKEN"
+      }
+    }
+  }
+}

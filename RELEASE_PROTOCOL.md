@@ -1,6 +1,6 @@
 # Release Protocol
 
-MCP Scope is not ready for package release in Phase 0.
+MCP Scope is not ready for package release in the early preview phases.
 
 ## Before Any Release
 
@@ -11,6 +11,6 @@ MCP Scope is not ready for package release in Phase 0.
 - Confirm generated reports are not accidentally committed unless they are intentional examples.
 - Confirm no secrets, private MCP configs, or local paths are included.
 
-## Phase 0 Rule
+## Early Preview Rule
 
-No npm publishing, prerelease, GitHub remote creation, or launch packaging should happen in Phase 0.
+No npm publishing, prerelease, GitHub remote creation, or launch packaging should happen until the roadmap explicitly reaches release work.

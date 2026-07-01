@@ -10,7 +10,7 @@ If you believe you found a security issue in MCP Scope itself, open a minimal pu
 
 ## Current Project State
 
-Phase 0 does not implement real scanning and does not execute MCP servers.
+Phase 1 implements static local MCP config fingerprinting. It does not execute MCP servers and does not call external APIs.
 
 Future MCP Scope reports should be treated as transparency warnings and review evidence. They are not full vulnerability proof, and they are not a guarantee that a server, config, or tool is safe.
 
