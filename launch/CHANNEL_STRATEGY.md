@@ -39,18 +39,18 @@ V2EX is skipped for this launch wave.
 
 ## Platform Map
 
-| Platform | Language | Image | Copy file | Goal |
+| Platform | Language | Image upload | Copy file | Goal |
 | --- | --- | --- | --- | --- |
-| GitHub prerelease | en | `launch/assets/release-banner-en.svg` | `launch/copy/github_release_final_review.md` | Make the preview publicly reviewable from the repo. |
-| Juejin | zh-CN | `launch/assets/release-banner-zh-CN.svg` | `launch/copy/juejin.md` | Reach Chinese developers who want technical detail. |
-| LinkedIn | en | `launch/assets/social-card-en.svg` | `launch/copy/linkedin.md` | Reach English-speaking builders and platform engineers. |
-| X / Twitter | en | `launch/assets/social-card-en.svg` | `launch/copy/x_twitter.md` | Create a concise public feedback request. |
-| Xiaohongshu | zh-CN | `launch/assets/social-card-square-zh-CN.svg` | `launch/copy/xiaohongshu.md` | Reach a broader Chinese technical audience with lighter wording. |
-| Jike | zh-CN | `launch/assets/social-card-zh-CN.svg` | `launch/copy/jike.md` | Share a compact Chinese builder update. |
-| WeChat group | zh-CN | `launch/assets/social-card-zh-CN.svg` | `launch/copy/wechat_group.md` | Ask known relevant groups for practical feedback. |
-| WeChat moments | zh-CN | `launch/assets/social-card-square-zh-CN.svg` | `launch/copy/wechat_moments.md` | Share a personal, low-pressure project note. |
+| GitHub prerelease | en | none uploaded | `launch/copy/github_release_final_review.md` | Make the preview publicly reviewable from the repo. |
+| Juejin | zh-CN | `launch/assets/exports/release-banner-zh-CN.png` | `launch/copy/juejin.md` | Reach Chinese developers who want technical detail. |
+| LinkedIn | en | `launch/assets/exports/social-card-en.png` | `launch/copy/linkedin.md` | Reach English-speaking builders and platform engineers. |
+| X / Twitter | en | `launch/assets/exports/social-card-en.png` | `launch/copy/x_twitter.md` | Create a concise public feedback request. |
+| Xiaohongshu | zh-CN | `launch/assets/exports/social-card-square-zh-CN.png` | `launch/copy/xiaohongshu.md` | Reach a broader Chinese technical audience with lighter wording. |
+| Jike | zh-CN | `launch/assets/exports/social-card-zh-CN.png` | `launch/copy/jike.md` | Share a compact Chinese builder update. |
+| WeChat group | zh-CN | `launch/assets/exports/social-card-zh-CN.png` | `launch/copy/wechat_group.md` | Ask known relevant groups for practical feedback. |
+| WeChat moments | zh-CN | `launch/assets/exports/social-card-square-zh-CN.png` | `launch/copy/wechat_moments.md` | Share a personal, low-pressure project note. |
 | Hacker News | en | none | `launch/copy/hackernews.md` | High-reach Show HN feedback after manual readiness checks. |
-| Dev.to | en | `launch/assets/release-banner-en.svg` | `launch/copy/devto.md` | Long-tail technical explanation. |
+| Dev.to | en | `launch/assets/exports/release-banner-en.png` | `launch/copy/devto.md` | Long-tail technical explanation. |
 | Reddit | en | none | `launch/copy/reddit.md` | Optional later discussion only with explicit approval. |
 | V2EX | zh-CN | none | `launch/copy/v2ex.md` | Skipped; keep copy archived only. |
 

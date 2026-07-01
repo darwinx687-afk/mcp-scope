@@ -2,7 +2,7 @@
 
 Language: en
 
-Selected image asset: `launch/assets/release-banner-en.svg`
+Selected image asset: `launch/assets/exports/release-banner-en.png`
 
 Do not post automatically. Preview manually before publishing.
 

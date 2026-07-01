@@ -10,6 +10,7 @@
 - Added Phase 10 bilingual launch copy, SVG social cards, posting tracker, feedback monitoring playbook, issue triage guide, and feedback-to-roadmap review templates.
 - Added final human launch review reports for manual prerelease and first-post gating.
 - Refined launch channel strategy and image mapping so Chinese platforms use zh-CN copy/assets, overseas platforms use en copy/assets, V2EX is skipped, and Reddit remains optional later.
+- Recorded the public GitHub prerelease state and exported PNG social assets from the repository-local SVG launch assets.
 - Kept npm publishing and GitHub Marketplace publishing out of scope.
 - Kept findings framed as static risk signals, transparency notes, and warnings.
 

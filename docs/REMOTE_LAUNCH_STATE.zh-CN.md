@@ -2,6 +2,8 @@
 
 记录时间：2026-07-01，Phase 9 远程仓库设置完成后。
 
+更新时间：2026-07-01，`v0.1.0-preview` GitHub prerelease 已公开后。
+
 ## 仓库
 
 - Repo 名称：`mcp-scope`
@@ -15,7 +17,8 @@
 ## Commit 和 CI
 
 - 最新已推送 release/tag commit：`89a45c0858db6b627932d4a2bbf2c9d16f445f17`
-- `main` 上的 CI：已通过，run `28528079909`
+- `main` 上最新 launch-pack commit：`f0af9c4`
+- `main` 上的 CI：已通过，run `28531824152`
 - `v0.1.0-preview` 上的 CI：已通过，run `28528155196`
 - 远程验证中修复过的 CI 问题：在 corepack 启用 pnpm 前关闭 setup-node 的 package-manager cache；给 action manifest 中带冒号的 description 加引号。
 
@@ -23,10 +26,11 @@
 
 - Tag：`v0.1.0-preview`
 - Tag 指向：`89a45c0858db6b627932d4a2bbf2c9d16f445f17`
-- Draft prerelease：已创建
-- Draft 状态：`isDraft: true`
+- Prerelease URL：`https://github.com/darwinx687-afk/mcp-scope/releases/tag/v0.1.0-preview`
+- Draft prerelease：已作为公开 prerelease 发布
+- Draft 状态：`isDraft: false`
 - Prerelease 状态：`isPrerelease: true`
-- Published 状态：还不是正式 release；`publishedAt` 为 null
+- Published 状态：公开 prerelease；`publishedAt` 为 `2026-07-01T16:24:27Z`
 
 ## 仓库信息
 
@@ -47,8 +51,8 @@
 
 ## 人工后续事项
 
-- 维护者需要先审查 draft prerelease，再决定是否转为正式 release。
-- Phase 9 不发布 npm。
-- Phase 9 不发布 GitHub Marketplace。
-- Phase 10 前不发社区或社交平台发布帖。
+- GitHub prerelease 已公开，但仍然是 prerelease，不是 final/stable release。
+- 不发布 npm。
+- 不发布 GitHub Marketplace。
+- 社区和社交平台发布仍需人工执行，并记录到 `launch/POSTING_TRACKER.md`。
 - 继续保持生成的 `reports/` smoke 输出被忽略，不提交进仓库。

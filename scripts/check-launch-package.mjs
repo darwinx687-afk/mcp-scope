@@ -71,6 +71,12 @@ const requiredFiles = [
   "launch/assets/social-card-square-zh-CN.svg",
   "launch/assets/release-banner-en.svg",
   "launch/assets/release-banner-zh-CN.svg",
+  "launch/assets/exports/social-card-en.png",
+  "launch/assets/exports/social-card-zh-CN.png",
+  "launch/assets/exports/social-card-square-en.png",
+  "launch/assets/exports/social-card-square-zh-CN.png",
+  "launch/assets/exports/release-banner-en.png",
+  "launch/assets/exports/release-banner-zh-CN.png",
   ".github/PULL_REQUEST_TEMPLATE.md",
   ".github/ISSUE_TEMPLATE/bug_report.yml",
   ".github/ISSUE_TEMPLATE/false_positive.yml",
@@ -220,6 +226,15 @@ const launchSvgFiles = [
   "launch/assets/release-banner-zh-CN.svg"
 ];
 
+const launchPngFiles = [
+  "launch/assets/exports/social-card-en.png",
+  "launch/assets/exports/social-card-zh-CN.png",
+  "launch/assets/exports/social-card-square-en.png",
+  "launch/assets/exports/social-card-square-zh-CN.png",
+  "launch/assets/exports/release-banner-en.png",
+  "launch/assets/exports/release-banner-zh-CN.png"
+];
+
 const trackerPlatforms = [
   "GitHub release",
   "Xiaohongshu",
@@ -236,26 +251,25 @@ const trackerPlatforms = [
 ];
 
 const chineseTrackerRows = [
-  ["Juejin", "launch/assets/release-banner-zh-CN.svg"],
-  ["Xiaohongshu", "launch/assets/social-card-square-zh-CN.svg"],
-  ["Jike", "launch/assets/social-card-zh-CN.svg"],
-  ["WeChat group", "launch/assets/social-card-zh-CN.svg"],
-  ["WeChat moments", "launch/assets/social-card-square-zh-CN.svg"]
+  ["Juejin", "launch/assets/exports/release-banner-zh-CN.png"],
+  ["Xiaohongshu", "launch/assets/exports/social-card-square-zh-CN.png"],
+  ["Jike", "launch/assets/exports/social-card-zh-CN.png"],
+  ["WeChat group", "launch/assets/exports/social-card-zh-CN.png"],
+  ["WeChat moments", "launch/assets/exports/social-card-square-zh-CN.png"]
 ];
 
 const englishTrackerRows = [
-  ["GitHub release", "launch/assets/release-banner-en.svg"],
-  ["LinkedIn", "launch/assets/social-card-en.svg"],
-  ["X / Twitter", "launch/assets/social-card-en.svg"],
-  ["Dev.to", "launch/assets/release-banner-en.svg"]
+  ["LinkedIn", "launch/assets/exports/social-card-en.png"],
+  ["X / Twitter", "launch/assets/exports/social-card-en.png"],
+  ["Dev.to", "launch/assets/exports/release-banner-en.png"]
 ];
 
 const zhChineseTrackerRows = [
-  ["掘金", "launch/assets/release-banner-zh-CN.svg"],
-  ["小红书", "launch/assets/social-card-square-zh-CN.svg"],
-  ["即刻", "launch/assets/social-card-zh-CN.svg"],
-  ["微信群", "launch/assets/social-card-zh-CN.svg"],
-  ["朋友圈", "launch/assets/social-card-square-zh-CN.svg"]
+  ["掘金", "launch/assets/exports/release-banner-zh-CN.png"],
+  ["小红书", "launch/assets/exports/social-card-square-zh-CN.png"],
+  ["即刻", "launch/assets/exports/social-card-zh-CN.png"],
+  ["微信群", "launch/assets/exports/social-card-zh-CN.png"],
+  ["朋友圈", "launch/assets/exports/social-card-square-zh-CN.png"]
 ];
 
 const docsIndexRequired = [
@@ -311,6 +325,16 @@ for (const svgFile of ["assets/logo.svg", "assets/banner.svg", ...launchSvgFiles
   }
 }
 
+for (const pngFile of launchPngFiles) {
+  try {
+    if (statSync(join(root, pngFile)).size <= 0) {
+      fail(`${pngFile} is empty`);
+    }
+  } catch {
+    fail(`missing PNG export: ${pngFile}`);
+  }
+}
+
 for (const template of issueTemplates) {
   const content = read(template).toLowerCase();
   if (!content.includes("secret")) {
@@ -356,25 +380,28 @@ for (const platform of trackerPlatforms) {
   }
 }
 for (const [platform, asset] of chineseTrackerRows) {
-  const pattern = new RegExp(`\\| ${platform} \\| zh-CN \\| not-started \\|[^\\n]*${asset.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`);
+  const pattern = new RegExp(`\\| ${platform} \\| zh-CN \\| (?:ready-to-post|manual-needed) \\|[^\\n]*${asset.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`);
   if (!pattern.test(postingTracker)) {
     fail(`launch/POSTING_TRACKER.md must map ${platform} to zh-CN and ${asset}`);
   }
 }
 for (const [platform, asset] of englishTrackerRows) {
-  const pattern = new RegExp(`\\| ${platform} \\| en \\| not-started \\|[^\\n]*${asset.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`);
+  const pattern = new RegExp(`\\| ${platform} \\| en \\| (?:ready-to-post|manual-needed) \\|[^\\n]*${asset.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`);
   if (!pattern.test(postingTracker)) {
     fail(`launch/POSTING_TRACKER.md must map ${platform} to en and ${asset}`);
   }
 }
+if (!/\| GitHub release \| en \| posted \| 2026-07-01 \| https:\/\/github\.com\/darwinx687-afk\/mcp-scope\/releases\/tag\/v0\.1\.0-preview \| none \|/.test(postingTracker)) {
+  fail("launch/POSTING_TRACKER.md must record the public GitHub prerelease URL as posted");
+}
 if (!/\| V2EX \| zh-CN \| skipped \|/.test(postingTracker)) {
   fail("launch/POSTING_TRACKER.md must mark V2EX as skipped");
 }
-if (!/\| Hacker News \| en \| not-started \|[^\n]*\| none \|/.test(postingTracker)) {
+if (!/\| Hacker News \| en \| ready-to-post \|[^\n]*\| none \|/.test(postingTracker)) {
   fail("launch/POSTING_TRACKER.md must keep Hacker News text-only unless manually changed");
 }
-if (!/\| Reddit \| en \| not-started \|[^\n]*\| none \|/.test(postingTracker)) {
-  fail("launch/POSTING_TRACKER.md must keep Reddit optional and image-free by default");
+if (!/\| Reddit \| en \| skipped \|[^\n]*\| none \|/.test(postingTracker)) {
+  fail("launch/POSTING_TRACKER.md must keep Reddit skipped and image-free by default");
 }
 const zhPostingTracker = read("launch/POSTING_TRACKER.zh-CN.md");
 for (const platform of ["GitHub release", "小红书", "掘金", "即刻", "V2EX", "微信群", "朋友圈", "LinkedIn", "X / Twitter", "Dev.to", "Reddit", "Hacker News"]) {
@@ -385,14 +412,17 @@ for (const platform of ["GitHub release", "小红书", "掘金", "即刻", "V2EX
 if (!/\| V2EX \| zh-CN \| skipped \|/.test(zhPostingTracker)) {
   fail("launch/POSTING_TRACKER.zh-CN.md must mark V2EX as skipped");
 }
+if (!/\| GitHub release \| en \| posted \| 2026-07-01 \| https:\/\/github\.com\/darwinx687-afk\/mcp-scope\/releases\/tag\/v0\.1\.0-preview \| none \|/.test(zhPostingTracker)) {
+  fail("launch/POSTING_TRACKER.zh-CN.md must record the public GitHub prerelease URL as posted");
+}
 for (const [platform, asset] of zhChineseTrackerRows) {
-  const pattern = new RegExp(`\\| ${platform} \\| zh-CN \\| not-started \\|[^\\n]*${asset.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`);
+  const pattern = new RegExp(`\\| ${platform} \\| zh-CN \\| (?:ready-to-post|manual-needed) \\|[^\\n]*${asset.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`);
   if (!pattern.test(zhPostingTracker)) {
     fail(`launch/POSTING_TRACKER.zh-CN.md must map ${platform} to zh-CN and ${asset}`);
   }
 }
 for (const [platform, asset] of englishTrackerRows) {
-  const pattern = new RegExp(`\\| ${platform} \\| en \\| not-started \\|[^\\n]*${asset.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`);
+  const pattern = new RegExp(`\\| ${platform} \\| en \\| (?:ready-to-post|manual-needed) \\|[^\\n]*${asset.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`);
   if (!pattern.test(zhPostingTracker)) {
     fail(`launch/POSTING_TRACKER.zh-CN.md must map ${platform} to en and ${asset}`);
   }

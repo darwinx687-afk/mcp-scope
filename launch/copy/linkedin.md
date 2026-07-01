@@ -2,7 +2,7 @@
 
 Language: en
 
-Selected image asset: `launch/assets/social-card-en.svg`
+Selected image asset: `launch/assets/exports/social-card-en.png`
 
 Do not post automatically. Preview manually before publishing.
 

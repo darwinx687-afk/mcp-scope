@@ -2,7 +2,7 @@
 
 Language: zh-CN
 
-Selected image asset: `launch/assets/release-banner-zh-CN.svg`
+Selected image asset: `launch/assets/exports/release-banner-zh-CN.png`
 
 Do not post automatically. Preview manually before publishing.
 

@@ -39,18 +39,18 @@ V2EX 本轮跳过。
 
 ## 平台映射
 
-| 平台 | 语言 | 图片 | 文案文件 | 目标 |
+| 平台 | 语言 | 上传图片 | 文案文件 | 目标 |
 | --- | --- | --- | --- | --- |
-| GitHub prerelease | en | `launch/assets/release-banner-en.svg` | `launch/copy/github_release_final_review.md` | 让 preview 可以从仓库公开审查。 |
-| 掘金 | zh-CN | `launch/assets/release-banner-zh-CN.svg` | `launch/copy/juejin.md` | 触达希望看技术细节的中文开发者。 |
-| LinkedIn | en | `launch/assets/social-card-en.svg` | `launch/copy/linkedin.md` | 触达英文 builder 和平台工程受众。 |
-| X / Twitter | en | `launch/assets/social-card-en.svg` | `launch/copy/x_twitter.md` | 发出简短公开反馈请求。 |
-| 小红书 | zh-CN | `launch/assets/social-card-square-zh-CN.svg` | `launch/copy/xiaohongshu.md` | 用更轻的表达触达更宽的中文技术受众。 |
-| 即刻 | zh-CN | `launch/assets/social-card-zh-CN.svg` | `launch/copy/jike.md` | 发一条简短中文项目更新。 |
-| 微信群 | zh-CN | `launch/assets/social-card-zh-CN.svg` | `launch/copy/wechat_group.md` | 向相关群收集真实使用反馈。 |
-| 朋友圈 | zh-CN | `launch/assets/social-card-square-zh-CN.svg` | `launch/copy/wechat_moments.md` | 以个人记录方式低压力分享。 |
+| GitHub prerelease | en | 未上传图片 | `launch/copy/github_release_final_review.md` | 让 preview 可以从仓库公开审查。 |
+| 掘金 | zh-CN | `launch/assets/exports/release-banner-zh-CN.png` | `launch/copy/juejin.md` | 触达希望看技术细节的中文开发者。 |
+| LinkedIn | en | `launch/assets/exports/social-card-en.png` | `launch/copy/linkedin.md` | 触达英文 builder 和平台工程受众。 |
+| X / Twitter | en | `launch/assets/exports/social-card-en.png` | `launch/copy/x_twitter.md` | 发出简短公开反馈请求。 |
+| 小红书 | zh-CN | `launch/assets/exports/social-card-square-zh-CN.png` | `launch/copy/xiaohongshu.md` | 用更轻的表达触达更宽的中文技术受众。 |
+| 即刻 | zh-CN | `launch/assets/exports/social-card-zh-CN.png` | `launch/copy/jike.md` | 发一条简短中文项目更新。 |
+| 微信群 | zh-CN | `launch/assets/exports/social-card-zh-CN.png` | `launch/copy/wechat_group.md` | 向相关群收集真实使用反馈。 |
+| 朋友圈 | zh-CN | `launch/assets/exports/social-card-square-zh-CN.png` | `launch/copy/wechat_moments.md` | 以个人记录方式低压力分享。 |
 | Hacker News | en | 无 | `launch/copy/hackernews.md` | 人工检查后，用 Show HN 获取高触达反馈。 |
-| Dev.to | en | `launch/assets/release-banner-en.svg` | `launch/copy/devto.md` | 长尾技术说明。 |
+| Dev.to | en | `launch/assets/exports/release-banner-en.png` | `launch/copy/devto.md` | 长尾技术说明。 |
 | Reddit | en | 无 | `launch/copy/reddit.md` | 之后可选，必须明确人工批准。 |
 | V2EX | zh-CN | 无 | `launch/copy/v2ex.md` | 本轮跳过，只保留文案归档。 |
 

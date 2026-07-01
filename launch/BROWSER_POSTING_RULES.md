@@ -5,7 +5,7 @@ These rules apply to any future manual or browser-assisted posting.
 - All publishing remains manual.
 - Chinese platforms must use Chinese copy and zh-CN image assets.
 - Overseas platforms must use English copy and en image assets.
-- Only use specified local SVG paths from `launch/assets/`.
+- Only use specified local SVG sources from `launch/assets/` or PNG exports from `launch/assets/exports/`.
 - Do not select personal photos.
 - Do not select random album images.
 - Do not use external images or remote image URLs.

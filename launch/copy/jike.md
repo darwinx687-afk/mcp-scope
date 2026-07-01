@@ -2,7 +2,7 @@
 
 Language: zh-CN
 
-Selected image asset: `launch/assets/social-card-zh-CN.svg`
+Selected image asset: `launch/assets/exports/social-card-zh-CN.png`
 
 Do not post automatically. Preview manually before publishing.
 

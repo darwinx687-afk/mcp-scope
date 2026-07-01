@@ -2,6 +2,8 @@
 
 Recorded on 2026-07-01 after Phase 9 remote setup.
 
+Updated on 2026-07-01 after the `v0.1.0-preview` GitHub prerelease became public.
+
 ## Repository
 
 - Repo name: `mcp-scope`
@@ -15,7 +17,8 @@ Recorded on 2026-07-01 after Phase 9 remote setup.
 ## Commit And CI
 
 - Latest pushed release/tag commit: `89a45c0858db6b627932d4a2bbf2c9d16f445f17`
-- CI on `main`: passed for run `28528079909`
+- Latest launch-pack commit on `main`: `f0af9c4`
+- CI on `main`: passed for run `28531824152`
 - CI on `v0.1.0-preview`: passed for run `28528155196`
 - CI fix recorded before launch state: setup-node package-manager cache disabled until corepack enables pnpm; action manifest descriptions with colons are quoted.
 
@@ -23,10 +26,11 @@ Recorded on 2026-07-01 after Phase 9 remote setup.
 
 - Tag: `v0.1.0-preview`
 - Tag target: `89a45c0858db6b627932d4a2bbf2c9d16f445f17`
-- Draft prerelease: created
-- Draft status: `isDraft: true`
+- Prerelease URL: `https://github.com/darwinx687-afk/mcp-scope/releases/tag/v0.1.0-preview`
+- Draft prerelease: published as public prerelease
+- Draft status: `isDraft: false`
 - Prerelease status: `isPrerelease: true`
-- Published status: not final; `publishedAt` is null
+- Published status: public prerelease; `publishedAt` is `2026-07-01T16:24:27Z`
 
 ## Repository Metadata
 
@@ -47,8 +51,8 @@ Recorded on 2026-07-01 after Phase 9 remote setup.
 
 ## Manual Follow-Ups
 
-- Human maintainer should review the draft prerelease before making it final.
-- Do not publish npm in Phase 9.
-- Do not publish to GitHub Marketplace in Phase 9.
-- Do not post launch announcements until Phase 10.
+- GitHub prerelease is public, but it is still a prerelease and not a final/stable release.
+- Do not publish npm.
+- Do not publish to GitHub Marketplace.
+- Social/community launch posts remain manual and must be recorded in `launch/POSTING_TRACKER.md`.
 - Keep generated `reports/` smoke outputs ignored and uncommitted.

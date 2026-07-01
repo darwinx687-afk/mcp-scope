@@ -1,6 +1,6 @@
 # Launch Notes
 
-MCP Scope now has a public GitHub repository and a draft prerelease for first public launch review. The release is still draft/prerelease only and has not been made final.
+MCP Scope now has a public GitHub repository and a public GitHub prerelease for first public launch review. The release is still a prerelease and has not been made final/stable.
 
 ## What MCP Scope Does
 
@@ -12,7 +12,7 @@ It helps developers see what changed, what is exposed, and what looks risky befo
 
 MCP tools can expose filesystem, network, credential, shell, and workflow capabilities to AI agents. Developers need a local way to review visible config and exported tool metadata before trusting that setup.
 
-## Included In v0.1.0-preview Draft
+## Included In v0.1.0-preview Prerelease
 
 - Static discovery for likely local MCP config files.
 - Static scanning for local MCP server config entries.
@@ -24,7 +24,7 @@ MCP tools can expose filesystem, network, credential, shell, and workflow capabi
 - Composite GitHub Action quality gate for local repository workflows.
 - Launch-ready README, docs indexes, examples indexes, issue templates, and release draft.
 - Public GitHub repository with CI verification.
-- `v0.1.0-preview` tag and draft prerelease.
+- `v0.1.0-preview` tag and public prerelease.
 - Bilingual launch pack with platform copy drafts, SVG social cards, posting tracker, feedback monitoring playbook, and issue triage guide.
 
 ## Local-First Guarantees
@@ -44,7 +44,7 @@ MCP tools can expose filesystem, network, credential, shell, and workflow capabi
 - It is not a complete security product.
 - It is not an official integration with any MCP client.
 - It has not been published to npm or GitHub Marketplace.
-- The GitHub release is draft/prerelease only until a maintainer makes it final.
+- The GitHub release is a public prerelease, not a final/stable release.
 - Social/community launch copy is prepared but not posted automatically.
 
 ## Known Limitations

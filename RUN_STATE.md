@@ -1,9 +1,9 @@
 # Run State
 
 - Current phase: Phase 10
-- Current status: Bilingual launch channel plan refined; no posts published
+- Current status: GitHub prerelease public; PNG launch assets exported; social channels prepared for manual posting
 - Next loop: Phase 11 feedback-driven iteration
-- Current scope guard: launch materials only; no MCP server execution, no live tools/list requests, no external APIs in scanning, no npm publish, no Marketplace claim, no production-grade security claim, no browser posting automation, no social/community posts, draft prerelease remains draft
+- Current scope guard: launch execution records only; no MCP server execution, no live tools/list requests, no external APIs in scanning, no npm publish, no Marketplace claim, no production-grade security claim, no browser posting automation, no social/community posts
 
 ## Latest Loop
 
@@ -27,5 +27,7 @@
 - Final human launch review: ready under `launch/FINAL_HUMAN_REVIEW.md` and `launch/FINAL_HUMAN_REVIEW.zh-CN.md`; no release or platform post was published automatically.
 - Remote: `https://github.com/darwinx687-afk/mcp-scope`.
 - Preview tag: `v0.1.0-preview`.
-- Draft prerelease: created as draft prerelease only; not final/published.
-- Publishing state: public GitHub source repository exists; no npm package, Marketplace listing, Pages site, deployment, final release, or social/community post was published.
+- GitHub prerelease: public prerelease at `https://github.com/darwinx687-afk/mcp-scope/releases/tag/v0.1.0-preview`; still not a final/stable release.
+- PNG launch assets: exported under `launch/assets/exports/` from repository-local SVG sources.
+- Social channel state: non-GitHub channels are ready-to-post or manual-needed; V2EX and Reddit are skipped.
+- Publishing state: public GitHub source repository and public GitHub prerelease exist; no npm package, Marketplace listing, Pages site, deployment, final/stable release, or social/community post was published.

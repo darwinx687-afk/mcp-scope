@@ -4,13 +4,13 @@ Date: 2026-07-01
 
 ## Launch Readiness Summary
 
-Status: ready for human maintainer review before any public launch step.
+Status: GitHub prerelease is public; social channels are prepared for manual posting.
 
-MCP Scope is ready for a manual `v0.1.0-preview` launch review. The repository, draft prerelease, CI, launch copy, SVG assets, feedback playbook, channel strategy, image asset map, and posting tracker are prepared. Nothing was published automatically during this review.
+MCP Scope has a public `v0.1.0-preview` GitHub prerelease. The repository, CI, launch copy, SVG sources, PNG exports, feedback playbook, channel strategy, image asset map, and posting tracker are prepared. No social platform was published automatically during this review.
 
 Recommended decision:
 
-- Go for human review of the GitHub draft prerelease.
+- GitHub prerelease is already public and should be treated as the accepted launch state.
 - Go for manual posting only after the maintainer approves the final release page and selected copy.
 - No-go for automated release publication, automated social posting, npm publication, GitHub Marketplace publication, or repository visibility changes.
 
@@ -18,8 +18,8 @@ Recommended decision:
 
 - Git status before this report: clean tracked tree; only ignored `reports/` artifacts present.
 - Expected remote: `https://github.com/darwinx687-afk/mcp-scope.git`.
-- GitHub release: `v0.1.0-preview` exists as draft/prerelease.
-- Release publication state: `publishedAt` is `null`.
+- GitHub release: `v0.1.0-preview` exists as a public prerelease.
+- Release publication state: `isDraft: false`, `isPrerelease: true`, `publishedAt: 2026-07-01T16:24:27Z`.
 - Latest `main` CI before this report: passed for `chore: add final human launch review`.
 - Local checks: `pnpm check` passed; `pnpm check:launch` passed.
 - CLI smoke: `discover` and `scan` passed.
@@ -30,9 +30,9 @@ Recommended decision:
 
 ## GitHub Release Status
 
-The GitHub prerelease remains a draft prerelease. Keep it draft until a human maintainer reviews the release title, release notes, attached assets if any, and repository first screen.
+The GitHub prerelease is public at `https://github.com/darwinx687-afk/mcp-scope/releases/tag/v0.1.0-preview`.
 
-Do not publish the release from automation.
+It remains a prerelease, not a final/stable release.
 
 ## Selected First Channels
 
@@ -52,16 +52,16 @@ V2EX is skipped for this launch wave. Reddit remains optional later and requires
 
 | Platform | Copy file | Image path | Notes |
 | --- | --- | --- | --- |
-| GitHub prerelease | `launch/copy/github_release_final_review.md` | `launch/assets/release-banner-en.svg` | Review manually before making draft public. |
-| Juejin | `launch/copy/juejin.md` | `launch/assets/release-banner-zh-CN.svg` | Safer first Chinese technical post. |
-| LinkedIn | `launch/copy/linkedin.md` | `launch/assets/social-card-en.svg` | Safer first English builder post. |
-| X / Twitter | `launch/copy/x_twitter.md` | `launch/assets/social-card-en.svg` | Short post or thread. |
-| Xiaohongshu | `launch/copy/xiaohongshu.md` | `launch/assets/social-card-square-zh-CN.svg` | Broader Chinese reach after technical launch is checked. |
-| Jike | `launch/copy/jike.md` | `launch/assets/social-card-zh-CN.svg` | Short Chinese builder update. |
-| WeChat group | `launch/copy/wechat_group.md` | `launch/assets/social-card-zh-CN.svg` | Share only in relevant groups. |
-| WeChat moments | `launch/copy/wechat_moments.md` | `launch/assets/social-card-square-zh-CN.svg` | Personal reflection style. |
+| GitHub prerelease | `launch/copy/github_release_final_review.md` | none uploaded | Public prerelease already posted. |
+| Juejin | `launch/copy/juejin.md` | `launch/assets/exports/release-banner-zh-CN.png` | Safer first Chinese technical post. |
+| LinkedIn | `launch/copy/linkedin.md` | `launch/assets/exports/social-card-en.png` | Safer first English builder post. |
+| X / Twitter | `launch/copy/x_twitter.md` | `launch/assets/exports/social-card-en.png` | Short post or thread. |
+| Xiaohongshu | `launch/copy/xiaohongshu.md` | `launch/assets/exports/social-card-square-zh-CN.png` | Broader Chinese reach after technical launch is checked. |
+| Jike | `launch/copy/jike.md` | `launch/assets/exports/social-card-zh-CN.png` | Short Chinese builder update. |
+| WeChat group | `launch/copy/wechat_group.md` | `launch/assets/exports/social-card-zh-CN.png` | Share only in relevant groups. |
+| WeChat moments | `launch/copy/wechat_moments.md` | `launch/assets/exports/social-card-square-zh-CN.png` | Personal reflection style. |
 | Hacker News | `launch/copy/hackernews.md` | none | Text-only Show HN unless manually decided otherwise. |
-| Dev.to | `launch/copy/devto.md` | `launch/assets/release-banner-en.svg` | Technical article draft. |
+| Dev.to | `launch/copy/devto.md` | `launch/assets/exports/release-banner-en.png` | Technical article draft. |
 | Reddit | `launch/copy/reddit.md` | none | Optional later, requires explicit human approval. |
 | V2EX | `launch/copy/v2ex.md` | none | Skipped; keep copy archived only. |
 
@@ -72,7 +72,7 @@ V2EX is skipped for this launch wave. Reddit remains optional later and requires
 - Do not save passwords in browser automation.
 - Chinese platforms must use Chinese copy and zh-CN image assets.
 - Overseas platforms must use English copy and en image assets.
-- Use only the prepared SVG assets from `launch/assets/`.
+- Use only the prepared SVG sources from `launch/assets/` or PNG exports from `launch/assets/exports/`.
 - Do not use personal photos, random album photos, external images, or remote images.
 - Do not claim npm availability, GitHub Marketplace availability, official MCP client integration, mature security protection, or user traction.
 - Do not paste secrets, full private configs, internal paths, or sensitive report excerpts into public threads.
@@ -110,4 +110,4 @@ First 72 hours:
 
 ## Explicit Non-Publication Statement
 
-This review did not publish the GitHub prerelease, did not post to any platform, did not publish npm, did not publish GitHub Marketplace, and did not change repository visibility.
+This review recorded the already-public GitHub prerelease, did not post to any social/community platform, did not publish npm, did not publish GitHub Marketplace, and did not change repository visibility.
