@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.1.0-preview - Draft prerelease
+
+- Prepared the first public GitHub preview state for MCP Scope.
+- Published the repository source to GitHub for early review.
+- Kept npm publishing and GitHub Marketplace publishing out of scope.
+- Kept findings framed as static risk signals, transparency notes, and warnings.
+
 ## 0.0.0 - 2026-07-01
 
 - Initialized MCP Scope Phase 0 foundation.
