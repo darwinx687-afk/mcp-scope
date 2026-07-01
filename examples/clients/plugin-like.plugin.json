@@ -1,0 +1,14 @@
+{
+  "name": "example-plugin",
+  "version": "0.0.0-example",
+  "mcpServers": {
+    "plugin-api": {
+      "command": "${CLAUDE_PLUGIN_ROOT}/servers/api-server",
+      "args": [
+        "--port",
+        "8080"
+      ],
+      "unknownPluginField": "example-field"
+    }
+  }
+}

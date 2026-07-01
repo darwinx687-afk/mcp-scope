@@ -40,6 +40,16 @@ node apps/cli/dist/index.js scan --config examples/claude-desktop-filesystem.jso
 
 Markdown 的标题和解释会使用中文。rule IDs、JSON keys、MCP、tool metadata、inputSchema、JSON-RPC 等技术名词保留英文。
 
+## 生成 Discovery 报告
+
+```bash
+node apps/cli/dist/index.js discover --root examples/clients
+node apps/cli/dist/index.js discover --root examples/clients --format json
+node apps/cli/dist/index.js discover --root examples/clients --format html --output reports/discovery.html
+```
+
+Discovery 报告只列出可能的 config 候选文件。发现后，选择一个路径再运行 `scan --config <path>`。
+
 ## 如何阅读发现项
 
 发现项是静态风险信号，不是被攻击的证明，也不是安全证明。

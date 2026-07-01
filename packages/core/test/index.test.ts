@@ -13,11 +13,11 @@ describe("core constants", () => {
     expect(PROJECT_VERSION).toBe("0.0.0");
   });
 
-  it("marks Phase 6 approval-memory diff behavior as static-only", () => {
+  it("marks Phase 7 ecosystem discovery behavior as static-only", () => {
     expect(FOUNDATION_STATUS).toMatchObject({
-      phase: 6,
-      status: "approval-memory-diff-ready",
-      scanner: "static-config-tool-metadata-approval-memory",
+      phase: 7,
+      status: "ecosystem-discovery-ready",
+      scanner: "static-config-tool-metadata-ecosystem-discovery",
       externalApiCalls: false,
       serverExecution: false
     });

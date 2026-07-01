@@ -1,6 +1,6 @@
 # MCP Scope Report Schema
 
-MCP Scope reports use a stable JSON shape for automation, localized Markdown for human review, self-contained HTML for local read-only viewing, GitHub Action threshold evaluation, and approval-memory diffing.
+MCP Scope reports use a stable JSON shape for automation, localized Markdown for human review, self-contained HTML for local read-only viewing, GitHub Action threshold evaluation, approval-memory diffing, and static discovery reports.
 
 ## Version Fields
 
@@ -84,6 +84,21 @@ Each item in `findings` includes:
 - `recommendation`
 
 Evidence must be short and safe. Findings are static risk signals, not confirmed compromise.
+
+## Config Source Context
+
+Phase 7 config scan results include source context fields:
+
+- `config.sourceShape`
+- `config.clientProfile`
+- `config.sourceContexts`
+- per-server `sourceShape`
+- per-server `clientProfile`
+- per-server `sourceContextLabel`
+- per-server `projectPathDisplay`, when nested project context exists
+- per-server `serverKeyPath`
+
+Client profile labels ending in `-like` are compatibility hints, not official integrations.
 
 ## Redaction Model
 
@@ -178,6 +193,47 @@ Each `changes` item includes:
 
 Diff severities use the same `info`, `low`, `medium`, and `high` scale. Diff findings remain static drift signals, not proof of compromise or proof of safety.
 
+## Discovery Report Model
+
+`mcp-scope discover` writes discovery reports as Markdown, JSON, or self-contained HTML. JSON discovery files currently use:
+
+- `schemaVersion: 1`
+
+Top-level discovery shape:
+
+```json
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-01T00:00:00.000Z",
+  "rootPathDisplay": "examples/clients",
+  "maxDepth": 4,
+  "includeHome": false,
+  "maxFileSizeBytes": 1048576,
+  "externalApiCalls": false,
+  "serverExecution": false,
+  "toolsListRequestSent": false,
+  "summary": {},
+  "candidates": [],
+  "notes": []
+}
+```
+
+Each `candidates` item includes:
+
+- `path`
+- `pathDisplay`
+- `fileName`
+- `sizeBytes`
+- `detectedShape`
+- `clientProfile`
+- `serverCount`
+- `hasToolsPath`
+- `parseStatus`
+- `riskPreview`
+- `notes`
+
+Discovery reports must not print file contents, env values, header values, or secret-like values.
+
 ## Limitations Model
 
 `limitations` includes:
@@ -191,6 +247,6 @@ Diff severities use the same `info`, `low`, `medium`, and `high` scale. Diff fin
 
 ## Compatibility Expectations
 
-Future GitHub Action and approval-memory work should treat `reportVersion`, `snapshotVersion`, `diffVersion`, `schemaVersion`, `scan`, `summary`, `findings`, `changes`, `redaction`, and `limitations` as compatibility-sensitive fields.
+Future GitHub Action, approval-memory, and discovery work should treat `reportVersion`, `snapshotVersion`, `diffVersion`, `schemaVersion`, `scan`, `summary`, `findings`, `changes`, `candidates`, `redaction`, and `limitations` as compatibility-sensitive fields.
 
 New fields may be added in later phases, but existing keys should remain stable unless `reportVersion` changes.

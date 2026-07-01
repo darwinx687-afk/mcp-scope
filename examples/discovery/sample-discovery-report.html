@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MCP Scope Discovery Report</title>
+<style>
+    :root { --ink: #172033; --muted: #64748b; --line: #dbe3ef; --panel: #ffffff; --bg: #eef3f8; --accent: #0f766e; }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--ink); background: var(--bg); font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.5; }
+    .page { width: min(1120px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 40px; }
+    header, section { margin-top: 18px; padding: 22px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    header { margin-top: 0; }
+    header p { margin: 0 0 8px; color: var(--muted); }
+    h1, h2 { margin: 0 0 14px; letter-spacing: 0; }
+    .cards { display: grid; grid-template-columns: repeat(4, minmax(120px, 1fr)); gap: 12px; }
+    .cards article { min-width: 0; padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: #fbfcfe; }
+    .cards span { display: block; color: var(--muted); font-size: 13px; }
+    .cards strong { display: block; margin-top: 8px; font-size: 26px; overflow-wrap: anywhere; }
+    dl { display: grid; gap: 8px; margin: 0; }
+    dl div { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+    dt { color: var(--muted); font-weight: 750; }
+    dd { margin: 0; overflow-wrap: anywhere; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 11px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+    th { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0; }
+    .muted { color: var(--muted); }
+    @media (max-width: 780px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } dl div { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<main class="page">
+<header>
+<p>Static discovery only</p>
+<h1>MCP Scope Discovery Report</h1>
+<p>No MCP server execution, no network calls, no live tools/list requests.</p>
+</header>
+<section class="cards">
+<article><span>Candidates</span><strong>10</strong></article>
+<article><span>Parsed</span><strong>10</strong></article>
+<article><span>Skipped</span><strong>0</strong></article>
+<article><span>Unsupported</span><strong>0</strong></article>
+</section>
+<section>
+<h2>Discovery Scope</h2>
+<dl><div><dt>rootPathDisplay</dt><dd>~/.../clients</dd></div><div><dt>maxDepth</dt><dd>4</dd></div><div><dt>includeHome</dt><dd>false</dd></div><div><dt>externalApiCalls</dt><dd>false</dd></div><div><dt>serverExecution</dt><dd>false</dd></div></dl>
+</section>
+<section>
+<h2>Candidates</h2>
+<div class="table-wrap"><table><thead><tr><th>Path</th><th>Status</th><th>Shape</th><th>Profile</th><th>Servers</th><th>Risk</th><th>Notes</th></tr></thead><tbody><tr><td>examples/clients/claude-code-project.mcp.json</td><td>parsed</td><td>top-level-mcpServers</td><td>claude-code-project</td><td>1</td><td>low</td><td>none</td></tr><tr><td>examples/clients/claude-code-user.claude.json</td><td>parsed</td><td>projects-mcpServers</td><td>claude-code-user</td><td>2</td><td>medium</td><td>info:nested_project_mcp_servers</td></tr><tr><td>examples/clients/claude-desktop-config.json</td><td>parsed</td><td>top-level-mcpServers</td><td>claude-desktop</td><td>1</td><td>medium</td><td>none</td></tr><tr><td>examples/clients/cline-like.mcp-settings.json</td><td>parsed</td><td>top-level-mcpServers</td><td>cline-like</td><td>1</td><td>medium</td><td>none</td></tr><tr><td>examples/clients/continue-like.mcp.json</td><td>parsed</td><td>top-level-servers</td><td>continue-like</td><td>1</td><td>low</td><td>none</td></tr><tr><td>examples/clients/cursor-like.mcp.json</td><td>parsed</td><td>mcp.servers</td><td>cursor-like</td><td>1</td><td>low</td><td>none</td></tr><tr><td>examples/clients/gemini-cli-like.settings.json</td><td>parsed</td><td>mcp.servers</td><td>gemini-cli-like</td><td>1</td><td>medium</td><td>none</td></tr><tr><td>examples/clients/generic-mcp-servers-wrapper.json</td><td>parsed</td><td>mcp.servers</td><td>generic</td><td>1</td><td>info</td><td>none</td></tr><tr><td>examples/clients/generic-mcp-servers.json</td><td>parsed</td><td>top-level-servers</td><td>generic</td><td>1</td><td>low</td><td>none</td></tr><tr><td>examples/clients/plugin-like.plugin.json</td><td>parsed</td><td>top-level-mcpServers</td><td>plugin-like</td><td>1</td><td>low</td><td>none</td></tr></tbody></table></div>
+</section>
+<section>
+<h2>Next Steps</h2>
+<ul><li>Pick a candidate path and run `mcp-scope scan --config &lt;path&gt;`.</li><li>If you have exported tools/list metadata, add `--tools &lt;path&gt;`.</li><li>discover does not auto-scan every candidate or modify config files.</li></ul>
+</section>
+<section>
+<h2>Limitations</h2>
+<ul><li>Discovery uses filename patterns and local JSON shape checks only.</li><li>Client profile labels are not official integration claims.</li><li>Candidates are review starting points, not security conclusions.</li></ul>
+</section>
+</main>
+</body>
+</html>

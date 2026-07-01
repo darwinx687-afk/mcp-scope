@@ -46,3 +46,9 @@
 - Phase 6 stores local redacted approval-memory snapshots as JSON and compares future local static scans against them.
 - Approval-memory snapshots are review artifacts, not safety certificates or public trust badges.
 - Diffing stays in the local CLI for this phase; GitHub Action diff integration and `scan --compare-to` remain out of scope until the core workflow has more usage feedback.
+
+## 2026-07-01 Phase 7
+
+- Phase 7 supports common local JSON config shapes and client-profile-like labels without claiming official integration.
+- Discovery lists likely local config candidates and requires users to choose a path before scanning; it does not auto-scan every candidate.
+- Home-like nested project paths are displayed safely by default to reduce accidental private path exposure.

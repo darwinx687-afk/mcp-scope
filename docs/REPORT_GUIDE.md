@@ -40,6 +40,16 @@ node apps/cli/dist/index.js scan --config examples/claude-desktop-filesystem.jso
 
 The Markdown headings and explanations are localized. Rule IDs and JSON keys stay English.
 
+## Generate Discovery Reports
+
+```bash
+node apps/cli/dist/index.js discover --root examples/clients
+node apps/cli/dist/index.js discover --root examples/clients --format json
+node apps/cli/dist/index.js discover --root examples/clients --format html --output reports/discovery.html
+```
+
+Discovery reports list likely config candidates only. After discovery, choose a path and run `scan --config <path>`.
+
 ## Use Reports in GitHub PRs or Issues
 
 Use the executive summary and findings section to show:

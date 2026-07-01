@@ -13,6 +13,10 @@ Current report docs:
 - `GITHUB_ACTION.zh-CN.md`
 - `APPROVAL_MEMORY.md`
 - `APPROVAL_MEMORY.zh-CN.md`
+- `ECOSYSTEM_COMPATIBILITY.md`
+- `ECOSYSTEM_COMPATIBILITY.zh-CN.md`
+- `DISCOVERY.md`
+- `DISCOVERY.zh-CN.md`
 
 Workflow examples:
 

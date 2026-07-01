@@ -16,6 +16,9 @@ import {
   renderDiffHtml,
   renderDiffJson,
   renderDiffMarkdown,
+  renderDiscoveryHtml,
+  renderDiscoveryJson,
+  renderDiscoveryMarkdown,
   renderFoundationStatusReport,
   renderHtmlFromJsonReport,
   renderHtmlViewer,
@@ -31,11 +34,11 @@ import {
 } from "../src/index.js";
 
 describe("renderFoundationStatusReport", () => {
-  it("renders honest Phase 6 status", () => {
+  it("renders honest Phase 7 status", () => {
     const report = renderFoundationStatusReport();
 
     expect(report).toContain("MCP Scope Foundation Status");
-    expect(report).toContain("scanner: static-config-tool-metadata-approval-memory");
+    expect(report).toContain("scanner: static-config-tool-metadata-ecosystem-discovery");
     expect(report).toContain("externalApiCalls: false");
     expect(report).toContain("does not execute MCP servers");
   });
@@ -286,6 +289,93 @@ describe("scan result renderers", () => {
     expect(html).toContain("[query-redacted]");
     expect(html).not.toContain("secret-header-value");
     expect(html).not.toContain("secret-query-token");
+  });
+});
+
+describe("discovery report renderers", () => {
+  const discoveryResult = {
+    schemaVersion: 1 as const,
+    generatedAt: "2026-07-01T00:00:00.000Z",
+    rootPathDisplay: "examples/clients",
+    maxDepth: 4,
+    includeHome: false,
+    maxFileSizeBytes: 1048576,
+    externalApiCalls: false as const,
+    serverExecution: false as const,
+    toolsListRequestSent: false as const,
+    summary: {
+      candidateCount: 2,
+      parsedCount: 1,
+      skippedCount: 0,
+      invalidJsonCount: 1,
+      unsupportedCount: 0
+    },
+    candidates: [
+      {
+        path: "examples/clients/cursor-like.mcp.json",
+        pathDisplay: "examples/clients/cursor-like.mcp.json",
+        fileName: "cursor-like.mcp.json",
+        sizeBytes: 240,
+        detectedShape: "mcp.servers" as const,
+        clientProfile: "cursor-like" as const,
+        serverCount: 1,
+        hasToolsPath: false as const,
+        parseStatus: "parsed" as const,
+        riskPreview: "medium" as const,
+        notes: ["info:transport_alias_normalized"]
+      },
+      {
+        path: "examples/clients/broken.mcp.json",
+        pathDisplay: "examples/clients/broken.mcp.json",
+        fileName: "broken.mcp.json",
+        sizeBytes: 12,
+        detectedShape: "unsupported" as const,
+        clientProfile: "unknown" as const,
+        serverCount: 0,
+        hasToolsPath: false as const,
+        parseStatus: "invalid-json" as const,
+        riskPreview: "info" as const,
+        notes: ["Candidate matched filename patterns but is not valid JSON."]
+      }
+    ],
+    notes: [
+      "Static discovery only. MCP Scope did not execute MCP servers or call external APIs."
+    ]
+  };
+
+  it("renders stable discovery JSON without file contents or secrets", () => {
+    const json = renderDiscoveryJson(discoveryResult);
+
+    expect(json).toContain('"schemaVersion": 1');
+    expect(json).toContain('"candidateCount": 2');
+    expect(json).toContain('"parseStatus": "parsed"');
+    expect(json).not.toContain("REDACTED_EXAMPLE_TOKEN");
+  });
+
+  it("renders discovery Markdown with next steps", () => {
+    const markdown = renderDiscoveryMarkdown(discoveryResult);
+
+    expect(markdown).toContain("# MCP Scope Discovery Report");
+    expect(markdown).toContain("Static discovery only");
+    expect(markdown).toContain("mcp-scope scan --config <path>");
+    expect(markdown).toContain("cursor-like");
+  });
+
+  it("renders Chinese discovery Markdown naturally", () => {
+    const markdown = renderDiscoveryMarkdown(discoveryResult, { lang: "zh-CN" });
+
+    expect(markdown).toContain("## 摘要");
+    expect(markdown).toContain("## 下一步");
+    expect(markdown).toContain("不代表官方集成");
+  });
+
+  it("renders self-contained discovery HTML", () => {
+    const html = renderDiscoveryHtml(discoveryResult, { lang: "zh-CN" });
+
+    expect(html).toContain("<title>MCP Scope Discovery Report</title>");
+    expect(html).toContain("仅做静态发现");
+    expect(html).toContain("cursor-like.mcp.json");
+    expect(html).not.toContain("<script");
   });
 });
 

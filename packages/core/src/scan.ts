@@ -1,11 +1,41 @@
+import { basename } from "node:path";
 import { readFile } from "node:fs/promises";
 
 import type { McpCapabilityCategory, RiskLevel } from "./index.js";
 import type { ToolMetadataScanResult } from "./tool-metadata.js";
 
-export type ConfigSourceKind = "mcpServers-json";
+export type ConfigSourceKind = "mcpServers-json" | "mcp-compatible-json";
 
 export type McpTransportType = "stdio" | "http" | "sse" | "ws" | "unknown";
+
+export type McpClientProfile =
+  | "generic"
+  | "claude-code-project"
+  | "claude-code-user"
+  | "claude-desktop"
+  | "cursor-like"
+  | "cline-like"
+  | "continue-like"
+  | "gemini-cli-like"
+  | "plugin-like"
+  | "unknown";
+
+export type McpConfigShape =
+  | "top-level-mcpServers"
+  | "projects-mcpServers"
+  | "mcp.servers"
+  | "top-level-servers"
+  | "multiple"
+  | "unsupported";
+
+export type McpConfigSourceContext = {
+  readonly sourceShape: McpConfigShape;
+  readonly clientProfile: McpClientProfile;
+  readonly sourceContextLabel: string;
+  readonly projectPathDisplay?: string;
+  readonly configPath?: string;
+  readonly serverKeyPath: string;
+};
 
 export type TransparencyNote = {
   readonly level: Exclude<RiskLevel, "unknown">;
@@ -13,12 +43,23 @@ export type TransparencyNote = {
   readonly message: string;
 };
 
+export type McpConfigServerDefinition = {
+  readonly name: string;
+  readonly entry: unknown;
+  readonly sourceContext: McpConfigSourceContext;
+};
+
 export type McpConfigFile = {
   readonly sourcePath?: string;
   readonly sourceKind: ConfigSourceKind;
+  readonly sourceShape: McpConfigShape;
+  readonly clientProfile: McpClientProfile;
   readonly topLevelKeys: readonly string[];
   readonly unknownTopLevelKeys: readonly string[];
   readonly mcpServers: Record<string, unknown>;
+  readonly serverEntries: readonly McpConfigServerDefinition[];
+  readonly sourceContexts: readonly McpConfigSourceContext[];
+  readonly transparencyNotes: readonly TransparencyNote[];
 };
 
 export type McpServerEntry = {
@@ -53,6 +94,24 @@ export type McpServerFingerprint = {
   readonly capabilityHints: readonly McpCapabilityCategory[];
   readonly transparencyNotes: readonly TransparencyNote[];
   readonly riskLevel: Exclude<RiskLevel, "unknown">;
+  readonly sourceShape: McpConfigShape;
+  readonly clientProfile: McpClientProfile;
+  readonly sourceContextLabel: string;
+  readonly projectPathDisplay?: string;
+  readonly configPath?: string;
+  readonly serverKeyPath: string;
+  readonly unknownFieldCount: number;
+  readonly unknownFields: readonly string[];
+  readonly timeoutPresent: boolean;
+  readonly alwaysLoad?: boolean;
+  readonly disabled?: boolean;
+  readonly oauthPresent: boolean;
+  readonly oauthKeys: readonly string[];
+  readonly headersHelperPresent: boolean;
+  readonly rootsCount: number;
+  readonly allowedToolsCount: number;
+  readonly deniedToolsCount: number;
+  readonly permissionHints: readonly string[];
 };
 
 export type McpScopeScanResult = {
@@ -61,6 +120,8 @@ export type McpScopeScanResult = {
   readonly name: "MCP Scope";
   readonly sourceFile?: string;
   readonly sourceKind: ConfigSourceKind;
+  readonly sourceShape: McpConfigShape;
+  readonly clientProfile: McpClientProfile;
   readonly generatedAt: string;
   readonly serverCount: number;
   readonly highestRiskLevel: Exclude<RiskLevel, "unknown">;
@@ -68,6 +129,7 @@ export type McpScopeScanResult = {
   readonly externalApiCalls: false;
   readonly serverExecution: false;
   readonly transparencyNotes: readonly TransparencyNote[];
+  readonly sourceContexts: readonly McpConfigSourceContext[];
   readonly servers: readonly McpServerFingerprint[];
   readonly toolMetadata?: ToolMetadataScanResult;
 };
@@ -87,8 +149,33 @@ export class McpScopeConfigError extends Error {
   }
 }
 
+const SERVER_ENTRY_KEYS = new Set([
+  "type",
+  "command",
+  "args",
+  "env",
+  "url",
+  "headers",
+  "timeout",
+  "alwaysLoad",
+  "disabled",
+  "oauth",
+  "headersHelper",
+  "roots",
+  "allowedTools",
+  "deniedTools"
+]);
+const KNOWN_TOP_LEVEL_KEYS = new Set([
+  "mcpServers",
+  "projects",
+  "mcp",
+  "servers",
+  "client",
+  "name",
+  "version",
+  "description"
+]);
 const SUPPORTED_TRANSPORTS = new Set(["stdio", "http", "sse", "ws"]);
-const SERVER_ENTRY_KEYS = new Set(["type", "command", "args", "env", "url", "headers"]);
 const RISK_ORDER: Record<Exclude<RiskLevel, "unknown">, number> = {
   info: 0,
   low: 1,
@@ -123,21 +210,51 @@ export function parseMcpConfig(input: unknown, sourcePath?: string): McpConfigFi
     throw new McpScopeConfigError("MCP config must be a JSON object.", "INVALID_CONFIG");
   }
 
-  const mcpServers = input["mcpServers"];
+  const topLevelKeys = Object.keys(input);
+  const unknownTopLevelKeys = topLevelKeys.filter((key) => !KNOWN_TOP_LEVEL_KEYS.has(key));
+  const notes: TransparencyNote[] = [];
+  const provisionalProfile = detectClientProfile(input, sourcePath, "unsupported");
+  const serverEntries: McpConfigServerDefinition[] = [];
 
-  if (!isPlainObject(mcpServers)) {
-    throw new McpScopeConfigError('MCP config must contain an "mcpServers" object.', "INVALID_CONFIG");
+  collectTopLevelMcpServers(input, sourcePath, provisionalProfile, serverEntries, notes);
+  collectProjectMcpServers(input, sourcePath, provisionalProfile, serverEntries, notes);
+  collectMcpServersWrapper(input, sourcePath, provisionalProfile, serverEntries, notes);
+  collectTopLevelServers(input, sourcePath, provisionalProfile, serverEntries, notes);
+
+  const recognizedEmptyShape = detectRecognizedShape(input);
+
+  if (serverEntries.length === 0 && notes.length === 0 && recognizedEmptyShape === "unsupported") {
+    throw new McpScopeConfigError(
+      'MCP config must contain a supported server object: "mcpServers", "projects[*].mcpServers", "mcp.servers", or "servers".',
+      "INVALID_CONFIG"
+    );
   }
 
-  const topLevelKeys = Object.keys(input);
-  const unknownTopLevelKeys = topLevelKeys.filter((key) => key !== "mcpServers");
+  const sourceShape = serverEntries.length === 0
+    ? recognizedEmptyShape
+    : detectSourceShape(serverEntries.map((entry) => entry.sourceContext.sourceShape));
+  const clientProfile = detectClientProfile(input, sourcePath, sourceShape);
+  const normalizedEntries = serverEntries.map((entry) => ({
+    ...entry,
+    sourceContext: {
+      ...entry.sourceContext,
+      clientProfile
+    }
+  }));
+  const sourceContexts = uniqueContexts(normalizedEntries.map((entry) => entry.sourceContext));
+  const sourceKind = sourceShape === "top-level-mcpServers" ? "mcpServers-json" : "mcp-compatible-json";
 
   return {
     sourcePath,
-    sourceKind: "mcpServers-json",
+    sourceKind,
+    sourceShape,
+    clientProfile,
     topLevelKeys,
     unknownTopLevelKeys,
-    mcpServers
+    mcpServers: aggregateMcpServers(normalizedEntries),
+    serverEntries: normalizedEntries,
+    sourceContexts,
+    transparencyNotes: notes
   };
 }
 
@@ -145,7 +262,7 @@ export function createMcpConfigFingerprint(
   parsedConfig: McpConfigFile,
   options: McpScopeScanOptions = {}
 ): McpScopeScanResult {
-  const globalNotes: TransparencyNote[] = [];
+  const globalNotes: TransparencyNote[] = [...parsedConfig.transparencyNotes];
 
   if (parsedConfig.unknownTopLevelKeys.length > 0) {
     globalNotes.push({
@@ -155,9 +272,15 @@ export function createMcpConfigFingerprint(
     });
   }
 
-  const servers = Object.entries(parsedConfig.mcpServers).map(([name, entry]) =>
-    fingerprintServer(name, entry)
-  );
+  if (parsedConfig.sourceShape === "projects-mcpServers" || parsedConfig.serverEntries.some((entry) => entry.sourceContext.sourceShape === "projects-mcpServers")) {
+    globalNotes.push({
+      level: "info",
+      code: "nested_project_mcp_servers",
+      message: "Nested project mcpServers entries were found and flattened for review."
+    });
+  }
+
+  const servers = parsedConfig.serverEntries.map((definition) => fingerprintServer(definition));
   const highestRiskLevel = highestRisk([
     ...globalNotes.map((note) => note.level),
     ...servers.map((server) => server.riskLevel)
@@ -169,6 +292,8 @@ export function createMcpConfigFingerprint(
     name: "MCP Scope",
     sourceFile: parsedConfig.sourcePath,
     sourceKind: parsedConfig.sourceKind,
+    sourceShape: parsedConfig.sourceShape,
+    clientProfile: parsedConfig.clientProfile,
     generatedAt: options.generatedAt ?? new Date().toISOString(),
     serverCount: servers.length,
     highestRiskLevel,
@@ -176,12 +301,210 @@ export function createMcpConfigFingerprint(
     externalApiCalls: false,
     serverExecution: false,
     transparencyNotes: globalNotes,
+    sourceContexts: parsedConfig.sourceContexts,
     servers,
     toolMetadata: options.toolMetadata
   };
 }
 
-function fingerprintServer(name: string, entry: unknown): McpServerFingerprint {
+export function safePathDisplay(path: string): string {
+  const normalized = path.replaceAll("\\", "/");
+  const parts = normalized.split("/").filter(Boolean);
+  const leaf = parts.at(-1) ?? normalized;
+
+  if (/^~\//.test(normalized)) {
+    return `~/.../${leaf}`;
+  }
+
+  if (/^\/Users\/[^/]+\//.test(normalized) || /^\/home\/[^/]+\//.test(normalized)) {
+    return `~/.../${leaf}`;
+  }
+
+  if (/^[A-Za-z]:\/Users\/[^/]+\//.test(normalized)) {
+    return `~/.../${leaf}`;
+  }
+
+  return summarizeText(path, 120);
+}
+
+function collectTopLevelMcpServers(
+  input: Record<string, unknown>,
+  sourcePath: string | undefined,
+  clientProfile: McpClientProfile,
+  serverEntries: McpConfigServerDefinition[],
+  notes: TransparencyNote[]
+): void {
+  if (!("mcpServers" in input)) {
+    return;
+  }
+
+  const mcpServers = input["mcpServers"];
+
+  if (!isPlainObject(mcpServers)) {
+    notes.push({
+      level: "medium",
+      code: "invalid_mcp_servers_shape",
+      message: 'Top-level "mcpServers" exists but is not a JSON object.'
+    });
+    return;
+  }
+
+  addServerEntries(serverEntries, mcpServers, {
+    sourceShape: "top-level-mcpServers",
+    clientProfile,
+    sourceContextLabel: "top-level mcpServers",
+    configPath: sourcePath,
+    serverKeyPath: "/mcpServers"
+  });
+}
+
+function collectProjectMcpServers(
+  input: Record<string, unknown>,
+  sourcePath: string | undefined,
+  clientProfile: McpClientProfile,
+  serverEntries: McpConfigServerDefinition[],
+  notes: TransparencyNote[]
+): void {
+  if (!("projects" in input)) {
+    return;
+  }
+
+  const projects = input["projects"];
+
+  if (!isPlainObject(projects)) {
+    notes.push({
+      level: "medium",
+      code: "invalid_projects_shape",
+      message: 'Top-level "projects" exists but is not a JSON object.'
+    });
+    return;
+  }
+
+  for (const [projectPath, projectValue] of Object.entries(projects)) {
+    if (!isPlainObject(projectValue)) {
+      notes.push({
+        level: "medium",
+        code: "invalid_project_scope_shape",
+        message: `Project scope "${safePathDisplay(projectPath)}" is not a JSON object.`
+      });
+      continue;
+    }
+
+    if (!("mcpServers" in projectValue)) {
+      continue;
+    }
+
+    const mcpServers = projectValue["mcpServers"];
+
+    if (!isPlainObject(mcpServers)) {
+      notes.push({
+        level: "medium",
+        code: "invalid_project_mcp_servers_shape",
+        message: `Project scope "${safePathDisplay(projectPath)}" has an mcpServers value that is not a JSON object.`
+      });
+      continue;
+    }
+
+    const projectPathDisplay = safePathDisplay(projectPath);
+    addServerEntries(serverEntries, mcpServers, {
+      sourceShape: "projects-mcpServers",
+      clientProfile,
+      sourceContextLabel: `project ${projectPathDisplay}`,
+      projectPathDisplay,
+      configPath: sourcePath,
+      serverKeyPath: `/projects/${jsonPointerToken(projectPath)}/mcpServers`
+    });
+  }
+}
+
+function collectMcpServersWrapper(
+  input: Record<string, unknown>,
+  sourcePath: string | undefined,
+  clientProfile: McpClientProfile,
+  serverEntries: McpConfigServerDefinition[],
+  notes: TransparencyNote[]
+): void {
+  if (!("mcp" in input)) {
+    return;
+  }
+
+  const mcp = input["mcp"];
+
+  if (!isPlainObject(mcp) || !("servers" in mcp)) {
+    return;
+  }
+
+  const servers = mcp["servers"];
+
+  if (!isPlainObject(servers)) {
+    notes.push({
+      level: "medium",
+      code: "invalid_mcp_servers_wrapper_shape",
+      message: 'Nested "mcp.servers" exists but is not a JSON object.'
+    });
+    return;
+  }
+
+  addServerEntries(serverEntries, servers, {
+    sourceShape: "mcp.servers",
+    clientProfile,
+    sourceContextLabel: "mcp.servers",
+    configPath: sourcePath,
+    serverKeyPath: "/mcp/servers"
+  });
+}
+
+function collectTopLevelServers(
+  input: Record<string, unknown>,
+  sourcePath: string | undefined,
+  clientProfile: McpClientProfile,
+  serverEntries: McpConfigServerDefinition[],
+  notes: TransparencyNote[]
+): void {
+  if (!("servers" in input)) {
+    return;
+  }
+
+  const servers = input["servers"];
+
+  if (!isPlainObject(servers)) {
+    notes.push({
+      level: "medium",
+      code: "invalid_top_level_servers_shape",
+      message: 'Top-level "servers" exists but is not a JSON object.'
+    });
+    return;
+  }
+
+  addServerEntries(serverEntries, servers, {
+    sourceShape: "top-level-servers",
+    clientProfile,
+    sourceContextLabel: "top-level servers",
+    configPath: sourcePath,
+    serverKeyPath: "/servers"
+  });
+}
+
+function addServerEntries(
+  serverEntries: McpConfigServerDefinition[],
+  servers: Record<string, unknown>,
+  context: McpConfigSourceContext
+): void {
+  for (const [name, entry] of Object.entries(servers)) {
+    serverEntries.push({
+      name,
+      entry,
+      sourceContext: {
+        ...context,
+        serverKeyPath: `${context.serverKeyPath}/${jsonPointerToken(name)}`
+      }
+    });
+  }
+}
+
+function fingerprintServer(definition: McpConfigServerDefinition): McpServerFingerprint {
+  const { name, entry, sourceContext } = definition;
+
   if (!isPlainObject(entry)) {
     const notes: TransparencyNote[] = [
       {
@@ -205,7 +528,18 @@ function fingerprintServer(name: string, entry: unknown): McpServerFingerprint {
       hasUrl: false,
       capabilityHints: ["unknown"],
       transparencyNotes: notes,
-      riskLevel: "medium"
+      riskLevel: "medium",
+      ...sourceContext,
+      unknownFieldCount: 0,
+      unknownFields: [],
+      timeoutPresent: false,
+      oauthPresent: false,
+      oauthKeys: [],
+      headersHelperPresent: false,
+      rootsCount: 0,
+      allowedToolsCount: 0,
+      deniedToolsCount: 0,
+      permissionHints: []
     };
   }
 
@@ -217,12 +551,25 @@ function fingerprintServer(name: string, entry: unknown): McpServerFingerprint {
   const headerKeys = objectKeys(entry["headers"]);
   const url = stringValue(entry["url"]);
   const transportInfo = normalizeTransport(entry["type"], command);
+  const timeoutPresent = entry["timeout"] !== undefined;
+  const alwaysLoad = booleanValue(entry["alwaysLoad"]);
+  const disabled = booleanValue(entry["disabled"]);
+  const oauthKeys = objectKeys(entry["oauth"]);
+  const oauthPresent = entry["oauth"] !== undefined;
+  const headersHelperPresent = entry["headersHelper"] !== undefined;
+  const rootsCount = countCollection(entry["roots"]);
+  const allowedTools = stringArrayValue(entry["allowedTools"]);
+  const deniedTools = stringArrayValue(entry["deniedTools"]);
+  const permissionHints = [
+    allowedTools.length === 0 ? undefined : `allowedTools:${allowedTools.length}`,
+    deniedTools.length === 0 ? undefined : `deniedTools:${deniedTools.length}`
+  ].filter((value): value is string => value !== undefined);
 
   if (unknownFields.length > 0) {
     notes.push({
       level: "info",
       code: "unknown_server_fields",
-      message: `Unknown server fields were ignored: ${unknownFields.join(", ")}.`
+      message: `Unknown server fields were ignored by value and listed by key only: ${unknownFields.join(", ")}.`
     });
   }
 
@@ -231,6 +578,14 @@ function fingerprintServer(name: string, entry: unknown): McpServerFingerprint {
       level: "info",
       code: "inferred_stdio_transport",
       message: "Transport type was omitted and command is present, so MCP Scope inferred stdio."
+    });
+  }
+
+  if (transportInfo.aliasRawType !== undefined) {
+    notes.push({
+      level: "info",
+      code: "transport_alias_normalized",
+      message: `Transport type "${transportInfo.aliasRawType}" was displayed as http for static review.`
     });
   }
 
@@ -312,6 +667,70 @@ function fingerprintServer(name: string, entry: unknown): McpServerFingerprint {
     });
   }
 
+  if (timeoutPresent) {
+    notes.push({
+      level: "info",
+      code: "timeout_configured",
+      message: "Timeout metadata is configured. MCP Scope records presence only."
+    });
+  }
+
+  if (alwaysLoad === true) {
+    notes.push({
+      level: "low",
+      code: "always_load_enabled",
+      message: "alwaysLoad is enabled. Review whether this server should load automatically."
+    });
+  }
+
+  if (disabled === true) {
+    notes.push({
+      level: "info",
+      code: "server_disabled",
+      message: "disabled is true. MCP Scope reports the entry but does not assume it is active."
+    });
+  }
+
+  if (oauthPresent) {
+    notes.push({
+      level: "info",
+      code: "oauth_metadata_present",
+      message: "OAuth metadata is present. Secret-like values are not rendered."
+    });
+  }
+
+  if (headersHelperPresent) {
+    notes.push({
+      level: "medium",
+      code: "headers_helper_present",
+      message: "headersHelper is configured. MCP Scope did not execute it; review it as command-like behavior."
+    });
+  }
+
+  if (rootsCount > 0) {
+    notes.push({
+      level: "low",
+      code: "roots_metadata_present",
+      message: `roots metadata is present with ${rootsCount} item(s). Values are not expanded or executed.`
+    });
+  }
+
+  if (allowedTools.length > 0) {
+    notes.push({
+      level: "info",
+      code: "allowed_tools_present",
+      message: `allowedTools lists ${allowedTools.length} permission hint(s).`
+    });
+  }
+
+  if (deniedTools.length > 0) {
+    notes.push({
+      level: "info",
+      code: "denied_tools_present",
+      message: `deniedTools lists ${deniedTools.length} permission hint(s).`
+    });
+  }
+
   const riskLevel = highestRisk(notes.map((note) => note.level));
 
   return {
@@ -329,15 +748,35 @@ function fingerprintServer(name: string, entry: unknown): McpServerFingerprint {
     hasUrl: url !== undefined,
     urlHost: urlDetails?.host,
     rawUrlRedacted: url === undefined ? undefined : redactUrl(url),
-    capabilityHints: inferCapabilityHints(name, command, args, url, envKeys, headerKeys),
+    capabilityHints: inferCapabilityHints(name, command, args, url, envKeys, headerKeys, {
+      oauthKeys,
+      headersHelperPresent,
+      rootsCount,
+      allowedTools,
+      deniedTools
+    }),
     transparencyNotes: notes,
-    riskLevel
+    riskLevel,
+    ...sourceContext,
+    unknownFieldCount: unknownFields.length,
+    unknownFields,
+    timeoutPresent,
+    alwaysLoad,
+    disabled,
+    oauthPresent,
+    oauthKeys,
+    headersHelperPresent,
+    rootsCount,
+    allowedToolsCount: allowedTools.length,
+    deniedToolsCount: deniedTools.length,
+    permissionHints
   };
 }
 
 function normalizeTransport(type: unknown, command?: string): {
   readonly transport: McpTransportType;
   readonly rawTransport?: string;
+  readonly aliasRawType?: string;
   readonly unsupportedRawType?: string;
   readonly inferred: boolean;
 } {
@@ -351,6 +790,15 @@ function normalizeTransport(type: unknown, command?: string): {
   }
 
   const normalized = rawTransport.toLowerCase();
+
+  if (normalized === "streamable-http") {
+    return {
+      transport: "http",
+      rawTransport,
+      aliasRawType: rawTransport,
+      inferred: false
+    };
+  }
 
   if (SUPPORTED_TRANSPORTS.has(normalized)) {
     return {
@@ -374,19 +822,38 @@ function inferCapabilityHints(
   args: readonly string[],
   url: string | undefined,
   envKeys: readonly string[],
-  headerKeys: readonly string[]
+  headerKeys: readonly string[],
+  metadata: {
+    readonly oauthKeys: readonly string[];
+    readonly headersHelperPresent: boolean;
+    readonly rootsCount: number;
+    readonly allowedTools: readonly string[];
+    readonly deniedTools: readonly string[];
+  }
 ): McpCapabilityCategory[] {
-  const haystack = [name, command, url, ...args, ...envKeys, ...headerKeys]
+  const haystack = [
+    name,
+    command,
+    url,
+    ...args,
+    ...envKeys,
+    ...headerKeys,
+    ...metadata.oauthKeys,
+    ...metadata.allowedTools,
+    ...metadata.deniedTools,
+    metadata.headersHelperPresent ? "headersHelper auth credentials" : undefined,
+    metadata.rootsCount > 0 ? "roots filesystem" : undefined
+  ]
     .filter((value): value is string => value !== undefined)
     .join(" ")
     .toLowerCase();
   const hints = new Set<McpCapabilityCategory>();
 
-  if (/(file|filesystem|fs|path|directory|folder|read|write|\.env|\.ssh|\/etc|appdata)/.test(haystack)) {
+  if (/(file|filesystem|fs|path|directory|folder|read|write|\.env|\.ssh|\/etc|appdata|roots)/.test(haystack)) {
     hints.add("filesystem");
   }
 
-  if (/(shell|bash|zsh|powershell|cmd|terminal|exec|spawn|process|npx|node|python|curl|wget)/.test(haystack)) {
+  if (/(shell|bash|zsh|powershell|cmd|terminal|exec|spawn|process|npx|node|python|curl|wget|headershelper)/.test(haystack)) {
     hints.add("shell");
   }
 
@@ -402,11 +869,11 @@ function inferCapabilityHints(
     hints.add("github");
   }
 
-  if (url !== undefined || /(http|sse|ws|network|api|endpoint|url|host)/.test(haystack)) {
+  if (url !== undefined || /(http|sse|ws|network|api|endpoint|url|host|webhook)/.test(haystack)) {
     hints.add("network");
   }
 
-  if (/(token|key|secret|password|authorization|credential|auth)/.test(haystack)) {
+  if (/(token|key|secret|password|authorization|credential|auth|oauth)/.test(haystack)) {
     hints.add("credentials");
   }
 
@@ -415,6 +882,128 @@ function inferCapabilityHints(
   }
 
   return [...hints].sort();
+}
+
+function detectClientProfile(
+  input: Record<string, unknown>,
+  sourcePath: string | undefined,
+  sourceShape: McpConfigShape
+): McpClientProfile {
+  const fileName = sourcePath === undefined ? "" : basename(sourcePath).toLowerCase();
+  const client = stringValue(input["client"])?.toLowerCase();
+  const name = stringValue(input["name"])?.toLowerCase();
+  const probe = [fileName, client, name].filter(Boolean).join(" ");
+
+  if (/claude.*desktop|claude_desktop/.test(probe)) {
+    return "claude-desktop";
+  }
+
+  if (/\.claude\.json$|claude-code-user|claude-user/.test(probe) || sourceShape === "projects-mcpServers") {
+    return "claude-code-user";
+  }
+
+  if (/cursor/.test(probe)) {
+    return "cursor-like";
+  }
+
+  if (/cline/.test(probe)) {
+    return "cline-like";
+  }
+
+  if (/continue/.test(probe)) {
+    return "continue-like";
+  }
+
+  if (/gemini/.test(probe)) {
+    return "gemini-cli-like";
+  }
+
+  if (/plugin/.test(probe)) {
+    return "plugin-like";
+  }
+
+  if (/\.mcp\.json$|mcp\.json$/.test(fileName)) {
+    return "claude-code-project";
+  }
+
+  if (sourceShape === "mcp.servers" || sourceShape === "top-level-servers") {
+    return "generic";
+  }
+
+  if (sourceShape === "top-level-mcpServers") {
+    return "generic";
+  }
+
+  return "unknown";
+}
+
+function detectSourceShape(shapes: readonly McpConfigShape[]): McpConfigShape {
+  const unique = [...new Set(shapes)];
+
+  if (unique.length === 0) {
+    return "unsupported";
+  }
+
+  if (unique.length === 1) {
+    return unique[0] ?? "unsupported";
+  }
+
+  return "multiple";
+}
+
+function detectRecognizedShape(input: Record<string, unknown>): McpConfigShape {
+  if (isPlainObject(input["mcpServers"])) {
+    return "top-level-mcpServers";
+  }
+
+  if (isPlainObject(input["projects"])) {
+    for (const value of Object.values(input["projects"])) {
+      if (isPlainObject(value) && isPlainObject(value["mcpServers"])) {
+        return "projects-mcpServers";
+      }
+    }
+  }
+
+  if (isPlainObject(input["mcp"]) && isPlainObject(input["mcp"]["servers"])) {
+    return "mcp.servers";
+  }
+
+  if (isPlainObject(input["servers"])) {
+    return "top-level-servers";
+  }
+
+  return "unsupported";
+}
+
+function aggregateMcpServers(entries: readonly McpConfigServerDefinition[]): Record<string, unknown> {
+  const aggregate: Record<string, unknown> = {};
+
+  for (const entry of entries) {
+    const key = aggregate[entry.name] === undefined
+      ? entry.name
+      : `${entry.sourceContext.serverKeyPath}:${entry.name}`;
+    aggregate[key] = entry.entry;
+  }
+
+  return aggregate;
+}
+
+function uniqueContexts(contexts: readonly McpConfigSourceContext[]): readonly McpConfigSourceContext[] {
+  const seen = new Set<string>();
+  const unique: McpConfigSourceContext[] = [];
+
+  for (const context of contexts) {
+    const key = `${context.sourceShape}:${context.sourceContextLabel}:${context.serverKeyPath}`;
+
+    if (seen.has(key)) {
+      continue;
+    }
+
+    seen.add(key);
+    unique.push(context);
+  }
+
+  return unique;
 }
 
 function classifyArgRisk(arg: string): TransparencyNote | undefined {
@@ -484,11 +1073,15 @@ function commandRiskLevel(command: string): "medium" | "high" {
 }
 
 function looksSensitiveKey(key: string): boolean {
-  return /(token|key|secret|password|authorization)/i.test(key);
+  return /(token|key|secret|password|authorization|clientsecret|api[_-]?key)/i.test(key);
 }
 
 function stringValue(value: unknown): string | undefined {
   return typeof value === "string" && value.trim() !== "" ? value : undefined;
+}
+
+function booleanValue(value: unknown): boolean | undefined {
+  return typeof value === "boolean" ? value : undefined;
 }
 
 function stringArrayValue(value: unknown): string[] {
@@ -503,6 +1096,18 @@ function objectKeys(value: unknown): string[] {
   return isPlainObject(value) ? Object.keys(value) : [];
 }
 
+function countCollection(value: unknown): number {
+  if (Array.isArray(value)) {
+    return value.length;
+  }
+
+  if (isPlainObject(value)) {
+    return Object.keys(value).length;
+  }
+
+  return value === undefined ? 0 : 1;
+}
+
 function summarizeText(value: string, maxLength = 120): string {
   return value.length <= maxLength ? value : `${value.slice(0, maxLength - 3)}...`;
 }
@@ -513,6 +1118,10 @@ function highestRisk(levels: readonly Exclude<RiskLevel, "unknown">[]): Exclude<
   }
 
   return levels.reduce((highest, level) => (RISK_ORDER[level] > RISK_ORDER[highest] ? level : highest), "info");
+}
+
+function jsonPointerToken(value: string): string {
+  return value.replaceAll("~", "~0").replaceAll("/", "~1");
 }
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {

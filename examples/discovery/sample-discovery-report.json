@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-01T14:27:06.853Z",
+  "rootPathDisplay": "~/.../clients",
+  "maxDepth": 4,
+  "includeHome": false,
+  "maxFileSizeBytes": 1048576,
+  "externalApiCalls": false,
+  "serverExecution": false,
+  "toolsListRequestSent": false,
+  "summary": {
+    "candidateCount": 10,
+    "parsedCount": 10,
+    "skippedCount": 0,
+    "invalidJsonCount": 0,
+    "unsupportedCount": 0
+  },
+  "candidates": [
+    {
+      "path": "examples/clients/claude-code-project.mcp.json",
+      "pathDisplay": "examples/clients/claude-code-project.mcp.json",
+      "fileName": "claude-code-project.mcp.json",
+      "sizeBytes": 328,
+      "detectedShape": "top-level-mcpServers",
+      "clientProfile": "claude-code-project",
+      "serverCount": 1,
+      "hasToolsPath": false,
+      "parseStatus": "parsed",
+      "riskPreview": "low",
+      "notes": []
+    },
+    {
+      "path": "examples/clients/claude-code-user.claude.json",
+      "pathDisplay": "examples/clients/claude-code-user.claude.json",
+      "fileName": "claude-code-user.claude.json",
+      "sizeBytes": 692,
+      "detectedShape": "projects-mcpServers",
+      "clientProfile": "claude-code-user",
+      "serverCount": 2,
+      "hasToolsPath": false,
+      "parseStatus": "parsed",
+      "riskPreview": "medium",
+      "notes": [
+        "info:nested_project_mcp_servers"
+      ]
+    },
+    {
+      "path": "examples/clients/claude-desktop-config.json",
+      "pathDisplay": "examples/clients/claude-desktop-config.json",
+      "fileName": "claude-desktop-config.json",
+      "sizeBytes": 208,
+      "detectedShape": "top-level-mcpServers",
+      "clientProfile": "claude-desktop",
+      "serverCount": 1,
+      "hasToolsPath": false,
+      "parseStatus": "parsed",
+      "riskPreview": "medium",
+      "notes": []
+    },
+    {
+      "path": "examples/clients/cline-like.mcp-settings.json",
+      "pathDisplay": "examples/clients/cline-like.mcp-settings.json",
+      "fileName": "cline-like.mcp-settings.json",
+      "sizeBytes": 272,
+      "detectedShape": "top-level-mcpServers",
+      "clientProfile": "cline-like",
+      "serverCount": 1,
+      "hasToolsPath": false,
+      "parseStatus": "parsed",
+      "riskPreview": "medium",
+      "notes": []
+    },
+    {
+      "path": "examples/clients/continue-like.mcp.json",
+      "pathDisplay": "examples/clients/continue-like.mcp.json",
+      "fileName": "continue-like.mcp.json",
+      "sizeBytes": 226,
+      "detectedShape": "top-level-servers",
+      "clientProfile": "continue-like",
+      "serverCount": 1,
+      "hasToolsPath": false,
+      "parseStatus": "parsed",
+      "riskPreview": "low",
+      "notes": []
+    },
+    {
+      "path": "examples/clients/cursor-like.mcp.json",
+      "pathDisplay": "examples/clients/cursor-like.mcp.json",
+      "fileName": "cursor-like.mcp.json",
+      "sizeBytes": 367,
+      "detectedShape": "mcp.servers",
+      "clientProfile": "cursor-like",
+      "serverCount": 1,
+      "hasToolsPath": false,
+      "parseStatus": "parsed",
+      "riskPreview": "low",
+      "notes": []
+    },
+    {
+      "path": "examples/clients/gemini-cli-like.settings.json",
+      "pathDisplay": "examples/clients/gemini-cli-like.settings.json",
+      "fileName": "gemini-cli-like.settings.json",
+      "sizeBytes": 291,
+      "detectedShape": "mcp.servers",
+      "clientProfile": "gemini-cli-like",
+      "serverCount": 1,
+      "hasToolsPath": false,
+      "parseStatus": "parsed",
+      "riskPreview": "medium",
+      "notes": []
+    },
+    {
+      "path": "examples/clients/generic-mcp-servers-wrapper.json",
+      "pathDisplay": "examples/clients/generic-mcp-servers-wrapper.json",
+      "fileName": "generic-mcp-servers-wrapper.json",
+      "sizeBytes": 137,
+      "detectedShape": "mcp.servers",
+      "clientProfile": "generic",
+      "serverCount": 1,
+      "hasToolsPath": false,
+      "parseStatus": "parsed",
+      "riskPreview": "info",
+      "notes": []
+    },
+    {
+      "path": "examples/clients/generic-mcp-servers.json",
+      "pathDisplay": "examples/clients/generic-mcp-servers.json",
+      "fileName": "generic-mcp-servers.json",
+      "sizeBytes": 129,
+      "detectedShape": "top-level-servers",
+      "clientProfile": "generic",
+      "serverCount": 1,
+      "hasToolsPath": false,
+      "parseStatus": "parsed",
+      "riskPreview": "low",
+      "notes": []
+    },
+    {
+      "path": "examples/clients/plugin-like.plugin.json",
+      "pathDisplay": "examples/clients/plugin-like.plugin.json",
+      "fileName": "plugin-like.plugin.json",
+      "sizeBytes": 273,
+      "detectedShape": "top-level-mcpServers",
+      "clientProfile": "plugin-like",
+      "serverCount": 1,
+      "hasToolsPath": false,
+      "parseStatus": "parsed",
+      "riskPreview": "low",
+      "notes": []
+    }
+  ],
+  "notes": [
+    "Static discovery only. MCP Scope did not execute MCP servers or call external APIs.",
+    "Discovery reports candidate files only; scan a selected path explicitly."
+  ]
+}

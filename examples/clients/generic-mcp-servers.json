@@ -1,0 +1,10 @@
+{
+  "servers": {
+    "generic-local": {
+      "command": "node",
+      "args": [
+        "generic-server.js"
+      ]
+    }
+  }
+}

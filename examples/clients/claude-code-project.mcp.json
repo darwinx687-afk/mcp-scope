@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "project-filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "./workspace"
+      ],
+      "allowedTools": [
+        "read_file",
+        "list_directory"
+      ],
+      "deniedTools": [
+        "delete_file"
+      ]
+    }
+  }
+}

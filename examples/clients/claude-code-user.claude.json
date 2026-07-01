@@ -1,0 +1,30 @@
+{
+  "projects": {
+    "/Users/example/private-project": {
+      "mcpServers": {
+        "project-docs": {
+          "type": "http",
+          "url": "https://example.com/mcp?api_key=REDACTED_EXAMPLE_TOKEN",
+          "headers": {
+            "Authorization": "Bearer REDACTED_EXAMPLE_TOKEN"
+          },
+          "oauth": {
+            "clientId": "example-client-id",
+            "clientSecret": "example-api-key-do-not-use"
+          }
+        }
+      }
+    },
+    "examples/safe-project": {
+      "mcpServers": {
+        "safe-local-tools": {
+          "command": "node",
+          "args": [
+            "./server.js"
+          ],
+          "disabled": true
+        }
+      }
+    }
+  }
+}

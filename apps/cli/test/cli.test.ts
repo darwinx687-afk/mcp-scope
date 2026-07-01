@@ -35,6 +35,7 @@ describe("mcp-scope CLI", () => {
       expect(result.stdout).toContain("mcp-scope inspect-tools --tools <path>");
       expect(result.stdout).toContain("mcp-scope snapshot");
       expect(result.stdout).toContain("mcp-scope diff");
+      expect(result.stdout).toContain("mcp-scope discover --root <path>");
       expect(result.stdout).toContain("does not execute MCP servers");
     });
   });
@@ -54,9 +55,9 @@ describe("mcp-scope CLI", () => {
     expect(parsed).toMatchObject({
       project: "mcp-scope",
       name: "MCP Scope",
-      phase: 6,
-      status: "approval-memory-diff-ready",
-      scanner: "static-config-tool-metadata-approval-memory",
+      phase: 7,
+      status: "ecosystem-discovery-ready",
+      scanner: "static-config-tool-metadata-ecosystem-discovery",
       externalApiCalls: false,
       serverExecution: false
     });
@@ -90,6 +91,85 @@ describe("mcp-scope CLI", () => {
     expect(result.stdout).toContain('"tools"');
     expect(result.stdout).toContain("metadata_injection_phrase");
     expect(result.stdout).not.toContain("Bearer REDACTED_EXAMPLE_TOKEN");
+  });
+
+  it("scans Phase 7 client compatibility examples", async () => {
+    const exampleNames = [
+      "claude-code-project.mcp.json",
+      "claude-code-user.claude.json",
+      "claude-desktop-config.json",
+      "cursor-like.mcp.json",
+      "cline-like.mcp-settings.json",
+      "continue-like.mcp.json",
+      "gemini-cli-like.settings.json",
+      "plugin-like.plugin.json",
+      "generic-mcp-servers.json",
+      "generic-mcp-servers-wrapper.json"
+    ];
+
+    for (const exampleName of exampleNames) {
+      const configPath = fileURLToPath(new URL(`../../../examples/clients/${exampleName}`, import.meta.url));
+      const result = await runCli(["scan", "--config", configPath, "--format", "json"]);
+
+      expect(result.exitCode, exampleName).toBe(0);
+      expect(result.stdout, exampleName).toContain('"serverCount"');
+      expect(result.stdout, exampleName).toContain('"sourceShape"');
+      expect(result.stdout, exampleName).toContain('"clientProfile"');
+      expect(result.stdout, exampleName).not.toContain("REDACTED_EXAMPLE_TOKEN");
+      expect(result.stdout, exampleName).not.toContain("example-api-key-do-not-use");
+    }
+  });
+
+  it("discovers Phase 7 client examples as Markdown", async () => {
+    const rootPath = fileURLToPath(new URL("../../../examples/clients", import.meta.url));
+    const result = await runCli(["discover", "--root", rootPath]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("# MCP Scope Discovery Report");
+    expect(result.stdout).toContain("Static discovery only");
+    expect(result.stdout).toContain("claude-code-project.mcp.json");
+    expect(result.stdout).toContain("mcp-scope scan --config <path>");
+    expect(result.stdout).not.toContain("REDACTED_EXAMPLE_TOKEN");
+  });
+
+  it("discovers Phase 7 client examples as JSON", async () => {
+    const rootPath = fileURLToPath(new URL("../../../examples/clients", import.meta.url));
+    const result = await runCli(["discover", "--root", rootPath, "--format", "json"]);
+    const parsed = JSON.parse(result.stdout) as { summary: { candidateCount: number; parsedCount: number } };
+
+    expect(result.exitCode).toBe(0);
+    expect(parsed.summary.candidateCount).toBeGreaterThanOrEqual(10);
+    expect(parsed.summary.parsedCount).toBeGreaterThanOrEqual(10);
+    expect(result.stdout).not.toContain("example-api-key-do-not-use");
+  });
+
+  it("discovers Phase 7 client examples with Chinese Markdown", async () => {
+    const rootPath = fileURLToPath(new URL("../../../examples/clients", import.meta.url));
+    const result = await runCli(["discover", "--root", rootPath, "--format", "markdown", "--lang", "zh-CN"]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("## 摘要");
+    expect(result.stdout).toContain("## 下一步");
+    expect(result.stdout).toContain("不代表官方集成");
+  });
+
+  it("writes discovery HTML to an output file", async () => {
+    const rootPath = fileURLToPath(new URL("../../../examples/clients", import.meta.url));
+    const tempDir = await mkdtemp(join(tmpdir(), "mcp-scope-cli-"));
+    const outputPath = join(tempDir, "discovery.html");
+
+    try {
+      const result = await runCli(["discover", "--root", rootPath, "--format", "html", "--output", outputPath]);
+      const html = await readFile(outputPath, "utf8");
+
+      expect(result.exitCode).toBe(0);
+      expect(result.stdout).toContain("Wrote MCP Scope html discovery report");
+      expect(html).toContain("<title>MCP Scope Discovery Report</title>");
+      expect(html).toContain("claude-code-project.mcp.json");
+      expect(html).not.toContain("<script");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
   });
 
   it("passes fail-on none even with high findings", async () => {

@@ -46,6 +46,11 @@ export {
   summarizeReportForCi
 } from "./ci.js";
 export type { CiReportSummary, FailOnThreshold, ReportSeverity } from "./ci.js";
+export {
+  renderDiscoveryHtml,
+  renderDiscoveryJson,
+  renderDiscoveryMarkdown
+} from "./discovery.js";
 export { escapeHtml, renderHtmlFromJsonReport, renderHtmlViewer } from "./html.js";
 
 export type ReportLanguage = "en" | "zh-CN";
@@ -150,7 +155,7 @@ export function renderFoundationStatusReport(): string {
     `- scanner: ${FOUNDATION_STATUS.scanner}`,
     `- externalApiCalls: ${String(FOUNDATION_STATUS.externalApiCalls)}`,
     "",
-    "Phase 6 adds local approval-memory snapshots and static diffing. It does not execute MCP servers, call tools/list, or call external APIs."
+    "Phase 7 adds ecosystem config compatibility and static discovery. It does not execute MCP servers, call tools/list, or call external APIs."
   ].join("\n");
 }
 
@@ -316,7 +321,7 @@ function renderMarkdownEn(report: TransparencyReportModel): string {
     "",
     "## What MCP Scope Checked",
     "",
-    "- Local MCP config files with a top-level `mcpServers` object.",
+    "- Local MCP config files using supported static JSON shapes.",
     "- Local exported MCP tool metadata files, when provided.",
     "- Tool descriptions, input schemas, output schemas, and annotations.",
     "- Startup command and URL visibility from config entries.",
@@ -364,7 +369,7 @@ function renderMarkdownZh(report: TransparencyReportModel): string {
     "",
     "## MCP Scope 检查了什么",
     "",
-    "- 带有顶层 `mcpServers` 对象的本地 MCP config 文件。",
+    "- 使用已支持静态 JSON 形态的本地 MCP config 文件。",
     "- 用户本地提供的已导出 tool metadata 文件。",
     "- tool descriptions、input schemas、output schemas 和 annotations。",
     "- 配置中的启动命令、URL、env key、header key 可见性。",
@@ -441,6 +446,8 @@ function renderConfigSectionEn(report: TransparencyReportModel): string[] {
     "## Config Summary",
     "",
     `- Source file: ${config.sourceFile ?? "unknown"}`,
+    `- Source shape: ${config.sourceShape}`,
+    `- Client profile: ${config.clientProfile}`,
     `- Server count: ${config.serverCount}`,
     `- Highest config risk level: ${config.highestRiskLevel}`,
     "",
@@ -464,6 +471,8 @@ function renderConfigSectionZh(report: TransparencyReportModel): string[] {
     "## Config 摘要",
     "",
     `- Source file: ${config.sourceFile ?? "unknown"}`,
+    `- Source shape: ${config.sourceShape}`,
+    `- Client profile: ${config.clientProfile}`,
     `- Server count: ${config.serverCount}`,
     `- Highest config risk level: ${config.highestRiskLevel}`,
     "",
@@ -637,15 +646,19 @@ function renderServerTable(servers: readonly McpServerFingerprint[]): string {
   }
 
   return [
-    "| Name | Transport | Command/URL | Env keys | Header keys | Capability hints | Risk level |",
-    "| --- | --- | --- | ---: | ---: | --- | --- |",
+    "| Name | Profile | Shape | Context | Transport | Command/URL | Env keys | Header keys | Permission hints | Capability hints | Risk level |",
+    "| --- | --- | --- | --- | --- | --- | ---: | ---: | --- | --- | --- |",
     ...servers.map((server) =>
       [
         tableCell(server.name),
+        tableCell(server.clientProfile),
+        tableCell(server.sourceShape),
+        tableCell(server.projectPathDisplay ?? server.sourceContextLabel),
         tableCell(server.transport),
         tableCell(commandOrUrl(server)),
         String(server.envKeyCount),
         String(server.headerKeyCount),
+        tableCell(server.permissionHints.join(", ") || "none"),
         tableCell(server.capabilityHints.join(", ")),
         tableCell(server.riskLevel)
       ].join(" | ")

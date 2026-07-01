@@ -8,6 +8,7 @@ import {
   PROJECT_NAME,
   PROJECT_VERSION,
   createMcpConfigFingerprint,
+  discoverMcpConfigs,
   evaluateToolManifest,
   readMcpToolMetadataFile,
   readMcpConfigFile
@@ -25,6 +26,9 @@ import {
   renderDiffHtml,
   renderDiffJson,
   renderDiffMarkdown,
+  renderDiscoveryHtml,
+  renderDiscoveryJson,
+  renderDiscoveryMarkdown,
   renderHtmlFromJsonReport,
   renderHtmlViewer,
   renderTransparencyReportMarkdown,
@@ -55,15 +59,17 @@ Usage:
   mcp-scope view --report <path> --output <path> [--lang en|zh-CN]
   mcp-scope snapshot [--config <path>] [--tools <path>] --output <path> [--label <text>]
   mcp-scope diff --baseline <snapshot-path> [--config <path>] [--tools <path>] [--format markdown|json|html] [--lang en|zh-CN] [--output <path>] [--fail-on-change none|info|low|medium|high]
+  mcp-scope discover --root <path> [--format markdown|json|html] [--lang en|zh-CN] [--output <path>] [--max-depth <number>] [--include-home]
 
-Phase 6 note:
+Phase 7 note:
   MCP Scope statically reads local JSON config and exported tool metadata files.
-  Approval memory stores local redacted snapshots and compares future static scans.
+  Discovery lists likely local MCP config candidates and never scans them automatically.
   It does not execute MCP servers, call tools/list, start a web server, or call external APIs.
 `;
 
 type ScanFormat = "markdown" | "json" | "html";
 type DiffFormat = ScanFormat;
+type DiscoveryFormat = ScanFormat;
 
 type ScanCommandOptions = {
   readonly configPath: string;
@@ -105,6 +111,15 @@ type DiffCommandOptions = {
   readonly failOnChange: FailOnThreshold;
 };
 
+type DiscoverCommandOptions = {
+  readonly rootPath: string;
+  readonly format: DiscoveryFormat;
+  readonly lang: ReportLanguage;
+  readonly outputPath?: string;
+  readonly maxDepth: number;
+  readonly includeHome: boolean;
+};
+
 export async function handleCli(args = process.argv.slice(2), io: CliIO = process): Promise<number> {
   const [command] = args;
 
@@ -141,6 +156,10 @@ export async function handleCli(args = process.argv.slice(2), io: CliIO = proces
 
   if (command === "diff") {
     return runDiffCommand(args.slice(1), io);
+  }
+
+  if (command === "discover") {
+    return runDiscoverCommand(args.slice(1), io);
   }
 
   io.stderr.write(`Unknown MCP Scope command: ${command}\n`);
@@ -383,6 +402,48 @@ async function runDiffCommand(args: readonly string[], io: CliIO): Promise<numbe
 
     const message = error instanceof Error ? error.message : String(error);
     io.stderr.write(`MCP Scope diff failed: ${message}\n`);
+    return 1;
+  }
+}
+
+async function runDiscoverCommand(args: readonly string[], io: CliIO): Promise<number> {
+  const options = parseDiscoverArgs(args);
+
+  if (typeof options === "string") {
+    io.stderr.write(`${options}\n`);
+    return 1;
+  }
+
+  if (options.format === "html" && options.outputPath === undefined) {
+    io.stderr.write("HTML format requires --output <path>.\n");
+    return 1;
+  }
+
+  try {
+    const result = await discoverMcpConfigs({
+      root: options.rootPath,
+      maxDepth: options.maxDepth,
+      includeHome: options.includeHome
+    });
+    const rendered =
+      options.format === "json"
+        ? renderDiscoveryJson(result)
+        : options.format === "html"
+          ? renderDiscoveryHtml(result, { lang: options.lang })
+          : renderDiscoveryMarkdown(result, { lang: options.lang });
+
+    if (options.outputPath !== undefined) {
+      await mkdir(dirname(options.outputPath), { recursive: true });
+      await writeFile(options.outputPath, rendered, "utf8");
+      io.stdout.write(`Wrote MCP Scope ${options.format} discovery report to ${options.outputPath}\n`);
+      return 0;
+    }
+
+    io.stdout.write(rendered.endsWith("\n") ? rendered : `${rendered}\n`);
+    return 0;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    io.stderr.write(`MCP Scope discovery failed: ${message}\n`);
     return 1;
   }
 }
@@ -886,5 +947,103 @@ function parseDiffArgs(args: readonly string[]): DiffCommandOptions | string {
     lang,
     outputPath,
     failOnChange
+  };
+}
+
+function parseDiscoverArgs(args: readonly string[]): DiscoverCommandOptions | string {
+  let rootPath: string | undefined;
+  let format: DiscoveryFormat = "markdown";
+  let lang: ReportLanguage = "en";
+  let outputPath: string | undefined;
+  let maxDepth = 4;
+  let includeHome = false;
+
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index];
+
+    if (arg === "--root") {
+      const value = args[index + 1];
+
+      if (value === undefined || value.startsWith("--")) {
+        return 'Missing value for --root <path>';
+      }
+
+      rootPath = value;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--format") {
+      const value = args[index + 1];
+
+      if (value !== "json" && value !== "markdown" && value !== "html") {
+        return `Unsupported --format "${value ?? ""}". Use "markdown", "json", or "html".`;
+      }
+
+      format = value;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--lang") {
+      const value = args[index + 1];
+
+      if (value !== "en" && value !== "zh-CN") {
+        return `Unsupported --lang "${value ?? ""}". Use "en" or "zh-CN".`;
+      }
+
+      lang = value;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--output") {
+      const value = args[index + 1];
+
+      if (value === undefined || value.startsWith("--")) {
+        return 'Missing value for --output <path>';
+      }
+
+      outputPath = value;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--max-depth") {
+      const value = args[index + 1];
+      const parsed = Number(value);
+
+      if (value === undefined || value.startsWith("--") || !Number.isInteger(parsed) || parsed < 0) {
+        return 'Invalid value for --max-depth <number>';
+      }
+
+      maxDepth = parsed;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--include-home") {
+      includeHome = true;
+      continue;
+    }
+
+    return `Unknown discover option: ${arg ?? ""}`;
+  }
+
+  if (rootPath === undefined || rootPath.trim() === "") {
+    return 'Missing required option: --root <path>';
+  }
+
+  if (outputPath !== undefined && outputPath.trim() === "") {
+    return 'Invalid empty value for --output <path>';
+  }
+
+  return {
+    rootPath,
+    format,
+    lang,
+    outputPath,
+    maxDepth,
+    includeHome
   };
 }

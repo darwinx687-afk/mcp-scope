@@ -1,0 +1,20 @@
+{
+  "client": "cursor",
+  "mcp": {
+    "servers": {
+      "cursor-docs": {
+        "type": "streamable-http",
+        "url": "https://example.com/mcp",
+        "timeout": 30000,
+        "alwaysLoad": true,
+        "allowedTools": [
+          "search_docs",
+          "read_doc"
+        ],
+        "deniedTools": [
+          "delete_doc"
+        ]
+      }
+    }
+  }
+}

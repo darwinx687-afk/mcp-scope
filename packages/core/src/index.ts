@@ -11,7 +11,8 @@ export type PhaseStatus =
   | "transparency-reports-ready"
   | "html-viewer-ready"
   | "github-action-gate-ready"
-  | "approval-memory-diff-ready";
+  | "approval-memory-diff-ready"
+  | "ecosystem-discovery-ready";
 
 export type RiskLevel = "info" | "low" | "medium" | "high" | "unknown";
 
@@ -35,12 +36,13 @@ export type McpScopeTarget = {
 export const FOUNDATION_STATUS = {
   project: PROJECT_SLUG,
   name: PROJECT_NAME,
-  phase: 6,
-  status: "approval-memory-diff-ready",
-  scanner: "static-config-tool-metadata-approval-memory",
+  phase: 7,
+  status: "ecosystem-discovery-ready",
+  scanner: "static-config-tool-metadata-ecosystem-discovery",
   externalApiCalls: false,
   serverExecution: false
 } as const;
 
 export * from "./scan.js";
+export * from "./discovery.js";
 export * from "./tool-metadata.js";

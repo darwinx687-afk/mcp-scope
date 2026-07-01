@@ -1,0 +1,14 @@
+{
+  "client": "continue",
+  "servers": {
+    "continue-search": {
+      "type": "sse",
+      "url": "https://example.com/sse",
+      "roots": [
+        {
+          "uri": "file:///workspace/docs"
+        }
+      ]
+    }
+  }
+}

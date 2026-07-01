@@ -1,0 +1,15 @@
+{
+  "client": "cline",
+  "mcpServers": {
+    "cline-headers": {
+      "type": "http",
+      "url": "https://example.com/cline/mcp",
+      "headersHelper": {
+        "command": "node",
+        "args": [
+          "./scripts/headers-helper.js"
+        ]
+      }
+    }
+  }
+}

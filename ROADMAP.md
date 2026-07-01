@@ -42,6 +42,8 @@ Status: implemented as local redacted approval-memory snapshots and static diff 
 
 Add examples for Claude Desktop, Claude Code, Cursor, Cline, Continue, and Gemini CLI.
 
+Status: implemented with local compatibility examples and static config discovery.
+
 ## Phase 8: Open-Source Launch Packaging
 
 Prepare docs, examples, security language, and release assets for public launch.

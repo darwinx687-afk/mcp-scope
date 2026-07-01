@@ -74,7 +74,7 @@ const TEXT: Record<ReportLanguage, ViewerText> = {
       info: "Info"
     },
     checkedItems: [
-      "Local MCP config files with a top-level mcpServers object.",
+      "Local MCP config files using supported static JSON shapes.",
       "Local exported tool metadata, when provided.",
       "Tool descriptions, inputSchema, outputSchema, and annotations.",
       "Startup command and URL visibility.",
@@ -129,7 +129,7 @@ const TEXT: Record<ReportLanguage, ViewerText> = {
       info: "Info"
     },
     checkedItems: [
-      "带有顶层 mcpServers 对象的本地 MCP config 文件。",
+      "使用已支持静态 JSON 形态的本地 MCP config 文件。",
       "用户本地提供的已导出 tool metadata。",
       "tool descriptions、inputSchema、outputSchema 和 annotations。",
       "启动命令和 URL 可见性。",
@@ -276,6 +276,8 @@ function renderSourceScope(report: TransparencyReportModel, text: ViewerText): s
         ["configPath", report.sources.configPath ?? text.notProvided],
         ["toolsPath", report.sources.toolsPath ?? text.notProvided],
         ["metadataSourceType", report.sources.metadataSourceType ?? text.notProvided],
+        ["sourceShape", report.config?.sourceShape ?? text.notProvided],
+        ["clientProfile", report.config?.clientProfile ?? text.notProvided],
         ["generatedAt", report.generatedAt],
         ["reportVersion", report.reportVersion],
         ["schemaVersion", report.schemaVersion],
@@ -326,13 +328,17 @@ function renderConfig(servers: readonly McpServerFingerprint[], text: ViewerText
     <section>
       <h2>${escapeHtml(text.config)}</h2>
       ${servers.length === 0 ? `<p class="muted">${escapeHtml(text.none)}</p>` : table(
-        ["Name", "Transport", "Command/URL", "Env keys", "Header keys", "Capabilities", "Risk"],
+        ["Name", "Profile", "Shape", "Context", "Transport", "Command/URL", "Env keys", "Header keys", "Permissions", "Capabilities", "Risk"],
         servers.map((server) => [
           server.name,
+          server.clientProfile ?? text.notProvided,
+          server.sourceShape ?? text.notProvided,
+          server.projectPathDisplay ?? server.sourceContextLabel ?? text.notProvided,
           server.transport,
           server.hasCommand ? server.commandSummary : server.rawUrlRedacted ?? text.none,
           server.envKeys.join(", ") || text.none,
           server.headerKeys.join(", ") || text.none,
+          server.permissionHints?.join(", ") || text.none,
           server.capabilityHints.join(", ") || text.none,
           server.riskLevel
         ])

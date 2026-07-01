@@ -26,3 +26,7 @@
 - Added `--fail-on-change none|info|low|medium|high` threshold behavior for diffs.
 - Added Markdown, JSON, and self-contained HTML diff rendering.
 - Added approval-memory docs and curated snapshot/diff examples.
+- Added Phase 7 support for `projects[*].mcpServers`, `mcp.servers`, and top-level `servers` config shapes.
+- Added client profile labels and curated client compatibility examples.
+- Added `mcp-scope discover --root <path>` with Markdown, JSON, and self-contained HTML reports.
+- Added discovery docs and curated discovery report examples.

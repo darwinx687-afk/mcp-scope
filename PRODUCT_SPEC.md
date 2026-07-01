@@ -37,9 +37,9 @@ Developers are connecting MCP servers to AI coding tools and agent environments.
 - Local self-contained HTML viewer.
 - GitHub Action quality gate.
 
-## Phase 6 Scope
+## Phase 7 Scope
 
-Phase 6 adds local approval-memory snapshots and static diffing on top of the local CLI, stable report system, HTML viewer, and GitHub Action quality gate.
+Phase 7 adds ecosystem compatibility examples and static local config discovery on top of the local CLI, stable report system, HTML viewer, GitHub Action quality gate, and approval-memory diffing.
 
 Included now:
 
@@ -50,7 +50,10 @@ Included now:
 - CLI command: `mcp-scope inspect-tools --tools <path>`.
 - CLI command: `mcp-scope snapshot [--config <path>] [--tools <path>] --output <path> [--label <text>]`.
 - CLI command: `mcp-scope diff --baseline <snapshot-path> [--config <path>] [--tools <path>]`.
+- CLI command: `mcp-scope discover --root <path>`.
 - Static parsing for JSON files with a top-level `mcpServers` object.
+- Static parsing for local JSON files with `projects[*].mcpServers`, `mcp.servers`, and top-level `servers`.
+- Client profile labels for common local config styles, including `cursor-like`, `cline-like`, `continue-like`, `gemini-cli-like`, and `plugin-like`.
 - Static parsing for local exported MCP `tools/list` JSON-RPC responses.
 - Static parsing for MCP Scope portable local tool manifests.
 - Claude Desktop style inference where omitted `type` plus `command` means `stdio`.
@@ -79,6 +82,11 @@ Included now:
 - Static diff reports for added/removed servers, added/removed tools, command/args/key/URL drift, tool description/schema/annotation drift, severity changes, and finding-rule changes.
 - Diff output formats: Markdown, JSON, and self-contained HTML.
 - Bilingual diff Markdown with `--lang en` and `--lang zh-CN`.
+- Static discovery reports in Markdown, JSON, and self-contained HTML.
+- Bilingual discovery Markdown with `--lang en` and `--lang zh-CN`.
+- Safe path display for home-like nested project paths.
+- Curated client examples under `examples/clients`.
+- Curated discovery examples under `examples/discovery`.
 - Example configs and tests.
 
 Not included now:
@@ -99,3 +107,6 @@ Not included now:
 - GitHub Action approval-memory diff integration.
 - `scan --compare-to` shortcut.
 - Treating snapshots as approval certificates or safety badges.
+- Official integration claims for Cursor, Cline, Continue, Gemini CLI, Claude Code, or Claude Desktop.
+- Automatic scanning of every discovered candidate.
+- Automatic modification of user config files.

@@ -11,7 +11,7 @@ MCP Scope starts as a small TypeScript pnpm monorepo.
 - `examples`: intentionally committed examples only.
 - `assets`: brand and visual assets later.
 
-## Phase 6 Runtime Boundaries
+## Phase 7 Runtime Boundaries
 
 - No external API calls in core checks.
 - No database, cloud service, or login by default.
@@ -27,10 +27,12 @@ MCP Scope starts as a small TypeScript pnpm monorepo.
 - The action does not upload artifacts unless the workflow adds an upload step.
 - Approval memory snapshots and diffs are local files only.
 - Approval memory does not certify safety or confirm compromise.
+- Discovery lists likely config files only and does not auto-scan every candidate.
+- Client profile labels are compatibility hints, not official integrations.
 
 ## Current Scanner Direction
 
-The Phase 6 scanner remains static-first. It reads local JSON config files with a top-level `mcpServers` object and local exported tool metadata files. It produces stable JSON reports, bilingual Markdown reports, self-contained HTML viewers, approval-memory snapshots, static diff reports, and CI threshold outputs without executing commands, connecting to MCP servers, sending `tools/list` requests, starting a web server, or calling external APIs.
+The Phase 7 scanner remains static-first. It reads local JSON config files with supported server shapes and local exported tool metadata files. It produces stable JSON reports, bilingual Markdown reports, self-contained HTML viewers, approval-memory snapshots, static diff reports, discovery reports, and CI threshold outputs without executing commands, connecting to MCP servers, sending `tools/list` requests, starting a web server, or calling external APIs.
 
 The scanner redacts env/header values and reports only key names. URL query strings are redacted in displayed output. Tool metadata schemas are sanitized before rendering so obvious example secret values are not emitted.
 
@@ -42,11 +44,21 @@ Any future dynamic checks must be explicitly gated, documented, and visible to t
 
 ## Package Responsibilities
 
-`packages/core` owns stable names, shared types, MCP config parsing, local tool metadata parsing, static fingerprinting, rule evaluation, capability hints, risk levels, and transparency notes.
+`packages/core` owns stable names, shared types, MCP config parsing, static config discovery, local tool metadata parsing, static fingerprinting, rule evaluation, capability hints, risk levels, and transparency notes.
 
-`packages/report` owns the stable report model, JSON rendering, bilingual Markdown rendering, self-contained HTML viewer rendering, approval-memory snapshot generation, and static diff rendering. It must avoid exposing raw env/header values or secret-like tool metadata examples.
+`packages/report` owns the stable report model, JSON rendering, bilingual Markdown rendering, self-contained HTML viewer rendering, approval-memory snapshot generation, static diff rendering, and discovery report rendering. It must avoid exposing raw env/header values or secret-like tool metadata examples.
 
 `apps/cli` owns user commands, argument parsing, exit codes, terminal output, report file writes, and the local `view` command.
+
+## Ecosystem Compatibility Architecture
+
+Phase 7 extends `parseMcpConfig` from one JSON shape to a small set of local static shapes: top-level `mcpServers`, `projects[*].mcpServers`, `mcp.servers`, and top-level `servers`.
+
+The scan result remains a flat list of server fingerprints for report compatibility. Each server now also carries source context: source shape, client profile label, source context label, safe project path display when nested, config path, and JSON-pointer-like server key path.
+
+`streamable-http` is normalized to `http` with a transparency note. Unknown transport strings warn instead of crashing. Extra fields such as `timeout`, `alwaysLoad`, `disabled`, `oauth`, `headersHelper`, `roots`, `allowedTools`, and `deniedTools` are summarized without executing helper commands or rendering secret-like values.
+
+`mcp-scope discover` walks only under a requested root, skips common generated or dependency directories, avoids symlinks, limits file size, and reports candidates. Discovery does not scan tool metadata, create snapshots, modify files, or auto-scan every candidate.
 
 ## Approval Memory Architecture
 

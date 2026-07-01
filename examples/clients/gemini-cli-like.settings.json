@@ -1,0 +1,17 @@
+{
+  "client": "gemini-cli",
+  "mcp": {
+    "servers": {
+      "gemini-local": {
+        "command": "python",
+        "args": [
+          "-m",
+          "example_mcp_server"
+        ],
+        "env": {
+          "GEMINI_EXAMPLE_TOKEN": "REDACTED_EXAMPLE_TOKEN"
+        }
+      }
+    }
+  }
+}
