@@ -1,0 +1,36 @@
+name: False positive
+description: Report a static finding that appears too noisy or too severe.
+title: "[False positive]: "
+labels: ["false-positive"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this when MCP Scope reports a static risk signal that seems too noisy. Do not paste secrets or full private configs. Prefer redacted report excerpts.
+  - type: textarea
+    id: finding
+    attributes:
+      label: Finding
+      description: Include rule ID, severity, and a redacted excerpt.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Why this seems safe or too severe
+      description: Explain the local pattern without exposing private values.
+    validations:
+      required: true
+  - type: textarea
+    id: shape
+    attributes:
+      label: Redacted config or tool metadata shape
+      description: Include only the minimal shape needed to understand the finding.
+      render: json
+  - type: checkboxes
+    id: redaction
+    attributes:
+      label: Redaction check
+      options:
+        - label: I removed secret values, private paths, private hostnames, and full private configs.
+          required: true

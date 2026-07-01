@@ -1,6 +1,6 @@
 # MCP Scope Ecosystem Compatibility
 
-MCP Scope Phase 7 supports more local JSON config shapes so developers can try the scanner against common MCP client-style files.
+MCP Scope supports several local JSON config shapes so developers can try the scanner against common MCP client-style files.
 
 This is static compatibility, not official client integration. MCP Scope does not execute MCP servers, connect to MCP servers, request live `tools/list`, call external APIs, or modify config files.
 

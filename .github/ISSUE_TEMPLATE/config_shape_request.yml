@@ -1,0 +1,39 @@
+name: Config shape request
+description: Ask MCP Scope to parse or discover a local MCP config shape.
+title: "[Config shape]: "
+labels: ["config-shape"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Share only a minimal redacted shape. Do not paste full private configs, tokens, private paths, or internal hostnames.
+  - type: textarea
+    id: shape
+    attributes:
+      label: Minimal redacted config shape
+      description: Replace private values with placeholders such as "<redacted>".
+      render: json
+    validations:
+      required: true
+  - type: input
+    id: client_style
+    attributes:
+      label: Client or tool style
+      description: Optional. Use a descriptive label, not an official integration claim.
+      placeholder: editor plugin style, local agent config style
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected MCP Scope behavior
+      placeholder: discover should list it, scan should parse servers, source context should show project label
+    validations:
+      required: true
+  - type: checkboxes
+    id: boundaries
+    attributes:
+      label: Redaction and scope
+      options:
+        - label: I removed secrets, private paths, internal hostnames, and nonessential private details.
+          required: true
+        - label: I understand MCP Scope should parse this statically without executing the server.
+          required: true

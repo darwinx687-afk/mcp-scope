@@ -30,3 +30,10 @@
 - Added client profile labels and curated client compatibility examples.
 - Added `mcp-scope discover --root <path>` with Markdown, JSON, and self-contained HTML reports.
 - Added discovery docs and curated discovery report examples.
+- Added Phase 8 open-source launch packaging.
+- Added SVG logo and banner assets.
+- Reworked English and Chinese README first screens for public launch review.
+- Added documentation and examples index pages in English and Chinese.
+- Added GitHub issue templates and PR template with redaction reminders.
+- Added launch checklist, feedback guide, post-launch roadmap, release draft, and refreshed launch notes.
+- Updated project status to Phase 8 launch packaging ready.

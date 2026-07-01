@@ -13,10 +13,10 @@ describe("core constants", () => {
     expect(PROJECT_VERSION).toBe("0.0.0");
   });
 
-  it("marks Phase 7 ecosystem discovery behavior as static-only", () => {
+  it("marks Phase 8 launch packaging behavior as static-only", () => {
     expect(FOUNDATION_STATUS).toMatchObject({
-      phase: 7,
-      status: "ecosystem-discovery-ready",
+      phase: 8,
+      status: "launch-packaging-ready",
       scanner: "static-config-tool-metadata-ecosystem-discovery",
       externalApiCalls: false,
       serverExecution: false

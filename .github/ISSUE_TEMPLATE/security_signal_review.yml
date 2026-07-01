@@ -1,0 +1,35 @@
+name: Security signal review
+description: Discuss whether a static risk signal should be adjusted.
+title: "[Signal review]: "
+labels: ["security-signal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        MCP Scope findings are static signals, not proof of compromise. Do not paste secrets, exploit payloads, full private configs, or sensitive internal paths.
+  - type: textarea
+    id: signal
+    attributes:
+      label: Signal or rule
+      description: Include rule ID, severity, and a redacted report excerpt.
+    validations:
+      required: true
+  - type: textarea
+    id: concern
+    attributes:
+      label: Review concern
+      description: Should severity, wording, evidence, or matching logic change?
+    validations:
+      required: true
+  - type: textarea
+    id: examples
+    attributes:
+      label: Safe examples
+      description: Minimal redacted examples that explain the concern.
+  - type: checkboxes
+    id: redaction
+    attributes:
+      label: Redaction check
+      options:
+        - label: I removed secrets, private paths, sensitive hostnames, and full private configs.
+          required: true

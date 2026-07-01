@@ -48,6 +48,8 @@ Status: implemented with local compatibility examples and static config discover
 
 Prepare docs, examples, security language, and release assets for public launch.
 
+Status: implemented as local repository launch packaging. No remote, release, npm package, or Marketplace publication has been created.
+
 ## Phase 9: GitHub Remote and Prerelease
 
 Create the remote repository and publish a prerelease when the project is ready.

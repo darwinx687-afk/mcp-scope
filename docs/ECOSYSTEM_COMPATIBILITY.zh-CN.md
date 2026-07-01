@@ -1,6 +1,6 @@
 # MCP Scope 客户端兼容说明
 
-MCP Scope Phase 7 支持更多本地 JSON 配置形态，方便开发者把常见 MCP 客户端风格的配置文件拿来做静态检查。
+MCP Scope 支持几类本地 JSON 配置形态，方便开发者把常见 MCP 客户端风格的配置文件拿来做静态检查。
 
 这只是静态兼容，不代表官方集成。MCP Scope 不会执行 MCP server，不会连接 MCP server，不会请求实时 `tools/list`，不会调用外部 API，也不会修改配置文件。
 

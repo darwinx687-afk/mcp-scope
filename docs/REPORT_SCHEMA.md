@@ -87,7 +87,7 @@ Evidence must be short and safe. Findings are static risk signals, not confirmed
 
 ## Config Source Context
 
-Phase 7 config scan results include source context fields:
+Current config scan results include source context fields:
 
 - `config.sourceShape`
 - `config.clientProfile`

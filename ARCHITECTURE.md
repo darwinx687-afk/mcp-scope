@@ -9,9 +9,9 @@ MCP Scope starts as a small TypeScript pnpm monorepo.
 - `packages/report`: report rendering utilities.
 - `docs`: supporting documentation.
 - `examples`: intentionally committed examples only.
-- `assets`: brand and visual assets later.
+- `assets`: local SVG brand and launch assets.
 
-## Phase 7 Runtime Boundaries
+## Phase 8 Runtime Boundaries
 
 - No external API calls in core checks.
 - No database, cloud service, or login by default.
@@ -29,10 +29,11 @@ MCP Scope starts as a small TypeScript pnpm monorepo.
 - Approval memory does not certify safety or confirm compromise.
 - Discovery lists likely config files only and does not auto-scan every candidate.
 - Client profile labels are compatibility hints, not official integrations.
+- Launch packaging is repository-local only and does not publish to GitHub, npm, or GitHub Marketplace.
 
 ## Current Scanner Direction
 
-The Phase 7 scanner remains static-first. It reads local JSON config files with supported server shapes and local exported tool metadata files. It produces stable JSON reports, bilingual Markdown reports, self-contained HTML viewers, approval-memory snapshots, static diff reports, discovery reports, and CI threshold outputs without executing commands, connecting to MCP servers, sending `tools/list` requests, starting a web server, or calling external APIs.
+The Phase 8 scanner remains static-first. It reads local JSON config files with supported server shapes and local exported tool metadata files. It produces stable JSON reports, bilingual Markdown reports, self-contained HTML viewers, approval-memory snapshots, static diff reports, discovery reports, and CI threshold outputs without executing commands, connecting to MCP servers, sending `tools/list` requests, starting a web server, or calling external APIs.
 
 The scanner redacts env/header values and reports only key names. URL query strings are redacted in displayed output. Tool metadata schemas are sanitized before rendering so obvious example secret values are not emitted.
 
@@ -77,3 +78,9 @@ Phase 5 uses a root composite action in `action.yml`. The action enables corepac
 The runner resolves paths relative to `GITHUB_WORKSPACE` and `working-directory`, invokes the built CLI with absolute paths, always writes a JSON report for CI evaluation, optionally writes Markdown or HTML reports, computes the fail-on threshold, writes `$GITHUB_OUTPUT`, and appends a safe `$GITHUB_STEP_SUMMARY` when enabled.
 
 There is no hosted service, no cloud sync, no telemetry, no Marketplace publishing step, and no write-token requirement.
+
+## Open-Source Launch Packaging Architecture
+
+Phase 8 adds repository packaging rather than new scanner behavior. The launch surface is made of static files: README first screens, bilingual docs indexes, examples indexes, SVG assets, community templates, launch notes, release draft, feedback guide, and checklist.
+
+These files are part of the local repository and do not require a hosted service. The launch package avoids publication claims until a human maintainer creates a remote repository, tag, release, npm package, or Marketplace listing in a later phase.

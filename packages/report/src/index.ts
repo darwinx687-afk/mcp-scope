@@ -155,7 +155,7 @@ export function renderFoundationStatusReport(): string {
     `- scanner: ${FOUNDATION_STATUS.scanner}`,
     `- externalApiCalls: ${String(FOUNDATION_STATUS.externalApiCalls)}`,
     "",
-    "Phase 7 adds ecosystem config compatibility and static discovery. It does not execute MCP servers, call tools/list, or call external APIs."
+    "Phase 8 packages the local-first project for public launch. Scanner behavior remains static-only and does not execute MCP servers, call tools/list, or call external APIs."
   ].join("\n");
 }
 

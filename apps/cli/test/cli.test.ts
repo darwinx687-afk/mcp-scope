@@ -55,8 +55,8 @@ describe("mcp-scope CLI", () => {
     expect(parsed).toMatchObject({
       project: "mcp-scope",
       name: "MCP Scope",
-      phase: 7,
-      status: "ecosystem-discovery-ready",
+      phase: 8,
+      status: "launch-packaging-ready",
       scanner: "static-config-tool-metadata-ecosystem-discovery",
       externalApiCalls: false,
       serverExecution: false

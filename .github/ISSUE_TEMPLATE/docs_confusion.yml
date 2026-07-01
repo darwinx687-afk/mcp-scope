@@ -1,0 +1,26 @@
+name: Docs confusion
+description: Report unclear docs, examples, or command guidance.
+title: "[Docs]: "
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve the docs. Please avoid pasting private configs, private paths, or secret values.
+  - type: input
+    id: page
+    attributes:
+      label: Page or file
+      placeholder: README.md, docs/GITHUB_ACTION.md, examples/README.md
+    validations:
+      required: true
+  - type: textarea
+    id: confusion
+    attributes:
+      label: What was confusing?
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested wording or example

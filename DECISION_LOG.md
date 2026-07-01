@@ -52,3 +52,9 @@
 - Phase 7 supports common local JSON config shapes and client-profile-like labels without claiming official integration.
 - Discovery lists likely local config candidates and requires users to choose a path before scanning; it does not auto-scan every candidate.
 - Home-like nested project paths are displayed safely by default to reduce accidental private path exposure.
+
+## 2026-07-01 Phase 8
+
+- Phase 8 treats launch packaging as repository-local static assets and documentation, not as publication.
+- The project can look ready for first public GitHub launch review without creating a remote repository, publishing a release, publishing npm, or claiming GitHub Marketplace availability.
+- Community templates ask for redacted reports and minimal shapes, not full private configs or secret values.

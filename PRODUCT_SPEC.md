@@ -37,9 +37,9 @@ Developers are connecting MCP servers to AI coding tools and agent environments.
 - Local self-contained HTML viewer.
 - GitHub Action quality gate.
 
-## Phase 7 Scope
+## Phase 8 Scope
 
-Phase 7 adds ecosystem compatibility examples and static local config discovery on top of the local CLI, stable report system, HTML viewer, GitHub Action quality gate, and approval-memory diffing.
+Phase 8 packages MCP Scope as a serious early-stage open-source project ready for first public GitHub launch review. It does not add new scanner categories. The scanner remains local-first, static-only, and report-first.
 
 Included now:
 
@@ -87,6 +87,12 @@ Included now:
 - Safe path display for home-like nested project paths.
 - Curated client examples under `examples/clients`.
 - Curated discovery examples under `examples/discovery`.
+- Launch-ready README first screen in English and Chinese.
+- SVG logo and banner assets under `assets`.
+- Documentation index pages in English and Chinese.
+- Examples index pages in English and Chinese.
+- GitHub issue templates and PR template with secret-redaction reminders.
+- Launch checklist, feedback guide, post-launch roadmap, and draft release notes.
 - Example configs and tests.
 
 Not included now:
@@ -110,3 +116,4 @@ Not included now:
 - Official integration claims for Cursor, Cline, Continue, Gemini CLI, Claude Code, or Claude Desktop.
 - Automatic scanning of every discovered candidate.
 - Automatic modification of user config files.
+- GitHub release publication.

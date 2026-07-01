@@ -1,242 +1,120 @@
+![MCP Scope banner](assets/banner.svg)
+
 # MCP Scope
 
-A local-first transparency and risk audit tool for MCP tool metadata, server configs, and AI agent tool permissions.
+Local-first transparency and risk audit reports for MCP tool metadata, server configs, and AI agent tool permissions.
 
-MCP Scope is in Phase 7 / early preview. It is not production-ready, does not make complete security claims, and does not execute MCP servers.
+Status: early preview. MCP Scope is useful for local review and CI visibility, but it is not a complete security product and does not claim production-grade protection.
 
-## Current Guarantees
+## What Stays Local
 
-- No external API calls in the core Phase 7 checks.
-- No login.
-- No database.
-- No cloud service by default.
 - No MCP server execution.
-- No remote metadata fetching.
 - No live `tools/list` requests.
-- Secret values from `env` and `headers` are redacted. Reports show key names only.
-- Tool metadata findings are static risk signals, not proof of compromise.
-- Markdown reports support `--lang en` and `--lang zh-CN`.
-- JSON reports keep stable English machine-readable keys.
-- HTML reports are self-contained local files with inline CSS and no external assets.
-- HTML reports require `--output`; MCP Scope does not open a browser or start a server.
-- GitHub Action support wraps the local CLI; it does not upload files automatically.
-- Approval memory snapshots are local redacted JSON files, not safety certification.
-- Client profile labels such as `cursor-like` are compatibility hints, not official integrations.
+- No external AI API calls.
+- No login, database, cloud sync, or telemetry.
+- Secret values from `env`, `headers`, URL queries, and secret-like schema examples are redacted where MCP Scope renders them.
+- Findings are static risk signals and transparency notes, not proof of compromise or proof of safety.
 
-## CLI
-
-Current commands:
-
-```bash
-mcp-scope --help
-mcp-scope --version
-mcp-scope status
-mcp-scope scan --config <path>
-mcp-scope scan --config <path> --tools <path>
-mcp-scope scan --config <path> --tools <path> --lang zh-CN
-mcp-scope scan --config <path> --format json
-mcp-scope scan --config <path> --format markdown --output reports/mcp-scope-report.md
-mcp-scope scan --config <path> --tools <path> --format html --output reports/mcp-scope-report.html
-mcp-scope inspect-tools --tools <path> --format markdown --lang zh-CN
-mcp-scope inspect-tools --tools <path> --format html --output reports/mcp-scope-tools.html
-mcp-scope scan --config <path> --tools <path> --fail-on high
-mcp-scope view --report examples/reports/sample-combined-report.json --output reports/sample-viewer.html
-mcp-scope snapshot --config <path> --tools <path> --output snapshots/approved.snapshot.json --label "reviewed"
-mcp-scope diff --baseline snapshots/approved.snapshot.json --config <path> --tools <path>
-mcp-scope diff --baseline snapshots/approved.snapshot.json --config <path> --tools <path> --fail-on-change high
-mcp-scope discover --root .
-mcp-scope discover --root . --format json
-mcp-scope discover --root . --format html --output reports/discovery.html
-```
-
-`mcp-scope status` reports the current static scanner state:
-
-```json
-{
-  "project": "mcp-scope",
-  "name": "MCP Scope",
-  "phase": 7,
-  "status": "ecosystem-discovery-ready",
-  "scanner": "static-config-tool-metadata-ecosystem-discovery",
-  "externalApiCalls": false,
-  "serverExecution": false
-}
-```
-
-## Scan a Local MCP Config
-
-MCP Scope supports local JSON configs with `mcpServers`, `projects[*].mcpServers`, `mcp.servers`, or top-level `servers`. It also supports Claude Desktop style entries where `type` is omitted but `command` and `args` exist; those entries are inferred as `stdio`.
-
-```bash
-pnpm build
-node apps/cli/dist/index.js scan --config examples/claude-desktop-filesystem.json
-node apps/cli/dist/index.js scan --config examples/http-server-with-redacted-auth.json --format json
-node apps/cli/dist/index.js scan --config examples/clients/cursor-like.mcp.json
-```
-
-## Discover Local MCP Configs
-
-Discovery lists likely local MCP config files. It does not auto-scan every candidate or modify files.
-
-```bash
-node apps/cli/dist/index.js discover --root examples/clients
-node apps/cli/dist/index.js discover --root examples/clients --format json
-node apps/cli/dist/index.js discover --root examples/clients --format html --output reports/discovery.html
-```
-
-After discovery, pick a candidate and run `scan --config <path>`. See `docs/DISCOVERY.md`.
-
-## Inspect Local Tool Metadata
-
-MCP Scope supports local exported MCP tool metadata only. It can read a saved MCP `tools/list` JSON-RPC response or a portable local manifest with `serverName` and `tools`. MCP Scope does not send `tools/list` requests to live MCP servers yet.
-
-```bash
-node apps/cli/dist/index.js scan --config examples/claude-code-project.mcp.json --tools examples/tools/poisoned-description-tools.json
-node apps/cli/dist/index.js inspect-tools --tools examples/tools/credential-network-tools.json --format json
-node apps/cli/dist/index.js inspect-tools --tools examples/tools/poisoned-description-tools.json --format markdown --lang zh-CN
-```
-
-## Reports
-
-MCP Scope reports include an executive summary, checked/not-checked sections, severity legend, config summary, tool metadata summary, sorted findings, redaction guarantees, and limitations. Markdown, JSON, and self-contained HTML are available.
-
-Example Markdown excerpt:
-
-```markdown
-# MCP Scope Report
-
-- Early transparency report
-- Static analysis only
-- MCP server execution: false
-- External API calls: false
-- Secret values redacted: true
-
-## Executive Summary
-
-- Server count: 1
-- Tool count: 2
-- Finding count: 4
-```
-
-Report docs:
-
-- `docs/REPORT_SCHEMA.md`
-- `docs/REPORT_GUIDE.md`
-- `docs/REPORT_GUIDE.zh-CN.md`
-- `docs/VIEWER_GUIDE.md`
-- `docs/VIEWER_GUIDE.zh-CN.md`
-- `docs/GITHUB_ACTION.md`
-- `docs/GITHUB_ACTION.zh-CN.md`
-- `docs/APPROVAL_MEMORY.md`
-- `docs/APPROVAL_MEMORY.zh-CN.md`
-- `docs/ECOSYSTEM_COMPATIBILITY.md`
-- `docs/ECOSYSTEM_COMPATIBILITY.zh-CN.md`
-- `docs/DISCOVERY.md`
-- `docs/DISCOVERY.zh-CN.md`
-
-MCP Scope reports transparency notes and static risk signals. It does not prove compromise, prove safety, run MCP servers, or inspect live tool metadata.
-
-## GitHub Action
-
-Use the root composite action from this repository in local workflows. MCP Scope is not published to GitHub Marketplace yet.
-
-```yaml
-- uses: ./
-  with:
-    config: examples/claude-desktop-filesystem.json
-    tools: examples/tools/filesystem-tools.json
-    report-format: markdown
-    report-path: mcp-scope-report.md
-    fail-on: high
-    lang: en
-```
-
-Recommended permissions:
-
-```yaml
-permissions:
-  contents: read
-```
-
-See `docs/GITHUB_ACTION.md` for inputs, outputs, threshold behavior, job summaries, and artifact upload examples.
-
-## Approval Memory Diff
-
-Create a local redacted snapshot after a review, then compare a future config and tool metadata export against that baseline:
-
-```bash
-node apps/cli/dist/index.js snapshot \
-  --config examples/claude-desktop-filesystem.json \
-  --tools examples/tools/filesystem-tools.json \
-  --output examples/snapshots/filesystem-approved.snapshot.json \
-  --label "filesystem review"
-
-node apps/cli/dist/index.js diff \
-  --baseline examples/snapshots/filesystem-approved.snapshot.json \
-  --config examples/claude-desktop-filesystem.json \
-  --tools examples/tools/filesystem-tools.changed-description.json \
-  --format markdown
-```
-
-Use `--fail-on-change none|info|low|medium|high` to make local scripts or CI fail when static drift reaches a chosen severity. See `docs/APPROVAL_MEMORY.md` for the full workflow.
-
-## Examples
-
-- `examples/claude-desktop-filesystem.json`
-- `examples/claude-code-project.mcp.json`
-- `examples/http-server-with-redacted-auth.json`
-- `examples/risky-local-command.json`
-- `examples/tools/filesystem-tools.json`
-- `examples/tools/poisoned-description-tools.json`
-- `examples/tools/credential-network-tools.json`
-- `examples/tools/schema-quality-tools.json`
-- `examples/tools/multi-tool-suspicious-fragments.json`
-- `examples/tools/filesystem-tools.changed-description.json`
-- `examples/tools/filesystem-tools.changed-schema.json`
-- `examples/tools/filesystem-tools.added-dangerous-tool.json`
-- `examples/configs/claude-desktop-filesystem.changed-command.json`
-- `examples/clients/claude-code-project.mcp.json`
-- `examples/clients/claude-code-user.claude.json`
-- `examples/clients/claude-desktop-config.json`
-- `examples/clients/cursor-like.mcp.json`
-- `examples/clients/cline-like.mcp-settings.json`
-- `examples/clients/continue-like.mcp.json`
-- `examples/clients/gemini-cli-like.settings.json`
-- `examples/clients/plugin-like.plugin.json`
-- `examples/clients/generic-mcp-servers.json`
-- `examples/clients/generic-mcp-servers-wrapper.json`
-- `examples/reports/sample-combined-report.md`
-- `examples/reports/sample-combined-report.zh-CN.md`
-- `examples/reports/sample-combined-report.json`
-- `examples/reports/sample-tools-only-report.md`
-- `examples/viewer/sample-combined-viewer.html`
-- `examples/viewer/sample-combined-viewer.zh-CN.html`
-- `examples/viewer/sample-tools-only-viewer.html`
-- `examples/snapshots/filesystem-approved.snapshot.json`
-- `examples/diffs/filesystem-description-change.diff.md`
-- `examples/diffs/filesystem-description-change.diff.zh-CN.md`
-- `examples/diffs/filesystem-added-dangerous-tool.diff.json`
-- `examples/diffs/filesystem-added-dangerous-tool.diff.html`
-- `examples/discovery/sample-discovery-report.md`
-- `examples/discovery/sample-discovery-report.zh-CN.md`
-- `examples/discovery/sample-discovery-report.json`
-- `examples/discovery/sample-discovery-report.html`
-- `docs/examples/github-action-basic.yml`
-- `docs/examples/github-action-threshold-gate.yml`
-- `docs/examples/github-action-zh-CN.yml`
-
-## Development
+## Run Locally
 
 ```bash
 pnpm install
-pnpm check
+pnpm build
+
+node apps/cli/dist/index.js discover --root examples/clients
+node apps/cli/dist/index.js scan --config examples/claude-desktop-filesystem.json --tools examples/tools/filesystem-tools.json
+node apps/cli/dist/index.js diff --baseline examples/snapshots/filesystem-approved.snapshot.json --config examples/claude-desktop-filesystem.json --tools examples/tools/filesystem-tools.changed-description.json
 ```
 
-## Roadmap Preview
+Three strong starting points:
 
-- Phase 4: local read-only viewer. Implemented.
-- Phase 5: GitHub Action quality gate. Implemented.
-- Phase 6: approval memory snapshots and static diffing. Implemented.
-- Phase 7: ecosystem compatibility examples and static discovery. Implemented.
+- `discover`: list likely local MCP config files without scanning or modifying them.
+- `scan`: inspect a local MCP config and optional exported tool metadata file.
+- `diff`: compare current local config/tool metadata against a redacted approval-memory snapshot.
 
-See `ROADMAP.md` for the full roadmap.
+Example output:
+
+- [Sample Markdown report](examples/reports/sample-combined-report.md)
+- [Sample JSON report](examples/reports/sample-combined-report.json)
+- [Sample HTML viewer](examples/viewer/sample-combined-viewer.html)
+
+## What It Is
+
+MCP Scope helps developers see what changed, what is exposed, and what looks risky before MCP tools are trusted by AI agents.
+
+Current capabilities:
+
+- Discover likely local MCP config files.
+- Scan MCP config server entries.
+- Inspect local exported MCP tool metadata.
+- Detect static tool metadata risk signals.
+- Generate Markdown, JSON, and self-contained HTML reports.
+- Render English and Chinese Markdown reports.
+- Create local approval-memory snapshots and static diffs.
+- Run as a local repository GitHub Action quality gate.
+
+## What It Is Not
+
+- Not a malware scanner.
+- Not a complete security product.
+- Not an official integration with any MCP client.
+- Not a SaaS, hosted dashboard, chatbot, or generic agent framework.
+- Not a tool that executes MCP servers or secretly fetches live tool metadata.
+
+## GitHub Action
+
+Use the root composite action from this repository in local workflows. MCP Scope is not published to GitHub Marketplace.
+
+```yaml
+name: MCP Scope
+
+on:
+  pull_request:
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  mcp-scope:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: ./
+        with:
+          config: examples/claude-desktop-filesystem.json
+          tools: examples/tools/filesystem-tools.json
+          report-format: markdown
+          report-path: mcp-scope-report.md
+          fail-on: high
+          lang: en
+```
+
+See [GitHub Action docs](docs/GITHUB_ACTION.md) for inputs, outputs, threshold behavior, job summaries, and artifact upload examples.
+
+## Docs
+
+- [Documentation index](docs/README.md)
+- [Examples index](examples/README.md)
+- [Report guide](docs/REPORT_GUIDE.md)
+- [Report schema](docs/REPORT_SCHEMA.md)
+- [HTML viewer guide](docs/VIEWER_GUIDE.md)
+- [Approval memory](docs/APPROVAL_MEMORY.md)
+- [Discovery](docs/DISCOVERY.md)
+- [Ecosystem compatibility](docs/ECOSYSTEM_COMPATIBILITY.md)
+- [Screenshot guide](docs/SCREENSHOT_GUIDE.md)
+- [FAQ](docs/FAQ.md)
+- [Security policy](SECURITY.md)
+- [Contributing](CONTRIBUTING.md)
+- [中文 README](README.zh-CN.md)
+
+## Limitations
+
+- Static analysis cannot prove a server is safe or compromised.
+- Tool metadata must be supplied from a local exported file; MCP Scope does not query live servers.
+- Client-profile-like labels are compatibility hints, not official integration claims.
+- Discovery finds likely config files, but users choose what to scan.
+- GitHub Action failure thresholds are based on static report severity only.
+
+See [ROADMAP.md](ROADMAP.md) and [Roadmap after launch](docs/ROADMAP_AFTER_LAUNCH.md) for planned next steps.

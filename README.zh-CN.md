@@ -1,243 +1,120 @@
+![MCP Scope banner](assets/banner.svg)
+
 # MCP Scope / MCP 透镜
 
-MCP Scope 是一个本地优先的 MCP 工具元数据、服务配置与 AI Agent 工具权限透明化审计工具。
+本地优先的 MCP 工具元数据、server 配置和 AI Agent 工具权限透明度审计报告工具。
 
-当前项目处于 Phase 7 / 早期预览阶段。它还不是可用于生产环境的完整安全产品，不做完整安全保证，也不会执行 MCP 服务。
+状态：早期预览。MCP Scope 适合本地审查和 CI 可见性检查，但它不是完整安全产品，也不做生产级安全保证。
 
-## 当前边界
+## 哪些事情留在本地
 
-- 核心 Phase 7 检查不调用外部 API。
-- 不需要登录。
-- 不使用数据库。
-- 默认不依赖云服务。
-- 不执行 MCP 服务。
-- 不拉取远程元数据。
-- 不向实时 MCP 服务发送 `tools/list` 请求。
-- `env` 和 `headers` 中的值会被隐藏，报告只展示键名。
-- 工具元数据发现项是静态风险信号，不是被攻击的证明。
-- Markdown 报告支持 `--lang en` 和 `--lang zh-CN`。
-- JSON 报告保持稳定的英文机器可读字段。
-- HTML 报告是本地自包含文件，使用内联 CSS，不依赖外部资源。
-- HTML 报告需要 `--output`；MCP Scope 不会自动打开浏览器，也不会启动服务。
-- GitHub Action 支持只是包装本地 CLI，不会自动上传文件。
-- 审批记忆 snapshot 是本地脱敏 JSON 文件，不是安全认证。
-- `cursor-like` 这类 client profile 只是兼容性提示，不代表官方集成。
+- 不执行 MCP server。
+- 不发送实时 `tools/list` 请求。
+- 不调用外部 AI API。
+- 不需要登录、数据库、云同步或遥测。
+- MCP Scope 渲染报告时会隐藏 `env`、`headers`、URL query 和疑似 secret 的 schema 示例值。
+- 发现项是静态风险信号和透明度提示，不是被攻击的证明，也不是安全证明。
 
-## CLI
-
-当前命令：
+## 本地运行
 
 ```bash
-mcp-scope --help
-mcp-scope --version
-mcp-scope status
-mcp-scope scan --config <path>
-mcp-scope scan --config <path> --tools <path>
-mcp-scope scan --config <path> --tools <path> --lang zh-CN
-mcp-scope scan --config <path> --format json
-mcp-scope scan --config <path> --format markdown --output reports/mcp-scope-report.md
-mcp-scope scan --config <path> --tools <path> --format html --output reports/mcp-scope-report.html
-mcp-scope inspect-tools --tools <path> --format markdown --lang zh-CN
-mcp-scope inspect-tools --tools <path> --format html --output reports/mcp-scope-tools.html
-mcp-scope scan --config <path> --tools <path> --fail-on high
-mcp-scope view --report examples/reports/sample-combined-report.json --output reports/sample-viewer.html
-mcp-scope snapshot --config <path> --tools <path> --output snapshots/approved.snapshot.json --label "reviewed"
-mcp-scope diff --baseline snapshots/approved.snapshot.json --config <path> --tools <path>
-mcp-scope diff --baseline snapshots/approved.snapshot.json --config <path> --tools <path> --fail-on-change high
-mcp-scope discover --root .
-mcp-scope discover --root . --format json
-mcp-scope discover --root . --format html --output reports/discovery.html
-```
-
-`mcp-scope status` 输出当前静态扫描状态：
-
-```json
-{
-  "project": "mcp-scope",
-  "name": "MCP Scope",
-  "phase": 7,
-  "status": "ecosystem-discovery-ready",
-  "scanner": "static-config-tool-metadata-ecosystem-discovery",
-  "externalApiCalls": false,
-  "serverExecution": false
-}
-```
-
-## 扫描本地 MCP 配置
-
-MCP Scope 支持带有 `mcpServers`、`projects[*].mcpServers`、`mcp.servers` 或顶层 `servers` 的本地 JSON 文件。对于 Claude Desktop 常见写法，如果条目省略 `type` 但包含 `command` 和 `args`，MCP Scope 会按 `stdio` 处理。
-
-```bash
+pnpm install
 pnpm build
-node apps/cli/dist/index.js scan --config examples/claude-desktop-filesystem.json
-node apps/cli/dist/index.js scan --config examples/http-server-with-redacted-auth.json --format json
-node apps/cli/dist/index.js scan --config examples/clients/cursor-like.mcp.json
-```
 
-## 发现本地 MCP 配置
-
-Discovery 只列出可能的本地 MCP config 文件。它不会自动扫描每个候选文件，也不会修改文件。
-
-```bash
 node apps/cli/dist/index.js discover --root examples/clients
-node apps/cli/dist/index.js discover --root examples/clients --format json
-node apps/cli/dist/index.js discover --root examples/clients --format html --output reports/discovery.html
+node apps/cli/dist/index.js scan --config examples/claude-desktop-filesystem.json --tools examples/tools/filesystem-tools.json
+node apps/cli/dist/index.js diff --baseline examples/snapshots/filesystem-approved.snapshot.json --config examples/claude-desktop-filesystem.json --tools examples/tools/filesystem-tools.changed-description.json
 ```
 
-发现后，选择一个候选路径再运行 `scan --config <path>`。详见 `docs/DISCOVERY.zh-CN.md`。
+三个最常用入口：
 
-## 检查本地工具元数据
+- `discover`：列出可能的本地 MCP config 文件，不自动扫描，也不修改文件。
+- `scan`：检查一个本地 MCP config，可选检查已导出的工具元数据。
+- `diff`：把当前本地 config/工具元数据和脱敏审批记忆 snapshot 做静态对比。
 
-MCP Scope 只支持用户本地提供的 MCP 工具元数据文件。它可以读取已经导出的 MCP `tools/list` JSON-RPC 响应，也可以读取带有 `serverName` 和 `tools` 的本地清单。MCP Scope 目前不会向实时 MCP 服务发送 `tools/list` 请求。
+示例输出：
 
-```bash
-node apps/cli/dist/index.js scan --config examples/claude-code-project.mcp.json --tools examples/tools/poisoned-description-tools.json
-node apps/cli/dist/index.js inspect-tools --tools examples/tools/credential-network-tools.json --format json
-node apps/cli/dist/index.js inspect-tools --tools examples/tools/poisoned-description-tools.json --format markdown --lang zh-CN
-```
+- [Markdown 示例报告](examples/reports/sample-combined-report.md)
+- [JSON 示例报告](examples/reports/sample-combined-report.json)
+- [HTML 查看器示例](examples/viewer/sample-combined-viewer.html)
 
-## 报告
+## 它是什么
 
-MCP Scope 报告包含执行摘要、检查范围、未检查范围、严重程度说明、config 摘要、tool metadata 摘要、排序后的发现项、脱敏说明和局限性。当前支持 Markdown、JSON 和本地自包含 HTML。
+MCP Scope 帮助开发者在信任 MCP 工具前，看清楚发生了什么变化、暴露了什么、哪些地方值得审查。
 
-Markdown 输出片段示例：
+当前能力：
 
-```markdown
-# MCP Scope Report
+- 发现可能的本地 MCP config 文件。
+- 扫描 MCP config server 条目。
+- 检查本地已导出的 MCP 工具元数据。
+- 识别静态工具元数据风险信号。
+- 生成 Markdown、JSON 和本地自包含 HTML 报告。
+- 生成英文和中文 Markdown 报告。
+- 创建本地审批记忆 snapshot，并做静态 diff。
+- 作为本地仓库 GitHub Action 质量门禁运行。
 
-- 早期透明度报告
-- 仅做静态分析
-- MCP server execution: false
-- External API calls: false
-- Secret values redacted: true
+## 它不是什么
 
-## 执行摘要
-
-- Server count: 1
-- Tool count: 2
-- Finding count: 4
-```
-
-报告文档：
-
-- `docs/REPORT_SCHEMA.md`
-- `docs/REPORT_GUIDE.md`
-- `docs/REPORT_GUIDE.zh-CN.md`
-- `docs/VIEWER_GUIDE.md`
-- `docs/VIEWER_GUIDE.zh-CN.md`
-- `docs/GITHUB_ACTION.md`
-- `docs/GITHUB_ACTION.zh-CN.md`
-- `docs/APPROVAL_MEMORY.md`
-- `docs/APPROVAL_MEMORY.zh-CN.md`
-- `docs/ECOSYSTEM_COMPATIBILITY.md`
-- `docs/ECOSYSTEM_COMPATIBILITY.zh-CN.md`
-- `docs/DISCOVERY.md`
-- `docs/DISCOVERY.zh-CN.md`
-
-MCP Scope 输出的是透明度提示和静态风险信号。它不会证明某个配置已经被攻击，也不会证明某个配置绝对安全；它不执行 MCP 服务，也不检查实时工具元数据。
+- 不是恶意软件扫描器。
+- 不是完整安全产品。
+- 不是任何 MCP 客户端的官方集成。
+- 不是 SaaS、托管 dashboard、chatbot 或通用 Agent 框架。
+- 不会执行 MCP server，也不会偷偷拉取实时工具元数据。
 
 ## GitHub Action
 
 可以在本仓库 workflow 中使用根目录 composite action。MCP Scope 还没有发布到 GitHub Marketplace。
 
 ```yaml
-- uses: ./
-  with:
-    config: examples/claude-desktop-filesystem.json
-    tools: examples/tools/filesystem-tools.json
-    report-format: markdown
-    report-path: mcp-scope-report.md
-    fail-on: high
-    lang: zh-CN
-```
+name: MCP Scope
 
-推荐权限：
+on:
+  pull_request:
+  push:
 
-```yaml
 permissions:
   contents: read
+
+jobs:
+  mcp-scope:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: ./
+        with:
+          config: examples/claude-desktop-filesystem.json
+          tools: examples/tools/filesystem-tools.json
+          report-format: markdown
+          report-path: mcp-scope-report.md
+          fail-on: high
+          lang: zh-CN
 ```
 
-输入、输出、阈值、job summary 和 artifact 上传示例见 `docs/GITHUB_ACTION.zh-CN.md`。
+输入、输出、阈值、job summary 和 artifact 上传示例见 [GitHub Action 文档](docs/GITHUB_ACTION.zh-CN.md)。
 
-## 审批记忆 Diff
+## 文档
 
-审查完成后可以生成一个本地脱敏 snapshot，之后把新的 config 和 tool metadata 导出文件与它做静态 diff：
+- [文档索引](docs/README.zh-CN.md)
+- [示例索引](examples/README.zh-CN.md)
+- [报告指南](docs/REPORT_GUIDE.zh-CN.md)
+- [报告 schema](docs/REPORT_SCHEMA.md)
+- [HTML 查看器指南](docs/VIEWER_GUIDE.zh-CN.md)
+- [审批记忆](docs/APPROVAL_MEMORY.zh-CN.md)
+- [Discovery](docs/DISCOVERY.zh-CN.md)
+- [客户端兼容说明](docs/ECOSYSTEM_COMPATIBILITY.zh-CN.md)
+- [截图指南](docs/SCREENSHOT_GUIDE.zh-CN.md)
+- [FAQ](docs/FAQ.zh-CN.md)
+- [安全政策](SECURITY.md)
+- [贡献说明](CONTRIBUTING.md)
+- [English README](README.md)
 
-```bash
-node apps/cli/dist/index.js snapshot \
-  --config examples/claude-desktop-filesystem.json \
-  --tools examples/tools/filesystem-tools.json \
-  --output examples/snapshots/filesystem-approved.snapshot.json \
-  --label "filesystem review"
+## 局限
 
-node apps/cli/dist/index.js diff \
-  --baseline examples/snapshots/filesystem-approved.snapshot.json \
-  --config examples/claude-desktop-filesystem.json \
-  --tools examples/tools/filesystem-tools.changed-description.json \
-  --format markdown \
-  --lang zh-CN
-```
+- 静态分析不能证明某个 server 安全，也不能证明它已被攻击。
+- 工具元数据需要来自本地导出文件；MCP Scope 不查询实时 server。
+- 带 `-like` 的 client profile 是兼容性提示，不是官方集成声明。
+- Discovery 只找可能的 config 文件，用户自己选择要扫描哪个。
+- GitHub Action 的失败阈值只基于静态报告严重程度。
 
-`--fail-on-change none|info|low|medium|high` 可以让本地脚本或 CI 在静态变化达到指定严重程度时失败。完整说明见 `docs/APPROVAL_MEMORY.zh-CN.md`。
-
-## 示例
-
-- `examples/claude-desktop-filesystem.json`
-- `examples/claude-code-project.mcp.json`
-- `examples/http-server-with-redacted-auth.json`
-- `examples/risky-local-command.json`
-- `examples/tools/filesystem-tools.json`
-- `examples/tools/poisoned-description-tools.json`
-- `examples/tools/credential-network-tools.json`
-- `examples/tools/schema-quality-tools.json`
-- `examples/tools/multi-tool-suspicious-fragments.json`
-- `examples/tools/filesystem-tools.changed-description.json`
-- `examples/tools/filesystem-tools.changed-schema.json`
-- `examples/tools/filesystem-tools.added-dangerous-tool.json`
-- `examples/configs/claude-desktop-filesystem.changed-command.json`
-- `examples/clients/claude-code-project.mcp.json`
-- `examples/clients/claude-code-user.claude.json`
-- `examples/clients/claude-desktop-config.json`
-- `examples/clients/cursor-like.mcp.json`
-- `examples/clients/cline-like.mcp-settings.json`
-- `examples/clients/continue-like.mcp.json`
-- `examples/clients/gemini-cli-like.settings.json`
-- `examples/clients/plugin-like.plugin.json`
-- `examples/clients/generic-mcp-servers.json`
-- `examples/clients/generic-mcp-servers-wrapper.json`
-- `examples/reports/sample-combined-report.md`
-- `examples/reports/sample-combined-report.zh-CN.md`
-- `examples/reports/sample-combined-report.json`
-- `examples/reports/sample-tools-only-report.md`
-- `examples/viewer/sample-combined-viewer.html`
-- `examples/viewer/sample-combined-viewer.zh-CN.html`
-- `examples/viewer/sample-tools-only-viewer.html`
-- `examples/snapshots/filesystem-approved.snapshot.json`
-- `examples/diffs/filesystem-description-change.diff.md`
-- `examples/diffs/filesystem-description-change.diff.zh-CN.md`
-- `examples/diffs/filesystem-added-dangerous-tool.diff.json`
-- `examples/diffs/filesystem-added-dangerous-tool.diff.html`
-- `examples/discovery/sample-discovery-report.md`
-- `examples/discovery/sample-discovery-report.zh-CN.md`
-- `examples/discovery/sample-discovery-report.json`
-- `examples/discovery/sample-discovery-report.html`
-- `docs/examples/github-action-basic.yml`
-- `docs/examples/github-action-threshold-gate.yml`
-- `docs/examples/github-action-zh-CN.yml`
-
-## 本地开发
-
-```bash
-pnpm install
-pnpm check
-```
-
-## 路线预览
-
-- Phase 4：本地只读查看器。已实现。
-- Phase 5：GitHub Action 质量门禁。已实现。
-- Phase 6：审批记忆 snapshot 与静态 diff。已实现。
-- Phase 7：客户端兼容示例与静态 discovery。已实现。
-
-完整路线见 `ROADMAP.md`。
+后续计划见 [ROADMAP.md](ROADMAP.md) 和 [发布后路线](docs/ROADMAP_AFTER_LAUNCH.zh-CN.md)。

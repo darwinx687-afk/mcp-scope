@@ -1,0 +1,38 @@
+name: False negative
+description: Report a static risk signal that MCP Scope missed.
+title: "[False negative]: "
+labels: ["false-negative"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this when MCP Scope misses something visible in local config or exported tool metadata. Do not paste secrets, exploit payloads, or full private configs.
+  - type: textarea
+    id: missed_signal
+    attributes:
+      label: Missed signal
+      description: What should MCP Scope have warned about?
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Redacted evidence
+      description: Provide a minimal redacted config or tool metadata shape.
+      render: json
+    validations:
+      required: true
+  - type: textarea
+    id: expected_rule
+    attributes:
+      label: Expected severity or rule idea
+      description: Use info, low, medium, or high if you have a view.
+  - type: checkboxes
+    id: boundaries
+    attributes:
+      label: Boundaries
+      options:
+        - label: This request can be handled with static local files and does not require executing MCP servers.
+          required: true
+        - label: I removed secret values, private paths, private hostnames, and full private configs.
+          required: true

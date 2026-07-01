@@ -1,0 +1,48 @@
+name: Feature request
+description: Suggest a local-first MCP Scope feature.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        MCP Scope is local-first and static by default. Requests that require SaaS, login, telemetry, secret collection, or silent MCP execution are out of scope.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What local review problem would this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - CLI
+        - Reports
+        - HTML viewer
+        - GitHub Action
+        - Approval memory diff
+        - Discovery
+        - Documentation
+        - Other
+    validations:
+      required: true
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: This can work without executing MCP servers by default.
+          required: true
+        - label: This can work without external AI API calls.
+          required: true
+        - label: This does not require collecting secret values.
+          required: true

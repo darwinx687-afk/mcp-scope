@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title desc">
+  <title id="title">MCP Scope logo</title>
+  <desc id="desc">A technical lens over a small MCP config graph.</desc>
+  <rect width="160" height="160" rx="28" fill="#f8fafc"/>
+  <rect x="18" y="18" width="124" height="124" rx="24" fill="#ffffff" stroke="#d6e3f0" stroke-width="2"/>
+  <path d="M44 48h20M44 112h20M96 48h20M96 112h20" stroke="#64748b" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="80" cy="80" r="32" fill="#eef6ff" stroke="#0f766e" stroke-width="5"/>
+  <circle cx="80" cy="80" r="14" fill="#ffffff" stroke="#2563eb" stroke-width="4"/>
+  <path d="M102 102l22 22" stroke="#0f766e" stroke-width="8" stroke-linecap="round"/>
+  <path d="M50 80h16M94 80h16M80 50v16M80 94v16" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="44" cy="80" r="5" fill="#f59e0b"/>
+  <circle cx="116" cy="80" r="5" fill="#f59e0b"/>
+</svg>

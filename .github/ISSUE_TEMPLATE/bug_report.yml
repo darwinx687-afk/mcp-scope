@@ -1,0 +1,54 @@
+name: Bug report
+description: Report a crash, incorrect output, or documented behavior mismatch.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Do not paste secrets, full private MCP configs, private paths, internal hostnames, or live tokens. Redacted report excerpts are welcome.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What went wrong?
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Command
+      description: Paste the MCP Scope command you ran. Remove private paths if needed.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Include exit code, redacted stderr/stdout, or redacted report excerpts.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: MCP Scope version or commit
+      placeholder: v0.1.0-preview or commit SHA
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: macOS 15, Node 24, pnpm 11
+  - type: checkboxes
+    id: redaction
+    attributes:
+      label: Redaction check
+      options:
+        - label: I removed secrets, tokens, full private configs, private paths, and sensitive hostnames.
+          required: true
