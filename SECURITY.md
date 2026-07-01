@@ -10,7 +10,7 @@ If you believe you found a security issue in MCP Scope itself, open a minimal pu
 
 ## Current Project State
 
-Phase 3 implements static local MCP config fingerprinting, local exported tool metadata analysis, and refined transparency reports. It does not execute MCP servers, send live `tools/list` requests, or call external APIs.
+Phase 4 implements static local MCP config fingerprinting, local exported tool metadata analysis, refined transparency reports, and self-contained local HTML viewer output. It does not execute MCP servers, send live `tools/list` requests, start a report web server, or call external APIs.
 
 Future MCP Scope reports should be treated as transparency warnings and review evidence. They are not full vulnerability proof, and they are not a guarantee that a server, config, or tool is safe.
 

@@ -2,11 +2,11 @@
 
 A local-first transparency and risk audit tool for MCP tool metadata, server configs, and AI agent tool permissions.
 
-MCP Scope is in Phase 3 / early preview. It is not production-ready, does not make complete security claims, and does not execute MCP servers.
+MCP Scope is in Phase 4 / early preview. It is not production-ready, does not make complete security claims, and does not execute MCP servers.
 
 ## Current Guarantees
 
-- No external API calls in the core Phase 3 checks.
+- No external API calls in the core Phase 4 checks.
 - No login.
 - No database.
 - No cloud service by default.
@@ -17,6 +17,8 @@ MCP Scope is in Phase 3 / early preview. It is not production-ready, does not ma
 - Tool metadata findings are static risk signals, not proof of compromise.
 - Markdown reports support `--lang en` and `--lang zh-CN`.
 - JSON reports keep stable English machine-readable keys.
+- HTML reports are self-contained local files with inline CSS and no external assets.
+- HTML reports require `--output`; MCP Scope does not open a browser or start a server.
 
 ## CLI
 
@@ -31,7 +33,10 @@ mcp-scope scan --config <path> --tools <path>
 mcp-scope scan --config <path> --tools <path> --lang zh-CN
 mcp-scope scan --config <path> --format json
 mcp-scope scan --config <path> --format markdown --output reports/mcp-scope-report.md
+mcp-scope scan --config <path> --tools <path> --format html --output reports/mcp-scope-report.html
 mcp-scope inspect-tools --tools <path> --format markdown --lang zh-CN
+mcp-scope inspect-tools --tools <path> --format html --output reports/mcp-scope-tools.html
+mcp-scope view --report examples/reports/sample-combined-report.json --output reports/sample-viewer.html
 ```
 
 `mcp-scope status` reports the current static scanner state:
@@ -40,9 +45,9 @@ mcp-scope inspect-tools --tools <path> --format markdown --lang zh-CN
 {
   "project": "mcp-scope",
   "name": "MCP Scope",
-  "phase": 3,
-  "status": "transparency-reports-ready",
-  "scanner": "static-config-tool-metadata-reports",
+  "phase": 4,
+  "status": "html-viewer-ready",
+  "scanner": "static-config-tool-metadata-html-viewer",
   "externalApiCalls": false,
   "serverExecution": false
 }
@@ -70,7 +75,7 @@ node apps/cli/dist/index.js inspect-tools --tools examples/tools/poisoned-descri
 
 ## Reports
 
-Phase 3 reports include an executive summary, checked/not-checked sections, severity legend, config summary, tool metadata summary, sorted findings, redaction guarantees, and limitations.
+Phase 4 reports include an executive summary, checked/not-checked sections, severity legend, config summary, tool metadata summary, sorted findings, redaction guarantees, and limitations. Markdown, JSON, and self-contained HTML are available.
 
 Example Markdown excerpt:
 
@@ -95,6 +100,8 @@ Report docs:
 - `docs/REPORT_SCHEMA.md`
 - `docs/REPORT_GUIDE.md`
 - `docs/REPORT_GUIDE.zh-CN.md`
+- `docs/VIEWER_GUIDE.md`
+- `docs/VIEWER_GUIDE.zh-CN.md`
 
 MCP Scope reports transparency notes and static risk signals. It does not prove compromise, prove safety, run MCP servers, or inspect live tool metadata.
 
@@ -113,6 +120,9 @@ MCP Scope reports transparency notes and static risk signals. It does not prove 
 - `examples/reports/sample-combined-report.zh-CN.md`
 - `examples/reports/sample-combined-report.json`
 - `examples/reports/sample-tools-only-report.md`
+- `examples/viewer/sample-combined-viewer.html`
+- `examples/viewer/sample-combined-viewer.zh-CN.html`
+- `examples/viewer/sample-tools-only-viewer.html`
 
 ## Development
 
@@ -123,7 +133,7 @@ pnpm check
 
 ## Roadmap Preview
 
-- Phase 4: local read-only viewer.
+- Phase 4: local read-only viewer. Implemented.
 - Phase 5: GitHub Action quality gate.
 - Phase 6: tool metadata diff and approval memory.
 

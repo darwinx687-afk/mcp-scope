@@ -8,7 +8,8 @@ export type PhaseStatus =
   | "scanner-not-implemented"
   | "config-fingerprint-ready"
   | "tool-metadata-rules-ready"
-  | "transparency-reports-ready";
+  | "transparency-reports-ready"
+  | "html-viewer-ready";
 
 export type RiskLevel = "info" | "low" | "medium" | "high" | "unknown";
 
@@ -32,9 +33,9 @@ export type McpScopeTarget = {
 export const FOUNDATION_STATUS = {
   project: PROJECT_SLUG,
   name: PROJECT_NAME,
-  phase: 3,
-  status: "transparency-reports-ready",
-  scanner: "static-config-tool-metadata-reports",
+  phase: 4,
+  status: "html-viewer-ready",
+  scanner: "static-config-tool-metadata-html-viewer",
   externalApiCalls: false,
   serverExecution: false
 } as const;

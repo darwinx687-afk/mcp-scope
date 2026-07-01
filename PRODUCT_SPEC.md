@@ -33,11 +33,12 @@ Developers are connecting MCP servers to AI coding tools and agent environments.
 - Capability classification.
 - Tool-change diff after approval.
 - Markdown and JSON reports.
+- Local self-contained HTML viewer.
 - GitHub Action quality gate.
 
-## Phase 3 Scope
+## Phase 4 Scope
 
-Phase 3 refines Markdown and JSON transparency reports into a stable, readable report system.
+Phase 4 adds a local, static, read-only HTML viewer on top of the stable report system.
 
 Included now:
 
@@ -56,7 +57,12 @@ Included now:
 - Stable JSON report model with `reportVersion`, execution flags, summaries, findings, redaction guarantees, and limitations.
 - Bilingual Markdown report rendering with `--lang en` and `--lang zh-CN`.
 - Markdown reports suitable for GitHub PRs, issues, and review notes.
+- Self-contained HTML report rendering with `--format html --output <path>`.
+- `view --report <path> --output <path>` for rendering an existing MCP Scope JSON report as HTML.
+- HTML viewer localization with `--lang en` and `--lang zh-CN`.
+- Inline CSS only; no CDN, external assets, tracking, telemetry, browser automation, or web server.
 - Curated report examples under `examples/reports`.
+- Curated viewer examples under `examples/viewer`.
 - Example configs and tests.
 
 Not included now:
@@ -66,7 +72,7 @@ Not included now:
 - Live `tools/list` requests.
 - External MCP registry connections.
 - Remote metadata fetching.
-- Web dashboard.
+- Hosted web dashboard.
 - GitHub Actions.
 - npm publishing.
 - External AI APIs.

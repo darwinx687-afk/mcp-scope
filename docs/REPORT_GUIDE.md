@@ -18,6 +18,20 @@ node apps/cli/dist/index.js scan --config examples/claude-code-project.mcp.json 
 
 JSON is intended for automation. Keys remain English and stable.
 
+## Generate HTML
+
+```bash
+node apps/cli/dist/index.js scan --config examples/claude-desktop-filesystem.json --tools examples/tools/filesystem-tools.json --format html --output reports/mcp-scope-viewer.html
+```
+
+HTML is best for local review and internal handoff. It is a self-contained local file with inline CSS and no external assets.
+
+You can also render a viewer from an existing JSON report:
+
+```bash
+node apps/cli/dist/index.js view --report examples/reports/sample-combined-report.json --output reports/sample-viewer.html
+```
+
 ## Generate Chinese Markdown
 
 ```bash
@@ -49,4 +63,4 @@ MCP Scope reports do not render env values or header values. Tool metadata examp
 
 ## Limits
 
-MCP Scope does not execute MCP servers, call live `tools/list`, run exploit payloads, call external AI APIs, or replace professional security review.
+MCP Scope does not execute MCP servers, call live `tools/list`, run exploit payloads, call external AI APIs, start a web server for reports, or replace professional security review.

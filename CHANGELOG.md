@@ -15,3 +15,6 @@
 - Added Phase 3 stable JSON transparency report model.
 - Added bilingual Markdown report rendering with `--lang en` and `--lang zh-CN`.
 - Added report schema/user guides and curated sample reports.
+- Added Phase 4 self-contained local HTML viewer rendering.
+- Added `scan --format html --output`, `inspect-tools --format html --output`, and `view --report --output`.
+- Added HTML viewer docs and curated viewer examples.

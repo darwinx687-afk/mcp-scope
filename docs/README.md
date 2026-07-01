@@ -1,5 +1,11 @@
 # MCP Scope Docs
 
-This directory will hold deeper documentation in later phases.
+This directory holds deeper documentation for local MCP Scope reports and review surfaces.
 
-Phase 0 intentionally keeps docs focused on project governance, scope boundaries, and the local-first foundation.
+Current report docs:
+
+- `REPORT_SCHEMA.md`
+- `REPORT_GUIDE.md`
+- `REPORT_GUIDE.zh-CN.md`
+- `VIEWER_GUIDE.md`
+- `VIEWER_GUIDE.zh-CN.md`

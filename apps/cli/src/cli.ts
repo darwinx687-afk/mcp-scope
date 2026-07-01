@@ -1,4 +1,4 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 
 import {
@@ -14,8 +14,11 @@ import {
 } from "@mcp-scope/core";
 import {
   type ReportLanguage,
+  renderHtmlFromJsonReport,
+  renderScanResultHtml,
   renderScanResultJson,
   renderScanResultMarkdown,
+  renderToolMetadataHtml,
   renderToolMetadataJson,
   renderToolMetadataMarkdown
 } from "@mcp-scope/report";
@@ -37,15 +40,17 @@ Usage:
   mcp-scope --help
   mcp-scope --version
   mcp-scope status
-  mcp-scope scan --config <path> [--tools <path>] [--format markdown|json] [--lang en|zh-CN] [--output <path>]
-  mcp-scope inspect-tools --tools <path> [--format markdown|json] [--lang en|zh-CN] [--output <path>]
+  mcp-scope scan --config <path> [--tools <path>] [--format markdown|json|html] [--lang en|zh-CN] [--output <path>]
+  mcp-scope inspect-tools --tools <path> [--format markdown|json|html] [--lang en|zh-CN] [--output <path>]
+  mcp-scope view --report <path> --output <path> [--lang en|zh-CN]
 
-Phase 3 note:
+Phase 4 note:
   MCP Scope statically reads local JSON config and exported tool metadata files.
-  It does not execute MCP servers, call tools/list, or call external APIs.
+  HTML output is a self-contained local file.
+  It does not execute MCP servers, call tools/list, start a web server, or call external APIs.
 `;
 
-type ScanFormat = "markdown" | "json";
+type ScanFormat = "markdown" | "json" | "html";
 
 type ScanCommandOptions = {
   readonly configPath: string;
@@ -60,6 +65,12 @@ type InspectToolsOptions = {
   readonly format: ScanFormat;
   readonly lang: ReportLanguage;
   readonly outputPath?: string;
+};
+
+type ViewCommandOptions = {
+  readonly reportPath: string;
+  readonly outputPath: string;
+  readonly lang: ReportLanguage;
 };
 
 export async function handleCli(args = process.argv.slice(2), io: CliIO = process): Promise<number> {
@@ -88,6 +99,10 @@ export async function handleCli(args = process.argv.slice(2), io: CliIO = proces
     return runInspectToolsCommand(args.slice(1), io);
   }
 
+  if (command === "view") {
+    return runViewCommand(args.slice(1), io);
+  }
+
   io.stderr.write(`Unknown MCP Scope command: ${command}\n`);
   io.stderr.write(`Run "mcp-scope --help" for usage.\n`);
   return 1;
@@ -103,6 +118,11 @@ async function runScanCommand(args: readonly string[], io: CliIO): Promise<numbe
     return 1;
   }
 
+  if (options.format === "html" && options.outputPath === undefined) {
+    io.stderr.write("HTML format requires --output <path>.\n");
+    return 1;
+  }
+
   try {
     const toolMetadata =
       options.toolsPath === undefined
@@ -111,7 +131,11 @@ async function runScanCommand(args: readonly string[], io: CliIO): Promise<numbe
     const parsedConfig = await readMcpConfigFile(options.configPath);
     const result = createMcpConfigFingerprint(parsedConfig, { toolMetadata });
     const rendered =
-      options.format === "json" ? renderScanResultJson(result) : renderScanResultMarkdown(result, { lang: options.lang });
+      options.format === "json"
+        ? renderScanResultJson(result)
+        : options.format === "html"
+          ? renderScanResultHtml(result, { lang: options.lang })
+          : renderScanResultMarkdown(result, { lang: options.lang });
 
     if (options.outputPath !== undefined) {
       await mkdir(dirname(options.outputPath), { recursive: true });
@@ -142,10 +166,19 @@ async function runInspectToolsCommand(args: readonly string[], io: CliIO): Promi
     return 1;
   }
 
+  if (options.format === "html" && options.outputPath === undefined) {
+    io.stderr.write("HTML format requires --output <path>.\n");
+    return 1;
+  }
+
   try {
     const result = evaluateToolManifest(await readMcpToolMetadataFile(options.toolsPath));
     const rendered =
-      options.format === "json" ? renderToolMetadataJson(result) : renderToolMetadataMarkdown(result, { lang: options.lang });
+      options.format === "json"
+        ? renderToolMetadataJson(result)
+        : options.format === "html"
+          ? renderToolMetadataHtml(result, { lang: options.lang })
+          : renderToolMetadataMarkdown(result, { lang: options.lang });
 
     if (options.outputPath !== undefined) {
       await mkdir(dirname(options.outputPath), { recursive: true });
@@ -164,6 +197,37 @@ async function runInspectToolsCommand(args: readonly string[], io: CliIO): Promi
 
     const message = error instanceof Error ? error.message : String(error);
     io.stderr.write(`MCP Scope tool metadata inspection failed: ${message}\n`);
+    return 1;
+  }
+}
+
+async function runViewCommand(args: readonly string[], io: CliIO): Promise<number> {
+  const options = parseViewArgs(args);
+
+  if (typeof options === "string") {
+    io.stderr.write(`${options}\n`);
+    return 1;
+  }
+
+  let reportJson: string;
+
+  try {
+    reportJson = await readFile(options.reportPath, "utf8");
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    io.stderr.write(`Unable to read report file "${options.reportPath}": ${message}\n`);
+    return 1;
+  }
+
+  try {
+    const rendered = renderHtmlFromJsonReport(reportJson, { lang: options.lang });
+    await mkdir(dirname(options.outputPath), { recursive: true });
+    await writeFile(options.outputPath, rendered, "utf8");
+    io.stdout.write(`Wrote MCP Scope HTML viewer to ${options.outputPath}\n`);
+    return 0;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    io.stderr.write(`MCP Scope view failed: ${message}\n`);
     return 1;
   }
 }
@@ -193,8 +257,8 @@ function parseScanArgs(args: readonly string[]): ScanCommandOptions | string {
     if (arg === "--format") {
       const nextFormat = args[index + 1];
 
-      if (nextFormat !== "json" && nextFormat !== "markdown") {
-        return `Unsupported --format "${nextFormat ?? ""}". Use "markdown" or "json".`;
+      if (nextFormat !== "json" && nextFormat !== "markdown" && nextFormat !== "html") {
+        return `Unsupported --format "${nextFormat ?? ""}". Use "markdown", "json", or "html".`;
       }
 
       format = nextFormat;
@@ -282,8 +346,8 @@ function parseInspectToolsArgs(args: readonly string[]): InspectToolsOptions | s
     if (arg === "--format") {
       const nextFormat = args[index + 1];
 
-      if (nextFormat !== "json" && nextFormat !== "markdown") {
-        return `Unsupported --format "${nextFormat ?? ""}". Use "markdown" or "json".`;
+      if (nextFormat !== "json" && nextFormat !== "markdown" && nextFormat !== "html") {
+        return `Unsupported --format "${nextFormat ?? ""}". Use "markdown", "json", or "html".`;
       }
 
       format = nextFormat;
@@ -331,5 +395,67 @@ function parseInspectToolsArgs(args: readonly string[]): InspectToolsOptions | s
     format,
     lang,
     outputPath
+  };
+}
+
+function parseViewArgs(args: readonly string[]): ViewCommandOptions | string {
+  let reportPath: string | undefined;
+  let outputPath: string | undefined;
+  let lang: ReportLanguage = "en";
+
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index];
+
+    if (arg === "--report") {
+      const value = args[index + 1];
+
+      if (value === undefined || value.startsWith("--")) {
+        return 'Missing value for --report <path>';
+      }
+
+      reportPath = value;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--output") {
+      const value = args[index + 1];
+
+      if (value === undefined || value.startsWith("--")) {
+        return 'Missing value for --output <path>';
+      }
+
+      outputPath = value;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--lang") {
+      const value = args[index + 1];
+
+      if (value !== "en" && value !== "zh-CN") {
+        return `Unsupported --lang "${value ?? ""}". Use "en" or "zh-CN".`;
+      }
+
+      lang = value;
+      index += 1;
+      continue;
+    }
+
+    return `Unknown view option: ${arg ?? ""}`;
+  }
+
+  if (reportPath === undefined || reportPath.trim() === "") {
+    return 'Missing required option: --report <path>';
+  }
+
+  if (outputPath === undefined || outputPath.trim() === "") {
+    return 'HTML viewer output requires --output <path>';
+  }
+
+  return {
+    reportPath,
+    outputPath,
+    lang
   };
 }

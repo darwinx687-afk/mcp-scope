@@ -18,6 +18,20 @@ node apps/cli/dist/index.js scan --config examples/claude-code-project.mcp.json 
 
 JSON 主要给自动化流程使用。字段名保持英文且尽量稳定。
 
+## 生成 HTML 报告
+
+```bash
+node apps/cli/dist/index.js scan --config examples/claude-desktop-filesystem.json --tools examples/tools/filesystem-tools.json --format html --output reports/mcp-scope-viewer.html
+```
+
+HTML 适合本地审查和内部交接。它是自包含本地文件，使用内联 CSS，不依赖外部资源。
+
+也可以从已有 JSON 报告生成查看器：
+
+```bash
+node apps/cli/dist/index.js view --report examples/reports/sample-combined-report.json --output reports/sample-viewer.html
+```
+
 ## 生成中文 Markdown 报告
 
 ```bash
@@ -53,4 +67,4 @@ risk signal 表示 MCP Scope 在本地静态文件中看到了值得人工审查
 
 ## 局限性
 
-MCP Scope 不执行 MCP servers，不连接实时 `tools/list`，不运行 exploit payload，不调用外部 AI APIs，也不能替代专业安全审查。
+MCP Scope 不执行 MCP servers，不连接实时 `tools/list`，不运行 exploit payload，不调用外部 AI APIs，不为报告启动 web server，也不能替代专业安全审查。

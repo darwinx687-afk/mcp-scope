@@ -1,3 +1,6 @@
+import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { describe, expect, it } from "vitest";
@@ -49,9 +52,9 @@ describe("mcp-scope CLI", () => {
     expect(parsed).toMatchObject({
       project: "mcp-scope",
       name: "MCP Scope",
-      phase: 3,
-      status: "transparency-reports-ready",
-      scanner: "static-config-tool-metadata-reports",
+      phase: 4,
+      status: "html-viewer-ready",
+      scanner: "static-config-tool-metadata-html-viewer",
       externalApiCalls: false,
       serverExecution: false
     });
@@ -101,6 +104,40 @@ describe("mcp-scope CLI", () => {
     expect(result.stdout).toContain("## MCP Scope 检查了什么");
   });
 
+  it("writes combined scan HTML to an output file", async () => {
+    const configPath = fileURLToPath(
+      new URL("../../../examples/claude-desktop-filesystem.json", import.meta.url)
+    );
+    const toolsPath = fileURLToPath(
+      new URL("../../../examples/tools/filesystem-tools.json", import.meta.url)
+    );
+    const tempDir = await mkdtemp(join(tmpdir(), "mcp-scope-cli-"));
+    const outputPath = join(tempDir, "combined.html");
+
+    try {
+      const result = await runCli([
+        "scan",
+        "--config",
+        configPath,
+        "--tools",
+        toolsPath,
+        "--format",
+        "html",
+        "--output",
+        outputPath
+      ]);
+      const html = await readFile(outputPath, "utf8");
+
+      expect(result.exitCode).toBe(0);
+      expect(result.stdout).toContain("Wrote MCP Scope html report");
+      expect(html).toContain("<title>MCP Scope Report</title>");
+      expect(html).toContain("Summary");
+      expect(html).toContain("Tool Metadata");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
   it("runs inspect-tools with a local tool metadata file", async () => {
     const toolsPath = fileURLToPath(
       new URL("../../../examples/tools/credential-network-tools.json", import.meta.url)
@@ -123,6 +160,54 @@ describe("mcp-scope CLI", () => {
     expect(result.stdout).toContain("静态风险信号");
   });
 
+  it("writes inspect-tools HTML to an output file", async () => {
+    const toolsPath = fileURLToPath(
+      new URL("../../../examples/tools/poisoned-description-tools.json", import.meta.url)
+    );
+    const tempDir = await mkdtemp(join(tmpdir(), "mcp-scope-cli-"));
+    const outputPath = join(tempDir, "tools.html");
+
+    try {
+      const result = await runCli([
+        "inspect-tools",
+        "--tools",
+        toolsPath,
+        "--format",
+        "html",
+        "--output",
+        outputPath
+      ]);
+      const html = await readFile(outputPath, "utf8");
+
+      expect(result.exitCode).toBe(0);
+      expect(result.stdout).toContain("Wrote MCP Scope html tool metadata report");
+      expect(html).toContain("Potential metadata-injection signal");
+      expect(html).not.toContain("<script");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  it("renders an existing JSON report with view", async () => {
+    const reportPath = fileURLToPath(
+      new URL("../../../examples/reports/sample-combined-report.json", import.meta.url)
+    );
+    const tempDir = await mkdtemp(join(tmpdir(), "mcp-scope-cli-"));
+    const outputPath = join(tempDir, "viewer.html");
+
+    try {
+      const result = await runCli(["view", "--report", reportPath, "--output", outputPath, "--lang", "zh-CN"]);
+      const html = await readFile(outputPath, "utf8");
+
+      expect(result.exitCode).toBe(0);
+      expect(result.stdout).toContain("Wrote MCP Scope HTML viewer");
+      expect(html).toContain("本地 MCP 透明度报告");
+      expect(html).toContain("MCP Scope 没有检查什么");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
   it("errors clearly when a tool metadata file is missing", async () => {
     const result = await runCli(["inspect-tools", "--tools", "examples/tools/not-found.json"]);
 
@@ -142,5 +227,25 @@ describe("mcp-scope CLI", () => {
 
     expect(result.exitCode).toBe(1);
     expect(result.stderr).toContain('Unsupported --format "xml"');
+  });
+
+  it("errors clearly when HTML output is missing", async () => {
+    const configPath = fileURLToPath(
+      new URL("../../../examples/claude-desktop-filesystem.json", import.meta.url)
+    );
+    const result = await runCli(["scan", "--config", configPath, "--format", "html"]);
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("HTML format requires --output <path>");
+  });
+
+  it("errors clearly when view output is missing", async () => {
+    const reportPath = fileURLToPath(
+      new URL("../../../examples/reports/sample-combined-report.json", import.meta.url)
+    );
+    const result = await runCli(["view", "--report", reportPath]);
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("HTML viewer output requires --output <path>");
   });
 });

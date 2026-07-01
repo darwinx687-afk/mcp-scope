@@ -14,6 +14,9 @@ import type {
   ToolRiskFinding,
   TransparencyNote
 } from "@mcp-scope/core";
+import { renderHtmlViewer } from "./html.js";
+
+export { escapeHtml, renderHtmlFromJsonReport, renderHtmlViewer } from "./html.js";
 
 export type ReportLanguage = "en" | "zh-CN";
 
@@ -117,7 +120,7 @@ export function renderFoundationStatusReport(): string {
     `- scanner: ${FOUNDATION_STATUS.scanner}`,
     `- externalApiCalls: ${String(FOUNDATION_STATUS.externalApiCalls)}`,
     "",
-    "Phase 3 refines static transparency reports. It does not execute MCP servers, call tools/list, or call external APIs."
+    "Phase 4 adds a local self-contained HTML viewer. It does not execute MCP servers, call tools/list, or call external APIs."
   ].join("\n");
 }
 
@@ -145,6 +148,13 @@ export function renderScanResultMarkdown(
   return renderTransparencyReportMarkdown(buildScanReportModel(result), options);
 }
 
+export function renderScanResultHtml(
+  result: McpScopeScanResult,
+  options: ReportRenderOptions = {}
+): string {
+  return renderHtmlViewer(buildScanReportModel(result), options);
+}
+
 export function renderScanResultJson(result: McpScopeScanResult): string {
   return `${JSON.stringify(buildScanReportModel(result), null, 2)}\n`;
 }
@@ -154,6 +164,13 @@ export function renderToolMetadataMarkdown(
   options: ReportRenderOptions = {}
 ): string {
   return renderTransparencyReportMarkdown(buildToolMetadataReportModel(result), options);
+}
+
+export function renderToolMetadataHtml(
+  result: ToolMetadataScanResult,
+  options: ReportRenderOptions = {}
+): string {
+  return renderHtmlViewer(buildToolMetadataReportModel(result), options);
 }
 
 export function renderToolMetadataJson(result: ToolMetadataScanResult): string {

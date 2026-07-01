@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MCP Scope Report</title>
+<style>
+    :root {
+      --ink: #172033;
+      --muted: #64748b;
+      --line: #dbe3ef;
+      --panel: #ffffff;
+      --panel-2: #f6f8fb;
+      --accent: #0f766e;
+      --high: #b42318;
+      --medium: #b45309;
+      --low: #4d7c0f;
+      --info: #2563eb;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #eef3f8;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    .page { width: min(1120px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 38px; }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+      gap: 24px;
+      align-items: end;
+      padding: 30px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: linear-gradient(135deg, #ffffff 0%, #f6f8fb 100%);
+      box-shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
+    }
+    .eyebrow { margin: 0 0 8px; color: var(--accent); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0; }
+    h1 { margin: 0; font-size: clamp(34px, 5vw, 58px); line-height: 1; letter-spacing: 0; }
+    h2 { margin: 0 0 16px; font-size: 22px; letter-spacing: 0; }
+    h3 { margin: 12px 0; font-size: 18px; letter-spacing: 0; }
+    .subtitle { margin: 12px 0 0; color: var(--muted); font-size: 18px; }
+    section { min-width: 0; margin-top: 18px; padding: 22px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
+    .grid { display: grid; gap: 18px; }
+    .two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .status-grid, .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .status-grid { justify-content: flex-end; }
+    .status, .chip, .badge, .severity {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 4px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--panel-2);
+      font-size: 13px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+    .status.good { color: var(--accent); border-color: rgba(15, 118, 110, 0.28); background: #ecfdf5; }
+    .status.warn { color: var(--medium); border-color: rgba(180, 83, 9, 0.28); background: #fffbeb; }
+    .cards { display: grid; grid-template-columns: repeat(4, minmax(120px, 1fr)); gap: 12px; }
+    .card { min-width: 0; padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: #fbfcfe; }
+    .card span { display: block; color: var(--muted); font-size: 13px; }
+    .card strong { display: block; margin-top: 8px; font-size: 26px; overflow-wrap: anywhere; }
+    .kv { display: grid; gap: 8px; margin: 0; }
+    .kv div { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+    .kv dt { color: var(--muted); font-weight: 750; }
+    .kv dd { margin: 0; overflow-wrap: anywhere; }
+    .bar-row { display: grid; grid-template-columns: 132px minmax(0, 1fr) 42px; gap: 10px; align-items: center; margin: 10px 0; }
+    .bar { height: 12px; border-radius: 999px; background: var(--panel-2); overflow: hidden; }
+    .bar span { display: block; height: 100%; background: var(--accent); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 11px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+    th { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0; }
+    code { padding: 2px 6px; border-radius: 6px; background: var(--panel-2); overflow-wrap: anywhere; }
+    .findings { display: grid; gap: 14px; }
+    .finding { padding: 18px; border: 1px solid var(--line); border-left: 5px solid var(--muted); border-radius: 8px; background: #fff; }
+    .finding.high { border-left-color: var(--high); }
+    .finding.medium { border-left-color: var(--medium); }
+    .finding.low { border-left-color: var(--low); }
+    .finding.info { border-left-color: var(--info); }
+    .finding-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .severity.high { color: var(--high); background: #fef3f2; border-color: rgba(180, 35, 24, 0.28); }
+    .severity.medium { color: var(--medium); background: #fffbeb; border-color: rgba(180, 83, 9, 0.28); }
+    .severity.low { color: var(--low); background: #f7fee7; border-color: rgba(77, 124, 15, 0.28); }
+    .severity.info { color: var(--info); background: #eff6ff; border-color: rgba(37, 99, 235, 0.28); }
+    ul { margin: 0; padding-left: 20px; }
+    li { margin: 8px 0; }
+    .muted { color: var(--muted); }
+    footer { margin-top: 24px; color: var(--muted); font-size: 14px; text-align: center; }
+    @media (max-width: 780px) {
+      .hero, .two { grid-template-columns: 1fr; }
+      .status-grid { justify-content: flex-start; }
+      .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .kv div, .bar-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<main class="page">
+
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Early transparency tool</p>
+        <h1>MCP Scope</h1>
+        <p class="subtitle">Local MCP transparency report</p>
+      </div>
+      <div class="status-grid">
+        <span class="status good">Static analysis only</span>
+        <span class="status good">External API calls: false</span>
+        <span class="status good">MCP server execution: false</span>
+        <span class="status good">Secret values redacted: true</span>
+      </div>
+    </header>
+
+    <section>
+      <h2>Summary</h2>
+      <div class="cards">
+        <article class="card"><span>Servers</span><strong>1</strong></article><article class="card"><span>Tools</span><strong>2</strong></article><article class="card"><span>Findings</span><strong>7</strong></article><article class="card"><span>Highest</span><strong>medium</strong></article><article class="card"><span>High</span><strong>0</strong></article><article class="card"><span>Medium</span><strong>3</strong></article><article class="card"><span>Low</span><strong>1</strong></article><article class="card"><span>Info</span><strong>3</strong></article>
+      </div>
+    </section>
+
+    <section>
+      <h2>Source and Scan Scope</h2>
+      
+    <dl class="kv">
+      <div><dt>configPath</dt><dd>examples/claude-desktop-filesystem.json</dd></div><div><dt>toolsPath</dt><dd>examples/tools/filesystem-tools.json</dd></div><div><dt>metadataSourceType</dt><dd>mcp-scope-tool-manifest</dd></div><div><dt>generatedAt</dt><dd>2026-07-01T13:17:30.999Z</dd></div><div><dt>reportVersion</dt><dd>0.3.0</dd></div><div><dt>schemaVersion</dt><dd>1</dd></div><div><dt>scanMode</dt><dd>combined</dd></div>
+    </dl>
+    </section>
+<section class="grid two">
+
+    <section>
+      <h2>Severity Distribution</h2>
+      <div class="bar-row">
+          <span class="badge tag-medium">medium</span>
+          <div class="bar" aria-hidden="true"><span style="width:43%"></span></div>
+          <strong>3</strong>
+        </div><div class="bar-row">
+          <span class="badge tag-low">low</span>
+          <div class="bar" aria-hidden="true"><span style="width:14%"></span></div>
+          <strong>1</strong>
+        </div><div class="bar-row">
+          <span class="badge tag-info">info</span>
+          <div class="bar" aria-hidden="true"><span style="width:43%"></span></div>
+          <strong>3</strong>
+        </div>
+    </section>
+
+    <section>
+      <h2>Category Distribution</h2>
+      <div class="bar-row">
+          <span class="badge tag-config-transparency">config-transparency</span>
+          <div class="bar" aria-hidden="true"><span style="width:43%"></span></div>
+          <strong>3</strong>
+        </div><div class="bar-row">
+          <span class="badge tag-annotation-trust">annotation-trust</span>
+          <div class="bar" aria-hidden="true"><span style="width:29%"></span></div>
+          <strong>2</strong>
+        </div><div class="bar-row">
+          <span class="badge tag-filesystem-access">filesystem-access</span>
+          <div class="bar" aria-hidden="true"><span style="width:29%"></span></div>
+          <strong>2</strong>
+        </div>
+    </section>
+</section>
+
+    <section>
+      <h2>Capability Hints</h2>
+      <div class="chips"><span class="chip">filesystem: 3</span><span class="chip">shell: 1</span></div>
+    </section>
+
+    <section>
+      <h2>Config</h2>
+      
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Name</th><th>Transport</th><th>Command/URL</th><th>Env keys</th><th>Header keys</th><th>Capabilities</th><th>Risk</th></tr></thead>
+        <tbody><tr><td>filesystem</td><td>stdio</td><td>npx</td><td>None</td><td>None</td><td>filesystem, shell</td><td>medium</td></tr></tbody>
+      </table>
+    </div>
+    </section>
+
+    <section>
+      <h2>Tool Metadata</h2>
+      
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Name</th><th>Title</th><th>Capabilities</th><th>Findings</th><th>Highest</th><th>Categories</th></tr></thead>
+        <tbody><tr><td>read_file</td><td>Read File</td><td>filesystem</td><td>2</td><td>medium</td><td>filesystem-access, annotation-trust</td></tr><tr><td>write_file</td><td>Write File</td><td>filesystem</td><td>2</td><td>medium</td><td>filesystem-access, annotation-trust</td></tr></tbody>
+      </table>
+    </div>
+    </section>
+
+    <section>
+      <h2>Findings</h2>
+      <div class="findings">
+        <article class="finding medium">
+          <div class="finding-head">
+            <span class="severity medium">MEDIUM</span>
+            <span class="badge">config-transparency</span>
+            <code>broad_path_argument</code>
+          </div>
+          <h3>Broad Path Argument</h3>
+          
+    <dl class="kv">
+      <div><dt>Target</dt><dd>config-server:filesystem (examples/claude-desktop-filesystem.json)</dd></div><div><dt>Message</dt><dd>Argument &quot;~/Documents/demo-project&quot; references a broad local path.</dd></div><div><dt>Evidence</dt><dd>server &quot;filesystem&quot;</dd></div><div><dt>Recommendation</dt><dd>Review this config entry before approving the MCP server.</dd></div>
+    </dl>
+        </article>
+        <article class="finding medium">
+          <div class="finding-head">
+            <span class="severity medium">MEDIUM</span>
+            <span class="badge">filesystem-access</span>
+            <code>filesystem_access_signal</code>
+          </div>
+          <h3>Filesystem access signal</h3>
+          
+    <dl class="kv">
+      <div><dt>Target</dt><dd>tool:read_file (examples/tools/filesystem-tools.json)</dd></div><div><dt>Message</dt><dd>Tool metadata references files, paths, directories, or filesystem operations.</dd></div><div><dt>Evidence</dt><dd>metadata contains &quot;read_file&quot;</dd></div><div><dt>Recommendation</dt><dd>Review allowed paths and confirm values are visible before approval.</dd></div>
+    </dl>
+        </article>
+        <article class="finding medium">
+          <div class="finding-head">
+            <span class="severity medium">MEDIUM</span>
+            <span class="badge">filesystem-access</span>
+            <code>filesystem_access_signal</code>
+          </div>
+          <h3>Filesystem access signal</h3>
+          
+    <dl class="kv">
+      <div><dt>Target</dt><dd>tool:write_file (examples/tools/filesystem-tools.json)</dd></div><div><dt>Message</dt><dd>Tool metadata references files, paths, directories, or filesystem operations.</dd></div><div><dt>Evidence</dt><dd>metadata contains &quot;write_file&quot;</dd></div><div><dt>Recommendation</dt><dd>Review allowed paths and confirm values are visible before approval.</dd></div>
+    </dl>
+        </article>
+        <article class="finding low">
+          <div class="finding-head">
+            <span class="severity low">LOW</span>
+            <span class="badge">config-transparency</span>
+            <code>local_stdio_command</code>
+          </div>
+          <h3>Local Stdio Command</h3>
+          
+    <dl class="kv">
+      <div><dt>Target</dt><dd>config-server:filesystem (examples/claude-desktop-filesystem.json)</dd></div><div><dt>Message</dt><dd>This stdio server starts a local process when used by an MCP client.</dd></div><div><dt>Evidence</dt><dd>server &quot;filesystem&quot;</dd></div><div><dt>Recommendation</dt><dd>Review this config entry before approving the MCP server.</dd></div>
+    </dl>
+        </article>
+        <article class="finding info">
+          <div class="finding-head">
+            <span class="severity info">INFO</span>
+            <span class="badge">annotation-trust</span>
+            <code>annotation_trust_note</code>
+          </div>
+          <h3>Tool annotations are untrusted metadata</h3>
+          
+    <dl class="kv">
+      <div><dt>Target</dt><dd>tool:read_file (examples/tools/filesystem-tools.json)</dd></div><div><dt>Message</dt><dd>Annotations can help review, but they are metadata claims until server trust is established.</dd></div><div><dt>Evidence</dt><dd>annotations include readOnlyHint</dd></div><div><dt>Recommendation</dt><dd>Treat annotations as review hints, not proof of behavior.</dd></div>
+    </dl>
+        </article>
+        <article class="finding info">
+          <div class="finding-head">
+            <span class="severity info">INFO</span>
+            <span class="badge">annotation-trust</span>
+            <code>annotation_trust_note</code>
+          </div>
+          <h3>Tool annotations are untrusted metadata</h3>
+          
+    <dl class="kv">
+      <div><dt>Target</dt><dd>tool:write_file (examples/tools/filesystem-tools.json)</dd></div><div><dt>Message</dt><dd>Annotations can help review, but they are metadata claims until server trust is established.</dd></div><div><dt>Evidence</dt><dd>annotations include destructiveHint, openWorldHint</dd></div><div><dt>Recommendation</dt><dd>Treat annotations as review hints, not proof of behavior.</dd></div>
+    </dl>
+        </article>
+        <article class="finding info">
+          <div class="finding-head">
+            <span class="severity info">INFO</span>
+            <span class="badge">config-transparency</span>
+            <code>inferred_stdio_transport</code>
+          </div>
+          <h3>Inferred Stdio Transport</h3>
+          
+    <dl class="kv">
+      <div><dt>Target</dt><dd>config-server:filesystem (examples/claude-desktop-filesystem.json)</dd></div><div><dt>Message</dt><dd>Transport type was omitted and command is present, so MCP Scope inferred stdio.</dd></div><div><dt>Evidence</dt><dd>server &quot;filesystem&quot;</dd></div><div><dt>Recommendation</dt><dd>Review this config entry before approving the MCP server.</dd></div>
+    </dl>
+        </article></div>
+    </section>
+
+    <section class="grid two">
+      <div>
+        <h2>What MCP Scope Checked</h2>
+        <ul><li>Local MCP config files with a top-level mcpServers object.</li><li>Local exported tool metadata, when provided.</li><li>Tool descriptions, inputSchema, outputSchema, and annotations.</li><li>Startup command and URL visibility.</li><li>Environment and header key visibility.</li></ul>
+      </div>
+      <div>
+        <h2>What MCP Scope Did Not Check</h2>
+        <ul><li>No MCP server execution.</li><li>No live tools/list request.</li><li>No external AI API call.</li><li>No exploit simulation.</li><li>No proof of compromise.</li><li>Not a replacement for security review.</li></ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Redaction and Sharing Notice</h2>
+      
+    <dl class="kv">
+      <div><dt>envValuesRendered</dt><dd>false</dd></div><div><dt>headerValuesRendered</dt><dd>false</dd></div><div><dt>secretLikeValuesRendered</dt><dd>false</dd></div>
+    </dl>
+      <ul><li>Env values are never rendered.</li><li>Header values are never rendered.</li><li>Secret-like values are redacted before rendering.</li><li>Do not post private configs in public issues.</li></ul>
+    </section>
+
+    <section>
+      <h2>Limitations</h2>
+      
+    <dl class="kv">
+      <div><dt>staticOnly</dt><dd>true</dd></div><div><dt>noRuntimeVerification</dt><dd>true</dd></div><div><dt>noExploitExecution</dt><dd>true</dd></div><div><dt>noExternalRegistryCheck</dt><dd>true</dd></div><div><dt>notProofOfCompromise</dt><dd>true</dd></div>
+    </dl>
+      <ul><li>This report is static analysis of local files only.</li><li>MCP Scope did not execute MCP servers or tools.</li><li>MCP Scope did not connect to live tools/list endpoints.</li><li>MCP Scope did not call external AI APIs or registries.</li><li>Findings are risk signals and warnings, not proof of compromise.</li></ul>
+    </section>
+<footer>MCP Scope is an early transparency tool. Findings are static risk signals, not proof of compromise.</footer>
+</main>
+</body>
+</html>

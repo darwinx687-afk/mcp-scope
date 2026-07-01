@@ -11,8 +11,10 @@ coverage/
 !examples/reports/**
 mcp-scope-report*.md
 mcp-scope-report*.json
+mcp-scope-report*.html
 *.mcp-scope-report.md
 *.mcp-scope-report.json
+*.mcp-scope-report.html
 
 # Local environment files can contain secrets or private MCP config paths.
 .env

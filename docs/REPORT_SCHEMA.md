@@ -1,16 +1,16 @@
 # MCP Scope Report Schema
 
-MCP Scope Phase 3 reports use a stable JSON shape for automation and localized Markdown for human review.
+MCP Scope Phase 4 reports use a stable JSON shape for automation, localized Markdown for human review, and self-contained HTML for local read-only viewing.
 
 ## Version Fields
 
-- `reportVersion`: report contract version. Phase 3 uses `0.3.0`.
-- `schemaVersion`: machine-readable schema version. Phase 3 uses `1`.
+- `reportVersion`: report contract version. Phase 4 uses `0.3.0`.
+- `schemaVersion`: machine-readable schema version. Phase 4 uses `1`.
 - `generatedAt`: ISO timestamp from the local scan run.
 
 ## Stable vs Display Fields
 
-JSON keys are stable English machine-readable fields. Markdown headings and explanatory text can be localized with `--lang`.
+JSON keys are stable English machine-readable fields. Markdown and HTML headings and explanatory text can be localized with `--lang`.
 
 Rule IDs, categories, severities, target types, and JSON keys should not be translated.
 
@@ -95,6 +95,19 @@ Evidence must be short and safe. Findings are static risk signals, not confirmed
 - `notes`
 
 Reports must not include env values, header values, or obvious secret-like example values.
+
+## HTML Viewer Contract
+
+The HTML viewer renders this same JSON report model. It does not introduce a new schema.
+
+Viewer requirements:
+
+- Use only local report data.
+- Escape report-derived strings before rendering.
+- Include inline CSS only.
+- Do not use external CSS, JavaScript, fonts, images, CDNs, telemetry, or tracking pixels.
+- Do not render env values, header values, or obvious secret-like example values.
+- Do not start a web server or open a browser.
 
 ## Limitations Model
 

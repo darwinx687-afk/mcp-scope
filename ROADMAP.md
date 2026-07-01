@@ -24,6 +24,8 @@ Status: implemented with stable JSON report model and bilingual Markdown renderi
 
 Provide a local viewer for generated reports. It must remain read-only.
 
+Status: implemented as self-contained HTML output plus `view --report`.
+
 ## Phase 5: GitHub Action Quality Gate
 
 Add optional CI checks for committed MCP config and metadata snapshots.

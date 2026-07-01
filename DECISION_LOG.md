@@ -27,3 +27,10 @@
 - Markdown reports support bilingual rendering through `--lang en` and `--lang zh-CN`.
 - JSON reports remain stable English machine-readable schema fields.
 - Curated report examples live under `examples/reports`; generated smoke reports remain ignored under `reports/`.
+
+## 2026-07-01 Phase 4
+
+- The viewer is a local static HTML file, not a hosted dashboard.
+- HTML output requires `--output` to avoid dumping viewer markup to stdout.
+- The `view` command renders an existing MCP Scope JSON report and does not execute MCP servers, start a web server, open a browser, or call external APIs.
+- Curated viewer examples live under `examples/viewer`; generated smoke reports remain ignored under `reports/`.
