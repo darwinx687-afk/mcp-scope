@@ -1,13 +1,13 @@
 # Run State
 
 - Current phase: Phase 10
-- Current status: GitHub prerelease public; PNG launch assets exported; social channels prepared for manual posting
-- Next loop: Phase 11 feedback-driven iteration
-- Current scope guard: launch execution records only; no MCP server execution, no live tools/list requests, no external APIs in scanning, no npm publish, no Marketplace claim, no production-grade security claim, no browser posting automation, no social/community posts
+- Current status: GitHub prerelease public; LinkedIn and Xiaohongshu launch posts published; first launch feedback snapshot recorded with no actionable feedback yet
+- Next loop: continue 24/72 hour launch feedback monitoring before Phase 11 unless real actionable feedback arrives
+- Current scope guard: launch tracking records only; no MCP server execution, no live tools/list requests, no external APIs in scanning, no npm publish, no Marketplace claim, no production-grade security claim, no new social/community posts without explicit approval
 
 ## Latest Loop
 
-- Objective: prepare bilingual launch sharing copy, SVG social assets, release review checklist, posting tracker, feedback monitoring playbook, issue triage guide, and Phase 11 feedback-to-roadmap review templates.
+- Objective: record the first public launch feedback snapshot for GitHub prerelease, LinkedIn, and Xiaohongshu.
 - Scanner state: static config fingerprint plus local exported tool metadata analysis; config parsing now supports `mcpServers`, `projects[*].mcpServers`, `mcp.servers`, and top-level `servers`.
 - External API calls: false.
 - MCP server execution: false.
@@ -29,5 +29,6 @@
 - Preview tag: `v0.1.0-preview`.
 - GitHub prerelease: public prerelease at `https://github.com/darwinx687-afk/mcp-scope/releases/tag/v0.1.0-preview`; still not a final/stable release.
 - PNG launch assets: exported under `launch/assets/exports/` from repository-local SVG sources.
-- Social channel state: non-GitHub channels are ready-to-post or manual-needed; V2EX and Reddit are skipped.
-- Publishing state: public GitHub source repository and public GitHub prerelease exist; no npm package, Marketplace listing, Pages site, deployment, final/stable release, or social/community post was published.
+- Social channel state: LinkedIn and Xiaohongshu are posted; Juejin, Jike, WeChat group, WeChat moments, X / Twitter, and Dev.to remain manual-needed; Hacker News remains ready-to-post; V2EX and Reddit are skipped.
+- Publishing state: public GitHub source repository, public GitHub prerelease, LinkedIn post, and Xiaohongshu post exist; no npm package, Marketplace listing, Pages site, deployment, or final/stable release was published.
+- Feedback state: first snapshot created in `launch/FEEDBACK_SNAPSHOT.md` and `launch/FEEDBACK_SNAPSHOT.zh-CN.md`; no actionable feedback yet, so Phase 11 should wait.
