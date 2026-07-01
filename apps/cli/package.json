@@ -1,0 +1,23 @@
+{
+  "name": "@mcp-scope/cli",
+  "version": "0.0.0",
+  "description": "Command-line interface for MCP Scope.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "mcp-scope": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --clean",
+    "dev": "tsx src/index.ts",
+    "test": "vitest run --config ../../vitest.config.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@mcp-scope/core": "workspace:*",
+    "@mcp-scope/report": "workspace:*"
+  }
+}

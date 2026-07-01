@@ -1,0 +1,22 @@
+{
+  "name": "mcp-scope",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A local-first transparency and risk audit tool for MCP tool metadata, server configs, and AI agent tool permissions.",
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@11.7.0",
+  "scripts": {
+    "build": "pnpm -r --sort build",
+    "test": "pnpm -r --sort test",
+    "typecheck": "pnpm build && pnpm -r --sort typecheck",
+    "check": "pnpm typecheck && pnpm test"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.0",
+    "tsup": "^8.5.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.15"
+  }
+}

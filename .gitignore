@@ -1,0 +1,18 @@
+node_modules/
+dist/
+coverage/
+.turbo/
+.DS_Store
+*.log
+
+# Local generated transparency reports are ignored unless intentionally moved into examples.
+reports/
+mcp-scope-report*.md
+mcp-scope-report*.json
+*.mcp-scope-report.md
+*.mcp-scope-report.json
+
+# Local environment files can contain secrets or private MCP config paths.
+.env
+.env.*
+!.env.example
