@@ -8,6 +8,7 @@
 - Verified GitHub Actions on `main` and the preview tag.
 - Fixed CI pnpm bootstrap and GitHub composite action manifest parsing issues found during first remote verification.
 - Added Phase 10 bilingual launch copy, SVG social cards, posting tracker, feedback monitoring playbook, issue triage guide, and feedback-to-roadmap review templates.
+- Added final human launch review reports for manual prerelease and first-post gating.
 - Kept npm publishing and GitHub Marketplace publishing out of scope.
 - Kept findings framed as static risk signals, transparency notes, and warnings.
 

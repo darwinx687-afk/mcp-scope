@@ -1,7 +1,7 @@
 # Run State
 
 - Current phase: Phase 10
-- Current status: Bilingual launch and feedback pack prepared; no posts published
+- Current status: Launch final human review ready; no posts published
 - Next loop: Phase 11 feedback-driven iteration
 - Current scope guard: launch materials only; no MCP server execution, no live tools/list requests, no external APIs in scanning, no npm publish, no Marketplace claim, no production-grade security claim, no browser posting automation, no social/community posts, draft prerelease remains draft
 
@@ -23,6 +23,7 @@
 - Client profile labels: compatibility hints only, not official integrations.
 - Launch packaging: README first screens, SVG assets, docs indexes, examples indexes, community templates, launch checklist, feedback guide, post-launch roadmap, release draft, and launch notes are prepared locally.
 - Launch pack: prepared under `launch/` with English and Chinese copy, social SVG assets, browser posting rules, posting tracker, feedback monitoring, and issue triage docs.
+- Final human launch review: ready under `launch/FINAL_HUMAN_REVIEW.md` and `launch/FINAL_HUMAN_REVIEW.zh-CN.md`; no release or platform post was published automatically.
 - Remote: `https://github.com/darwinx687-afk/mcp-scope`.
 - Preview tag: `v0.1.0-preview`.
 - Draft prerelease: created as draft prerelease only; not final/published.
