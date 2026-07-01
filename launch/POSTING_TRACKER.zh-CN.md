@@ -12,7 +12,7 @@
 | 即刻 | zh-CN | manual-needed | TBD |  | `launch/assets/exports/social-card-zh-CN.png` | `launch/copy/jike.md` | 需要手动发布；只使用这张中文 PNG。 | 暂无反馈 | no |
 | 微信群 | zh-CN | manual-needed | TBD |  | `launch/assets/exports/social-card-zh-CN.png` | `launch/copy/wechat_group.md` | 私域群分享只能手动执行。 | 暂无反馈 | no |
 | 朋友圈 | zh-CN | manual-needed | TBD |  | `launch/assets/exports/social-card-square-zh-CN.png` | `launch/copy/wechat_moments.md` | 朋友圈发布只能手动执行。 | 暂无反馈 | no |
-| LinkedIn | en | manual-needed | 2026-07-01 |  | `launch/assets/exports/social-card-en.png` | `launch/copy/linkedin.md` | 已检测到登录状态的 feed，但 in-app browser 里 sharebox 发帖入口没有稳定打开；需要手动发布、上传 PNG、预览并确认。 | 暂无反馈 | no |
+| LinkedIn | en | posted | 2026-07-01 | https://www.linkedin.com/feed/update/urn:li:share:7478133413061898240/ | `launch/assets/exports/social-card-en.png` | `launch/copy/linkedin.md` | 浏览器辅助填写文案、人工上传 PNG 后已发布；LinkedIn 将 GitHub URL 改写为 `lnkd.in` 短链。 | 等待反馈 | no |
 | X / Twitter | en | manual-needed | 2026-07-01 |  | `launch/assets/exports/social-card-en.png` | `launch/copy/x_twitter.md` | 浏览器进入登录页；需要手动登录、上传 PNG、预览并确认发布。 | 暂无反馈 | no |
 | Hacker News | en | ready-to-post | TBD |  | none | `launch/copy/hackernews.md` | 纯文字 Show HN；最终发布前必须人工确认。 | 暂无反馈 | no |
 | Dev.to | en | manual-needed | 2026-07-01 |  | `launch/assets/exports/release-banner-en.png` | `launch/copy/devto.md` | 浏览器进入登录页；需要手动登录、创建文章草稿、上传 banner、预览并确认发布。 | 暂无反馈 | no |

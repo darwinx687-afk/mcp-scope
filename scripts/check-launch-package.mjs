@@ -380,13 +380,13 @@ for (const platform of trackerPlatforms) {
   }
 }
 for (const [platform, asset] of chineseTrackerRows) {
-  const pattern = new RegExp(`\\| ${platform} \\| zh-CN \\| (?:ready-to-post|manual-needed) \\|[^\\n]*${asset.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`);
+  const pattern = new RegExp(`\\| ${platform} \\| zh-CN \\| (?:posted|ready-to-post|manual-needed) \\|[^\\n]*${asset.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`);
   if (!pattern.test(postingTracker)) {
     fail(`launch/POSTING_TRACKER.md must map ${platform} to zh-CN and ${asset}`);
   }
 }
 for (const [platform, asset] of englishTrackerRows) {
-  const pattern = new RegExp(`\\| ${platform} \\| en \\| (?:ready-to-post|manual-needed) \\|[^\\n]*${asset.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`);
+  const pattern = new RegExp(`\\| ${platform} \\| en \\| (?:posted|ready-to-post|manual-needed) \\|[^\\n]*${asset.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`);
   if (!pattern.test(postingTracker)) {
     fail(`launch/POSTING_TRACKER.md must map ${platform} to en and ${asset}`);
   }
@@ -416,13 +416,13 @@ if (!/\| GitHub release \| en \| posted \| 2026-07-01 \| https:\/\/github\.com\/
   fail("launch/POSTING_TRACKER.zh-CN.md must record the public GitHub prerelease URL as posted");
 }
 for (const [platform, asset] of zhChineseTrackerRows) {
-  const pattern = new RegExp(`\\| ${platform} \\| zh-CN \\| (?:ready-to-post|manual-needed) \\|[^\\n]*${asset.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`);
+  const pattern = new RegExp(`\\| ${platform} \\| zh-CN \\| (?:posted|ready-to-post|manual-needed) \\|[^\\n]*${asset.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`);
   if (!pattern.test(zhPostingTracker)) {
     fail(`launch/POSTING_TRACKER.zh-CN.md must map ${platform} to zh-CN and ${asset}`);
   }
 }
 for (const [platform, asset] of englishTrackerRows) {
-  const pattern = new RegExp(`\\| ${platform} \\| en \\| (?:ready-to-post|manual-needed) \\|[^\\n]*${asset.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`);
+  const pattern = new RegExp(`\\| ${platform} \\| en \\| (?:posted|ready-to-post|manual-needed) \\|[^\\n]*${asset.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`);
   if (!pattern.test(zhPostingTracker)) {
     fail(`launch/POSTING_TRACKER.zh-CN.md must map ${platform} to en and ${asset}`);
   }
