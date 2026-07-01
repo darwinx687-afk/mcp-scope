@@ -1,8 +1,8 @@
 # Run State
 
 - Current phase: Phase 10
-- Current status: GitHub prerelease public; LinkedIn and Xiaohongshu launch posts published; 24/72h feedback monitoring snapshot updated with no actionable feedback yet
-- Next loop: continue 24/72 hour launch feedback monitoring before Phase 11 unless real actionable feedback arrives
+- Current status: GitHub prerelease public; LinkedIn and Xiaohongshu launch posts published; 72h feedback and exposure decision snapshot recorded with no actionable feedback yet
+- Next loop: prepare one carefully reviewed second-wave X / Twitter exposure attempt, or continue monitoring if no human approval is given; do not start Phase 11 unless real actionable feedback arrives
 - Current scope guard: launch tracking records only; no MCP server execution, no live tools/list requests, no external APIs in scanning, no npm publish, no Marketplace claim, no production-grade security claim, no new social/community posts without explicit approval
 
 ## Latest Loop
@@ -31,4 +31,4 @@
 - PNG launch assets: exported under `launch/assets/exports/` from repository-local SVG sources.
 - Social channel state: LinkedIn and Xiaohongshu are posted; Juejin, Jike, WeChat group, WeChat moments, X / Twitter, and Dev.to remain manual-needed; Hacker News remains ready-to-post; V2EX and Reddit are skipped.
 - Publishing state: public GitHub source repository, public GitHub prerelease, LinkedIn post, and Xiaohongshu post exist; no npm package, Marketplace listing, Pages site, deployment, or final/stable release was published.
-- Feedback state: snapshots appended in `launch/FEEDBACK_SNAPSHOT.md` and `launch/FEEDBACK_SNAPSHOT.zh-CN.md`; latest visible signals are GitHub 0 stars/0 forks/0 issues/0 PRs, LinkedIn 1 reaction and 8 impressions, Xiaohongshu 40 views and 1 collect; no actionable feedback yet, so Phase 11 should wait.
+- Feedback state: snapshots appended in `launch/FEEDBACK_SNAPSHOT.md` and `launch/FEEDBACK_SNAPSHOT.zh-CN.md`; exposure decision recorded in `launch/EXPOSURE_DECISION.md` and `launch/EXPOSURE_DECISION.zh-CN.md`; latest visible signals are GitHub 1 star/0 forks/0 issues/0 PRs, LinkedIn 1 reaction and 9 impressions, Xiaohongshu 40 views and 1 collect; no actionable feedback yet, so Phase 11 should wait.
