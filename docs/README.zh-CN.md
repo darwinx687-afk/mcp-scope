@@ -20,6 +20,7 @@
 - [贡献说明](../CONTRIBUTING.md)
 - [安全政策](../SECURITY.md)
 - [发布检查清单](LAUNCH_CHECKLIST.zh-CN.md)
+- [远程发布状态](REMOTE_LAUNCH_STATE.zh-CN.md)
 - [反馈指南](FEEDBACK_GUIDE.zh-CN.md)
 - [发布后路线](ROADMAP_AFTER_LAUNCH.zh-CN.md)
 - [Release 草稿](RELEASE_DRAFT.zh-CN.md)

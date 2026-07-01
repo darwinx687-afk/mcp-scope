@@ -22,6 +22,8 @@ const requiredFiles = [
   "docs/ROADMAP_AFTER_LAUNCH.zh-CN.md",
   "docs/RELEASE_DRAFT.md",
   "docs/RELEASE_DRAFT.zh-CN.md",
+  "docs/REMOTE_LAUNCH_STATE.md",
+  "docs/REMOTE_LAUNCH_STATE.zh-CN.md",
   "examples/README.md",
   "examples/README.zh-CN.md",
   ".github/PULL_REQUEST_TEMPLATE.md",
@@ -54,6 +56,7 @@ const zhLaunchFiles = [
   "docs/FEEDBACK_GUIDE.zh-CN.md",
   "docs/ROADMAP_AFTER_LAUNCH.zh-CN.md",
   "docs/RELEASE_DRAFT.zh-CN.md",
+  "docs/REMOTE_LAUNCH_STATE.zh-CN.md",
   "docs/SCREENSHOT_GUIDE.zh-CN.md",
   "docs/FAQ.zh-CN.md",
   "examples/README.zh-CN.md"
@@ -74,6 +77,8 @@ const claimFiles = [
   "docs/ROADMAP_AFTER_LAUNCH.zh-CN.md",
   "docs/RELEASE_DRAFT.md",
   "docs/RELEASE_DRAFT.zh-CN.md",
+  "docs/REMOTE_LAUNCH_STATE.md",
+  "docs/REMOTE_LAUNCH_STATE.zh-CN.md",
   "docs/SCREENSHOT_GUIDE.md",
   "docs/SCREENSHOT_GUIDE.zh-CN.md",
   "docs/FAQ.md",
@@ -92,6 +97,7 @@ const docsIndexRequired = [
   "DISCOVERY",
   "SCREENSHOT_GUIDE",
   "FAQ",
+  "REMOTE_LAUNCH_STATE",
   "../SECURITY.md",
   "../CONTRIBUTING.md",
   "../examples/README.md"
@@ -149,7 +155,7 @@ for (const marker of docsIndexRequired) {
 }
 
 const zhDocsIndex = read("docs/README.zh-CN.md");
-for (const marker of ["SCREENSHOT_GUIDE", "FAQ", "../SECURITY.md", "../CONTRIBUTING.md", "../examples/README.zh-CN.md"]) {
+for (const marker of ["SCREENSHOT_GUIDE", "FAQ", "REMOTE_LAUNCH_STATE", "../SECURITY.md", "../CONTRIBUTING.md", "../examples/README.zh-CN.md"]) {
   if (!zhDocsIndex.includes(marker)) {
     fail(`docs/README.zh-CN.md is missing ${marker}`);
   }

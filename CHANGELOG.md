@@ -4,6 +4,9 @@
 
 - Prepared the first public GitHub preview state for MCP Scope.
 - Published the repository source to GitHub for early review.
+- Added the `v0.1.0-preview` tag and draft prerelease.
+- Verified GitHub Actions on `main` and the preview tag.
+- Fixed CI pnpm bootstrap and GitHub composite action manifest parsing issues found during first remote verification.
 - Kept npm publishing and GitHub Marketplace publishing out of scope.
 - Kept findings framed as static risk signals, transparency notes, and warnings.
 

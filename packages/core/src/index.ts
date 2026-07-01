@@ -13,7 +13,8 @@ export type PhaseStatus =
   | "github-action-gate-ready"
   | "approval-memory-diff-ready"
   | "ecosystem-discovery-ready"
-  | "launch-packaging-ready";
+  | "launch-packaging-ready"
+  | "remote-prerelease-ready";
 
 export type RiskLevel = "info" | "low" | "medium" | "high" | "unknown";
 
@@ -37,8 +38,8 @@ export type McpScopeTarget = {
 export const FOUNDATION_STATUS = {
   project: PROJECT_SLUG,
   name: PROJECT_NAME,
-  phase: 8,
-  status: "launch-packaging-ready",
+  phase: 9,
+  status: "remote-prerelease-ready",
   scanner: "static-config-tool-metadata-ecosystem-discovery",
   externalApiCalls: false,
   serverExecution: false

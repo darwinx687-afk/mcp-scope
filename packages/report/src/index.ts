@@ -155,7 +155,7 @@ export function renderFoundationStatusReport(): string {
     `- scanner: ${FOUNDATION_STATUS.scanner}`,
     `- externalApiCalls: ${String(FOUNDATION_STATUS.externalApiCalls)}`,
     "",
-    "Phase 8 packages the local-first project for public launch. Scanner behavior remains static-only and does not execute MCP servers, call tools/list, or call external APIs."
+    "Phase 9 records the public GitHub remote and draft prerelease state. Scanner behavior remains static-only and does not execute MCP servers, call tools/list, or call external APIs."
   ].join("\n");
 }
 

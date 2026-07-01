@@ -58,3 +58,9 @@
 - Phase 8 treats launch packaging as repository-local static assets and documentation, not as publication.
 - The project can look ready for first public GitHub launch review without creating a remote repository, publishing a release, publishing npm, or claiming GitHub Marketplace availability.
 - Community templates ask for redacted reports and minimal shapes, not full private configs or secret values.
+
+## 2026-07-01 Phase 9
+
+- Phase 9 created the public GitHub repository under the authenticated user account `darwinx687-afk` because `gh auth status` reported a single active account and no existing target repo.
+- Phase 9 uses a draft prerelease for `v0.1.0-preview`; the release remains draft/prerelease and is not a final launch announcement.
+- GitHub Actions CI is part of the public repository launch gate. Repository-side CI bootstrap and action manifest parsing issues were fixed before recording the launch state.

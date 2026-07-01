@@ -37,9 +37,9 @@ Developers are connecting MCP servers to AI coding tools and agent environments.
 - Local self-contained HTML viewer.
 - GitHub Action quality gate.
 
-## Phase 8 Scope
+## Phase 9 Scope
 
-Phase 8 packages MCP Scope as a serious early-stage open-source project ready for first public GitHub launch review. It does not add new scanner categories. The scanner remains local-first, static-only, and report-first.
+Phase 9 creates the public GitHub repository, verifies GitHub Actions, creates the `v0.1.0-preview` tag, prepares a draft prerelease, and records the remote launch state. It does not add scanner categories. The scanner remains local-first, static-only, and report-first.
 
 Included now:
 
@@ -93,6 +93,11 @@ Included now:
 - Examples index pages in English and Chinese.
 - GitHub issue templates and PR template with secret-redaction reminders.
 - Launch checklist, feedback guide, post-launch roadmap, and draft release notes.
+- Public GitHub repository under the authenticated user account.
+- GitHub Actions CI verification for `main` and the preview tag.
+- `v0.1.0-preview` annotated tag.
+- Draft prerelease for `v0.1.0-preview`.
+- Remote launch state docs in English and Chinese.
 - Example configs and tests.
 
 Not included now:
@@ -108,7 +113,6 @@ Not included now:
 - Login, database, billing, or cloud services.
 - Production-grade security claims.
 - GitHub Marketplace publication.
-- Remote repository creation or push.
 - Automatic artifact upload from the action itself.
 - GitHub Action approval-memory diff integration.
 - `scan --compare-to` shortcut.
@@ -116,4 +120,5 @@ Not included now:
 - Official integration claims for Cursor, Cline, Continue, Gemini CLI, Claude Code, or Claude Desktop.
 - Automatic scanning of every discovered candidate.
 - Automatic modification of user config files.
-- GitHub release publication.
+- Final GitHub release publication.
+- Social/community launch posts.

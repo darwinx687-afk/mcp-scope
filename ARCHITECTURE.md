@@ -11,7 +11,7 @@ MCP Scope starts as a small TypeScript pnpm monorepo.
 - `examples`: intentionally committed examples only.
 - `assets`: local SVG brand and launch assets.
 
-## Phase 8 Runtime Boundaries
+## Phase 9 Runtime Boundaries
 
 - No external API calls in core checks.
 - No database, cloud service, or login by default.
@@ -29,11 +29,12 @@ MCP Scope starts as a small TypeScript pnpm monorepo.
 - Approval memory does not certify safety or confirm compromise.
 - Discovery lists likely config files only and does not auto-scan every candidate.
 - Client profile labels are compatibility hints, not official integrations.
-- Launch packaging is repository-local only and does not publish to GitHub, npm, or GitHub Marketplace.
+- Phase 9 publishes the GitHub repository source and draft prerelease state only.
+- Phase 9 does not publish npm, publish GitHub Marketplace, enable Pages, add deployments, or post to community platforms.
 
 ## Current Scanner Direction
 
-The Phase 8 scanner remains static-first. It reads local JSON config files with supported server shapes and local exported tool metadata files. It produces stable JSON reports, bilingual Markdown reports, self-contained HTML viewers, approval-memory snapshots, static diff reports, discovery reports, and CI threshold outputs without executing commands, connecting to MCP servers, sending `tools/list` requests, starting a web server, or calling external APIs.
+The Phase 9 scanner remains static-first. It reads local JSON config files with supported server shapes and local exported tool metadata files. It produces stable JSON reports, bilingual Markdown reports, self-contained HTML viewers, approval-memory snapshots, static diff reports, discovery reports, and CI threshold outputs without executing commands, connecting to MCP servers, sending `tools/list` requests, starting a web server, or calling external APIs.
 
 The scanner redacts env/header values and reports only key names. URL query strings are redacted in displayed output. Tool metadata schemas are sanitized before rendering so obvious example secret values are not emitted.
 
@@ -84,3 +85,9 @@ There is no hosted service, no cloud sync, no telemetry, no Marketplace publishi
 Phase 8 adds repository packaging rather than new scanner behavior. The launch surface is made of static files: README first screens, bilingual docs indexes, examples indexes, SVG assets, community templates, launch notes, release draft, feedback guide, and checklist.
 
 These files are part of the local repository and do not require a hosted service. The launch package avoids publication claims until a human maintainer creates a remote repository, tag, release, npm package, or Marketplace listing in a later phase.
+
+## Remote Launch Architecture
+
+Phase 9 creates the public GitHub repository and uses GitHub Actions as repository CI. The remote is source hosting and CI only; it does not add a hosted scanner, telemetry, cloud sync, deployment, Pages site, npm package, or Marketplace action.
+
+The `v0.1.0-preview` tag and draft prerelease are preview release management artifacts. They do not change scanner behavior and do not imply production-grade security protection.

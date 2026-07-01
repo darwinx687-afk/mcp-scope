@@ -103,6 +103,7 @@ jobs:
 - [审批记忆](docs/APPROVAL_MEMORY.zh-CN.md)
 - [Discovery](docs/DISCOVERY.zh-CN.md)
 - [客户端兼容说明](docs/ECOSYSTEM_COMPATIBILITY.zh-CN.md)
+- [远程发布状态](docs/REMOTE_LAUNCH_STATE.zh-CN.md)
 - [截图指南](docs/SCREENSHOT_GUIDE.zh-CN.md)
 - [FAQ](docs/FAQ.zh-CN.md)
 - [安全政策](SECURITY.md)

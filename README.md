@@ -103,6 +103,7 @@ See [GitHub Action docs](docs/GITHUB_ACTION.md) for inputs, outputs, threshold b
 - [Approval memory](docs/APPROVAL_MEMORY.md)
 - [Discovery](docs/DISCOVERY.md)
 - [Ecosystem compatibility](docs/ECOSYSTEM_COMPATIBILITY.md)
+- [Remote launch state](docs/REMOTE_LAUNCH_STATE.md)
 - [Screenshot guide](docs/SCREENSHOT_GUIDE.md)
 - [FAQ](docs/FAQ.md)
 - [Security policy](SECURITY.md)

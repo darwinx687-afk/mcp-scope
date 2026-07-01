@@ -1,6 +1,6 @@
 # MCP Scope Launch Checklist
 
-MCP Scope is not published yet. Use this checklist before creating a public remote, prerelease, or release announcement.
+MCP Scope now has a public GitHub repository and a draft prerelease. Use this checklist before making the draft release final or posting launch announcements.
 
 ## Local Checks
 
@@ -61,4 +61,14 @@ mcp, model-context-protocol, ai-security, agent-safety, tool-use, ai-agents, cli
 - Human maintainer confirms no npm publish is planned for this loop.
 - Human maintainer confirms no GitHub Marketplace publication is planned for this loop.
 
-Do not publish, tag, announce, or push a remote until human review is complete.
+## Phase 9 Recorded State
+
+- Public GitHub repo created: `https://github.com/darwinx687-afk/mcp-scope`.
+- `main` pushed and set as default branch.
+- GitHub Actions verified on `main`.
+- `v0.1.0-preview` tag created and pushed.
+- Draft prerelease created as prerelease/draft only.
+- Tag CI verified.
+- npm and GitHub Marketplace remain unpublished.
+
+Do not make the draft release final, publish npm, publish GitHub Marketplace, or post launch announcements until human review is complete.

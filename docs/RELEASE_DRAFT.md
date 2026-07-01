@@ -1,6 +1,6 @@
 # Draft Release Notes: v0.1.0-preview
 
-This is a draft for a future GitHub release. It has not been published.
+This is the release-note source for the draft GitHub prerelease. The release remains draft/prerelease until a human maintainer explicitly publishes it.
 
 ## Summary
 

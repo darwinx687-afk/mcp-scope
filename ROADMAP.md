@@ -54,6 +54,8 @@ Status: implemented as local repository launch packaging. No remote, release, np
 
 Create the remote repository and publish a prerelease when the project is ready.
 
+Status: implemented as a public GitHub repository with CI verification, `v0.1.0-preview` tag, and draft prerelease. The release is draft/prerelease only; npm and GitHub Marketplace remain unpublished.
+
 ## Phase 10: Bilingual Launch and Feedback
 
 Launch with English and Chinese docs and collect early feedback.

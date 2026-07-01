@@ -20,6 +20,7 @@ MCP Scope documentation is organized around local transparency reports, static r
 - [Contributing](../CONTRIBUTING.md)
 - [Security policy](../SECURITY.md)
 - [Launch checklist](LAUNCH_CHECKLIST.md)
+- [Remote launch state](REMOTE_LAUNCH_STATE.md)
 - [Feedback guide](FEEDBACK_GUIDE.md)
 - [Roadmap after launch](ROADMAP_AFTER_LAUNCH.md)
 - [Release draft](RELEASE_DRAFT.md)
