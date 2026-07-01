@@ -61,7 +61,7 @@ Usage:
   mcp-scope diff --baseline <snapshot-path> [--config <path>] [--tools <path>] [--format markdown|json|html] [--lang en|zh-CN] [--output <path>] [--fail-on-change none|info|low|medium|high]
   mcp-scope discover --root <path> [--format markdown|json|html] [--lang en|zh-CN] [--output <path>] [--max-depth <number>] [--include-home]
 
-Phase 9 note:
+Phase 10 note:
   MCP Scope statically reads local JSON config and exported tool metadata files.
   Discovery lists likely local MCP config candidates and never scans them automatically.
   It does not execute MCP servers, call tools/list, start a web server, or call external APIs.

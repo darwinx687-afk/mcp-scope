@@ -11,7 +11,7 @@ MCP Scope starts as a small TypeScript pnpm monorepo.
 - `examples`: intentionally committed examples only.
 - `assets`: local SVG brand and launch assets.
 
-## Phase 9 Runtime Boundaries
+## Phase 10 Runtime Boundaries
 
 - No external API calls in core checks.
 - No database, cloud service, or login by default.
@@ -31,10 +31,11 @@ MCP Scope starts as a small TypeScript pnpm monorepo.
 - Client profile labels are compatibility hints, not official integrations.
 - Phase 9 publishes the GitHub repository source and draft prerelease state only.
 - Phase 9 does not publish npm, publish GitHub Marketplace, enable Pages, add deployments, or post to community platforms.
+- Phase 10 prepares launch copy and monitoring materials only; it does not post, use browser automation for publishing, or make the draft release final.
 
 ## Current Scanner Direction
 
-The Phase 9 scanner remains static-first. It reads local JSON config files with supported server shapes and local exported tool metadata files. It produces stable JSON reports, bilingual Markdown reports, self-contained HTML viewers, approval-memory snapshots, static diff reports, discovery reports, and CI threshold outputs without executing commands, connecting to MCP servers, sending `tools/list` requests, starting a web server, or calling external APIs.
+The Phase 10 scanner remains static-first. It reads local JSON config files with supported server shapes and local exported tool metadata files. It produces stable JSON reports, bilingual Markdown reports, self-contained HTML viewers, approval-memory snapshots, static diff reports, discovery reports, and CI threshold outputs without executing commands, connecting to MCP servers, sending `tools/list` requests, starting a web server, or calling external APIs.
 
 The scanner redacts env/header values and reports only key names. URL query strings are redacted in displayed output. Tool metadata schemas are sanitized before rendering so obvious example secret values are not emitted.
 
@@ -91,3 +92,9 @@ These files are part of the local repository and do not require a hosted service
 Phase 9 creates the public GitHub repository and uses GitHub Actions as repository CI. The remote is source hosting and CI only; it does not add a hosted scanner, telemetry, cloud sync, deployment, Pages site, npm package, or Marketplace action.
 
 The `v0.1.0-preview` tag and draft prerelease are preview release management artifacts. They do not change scanner behavior and do not imply production-grade security protection.
+
+## Bilingual Launch Pack Architecture
+
+Phase 10 adds static launch materials under `launch/`: platform copy drafts, social SVG assets, release review checklists, posting trackers, feedback monitoring playbooks, issue triage guides, browser posting rules, and Phase 11 feedback review templates.
+
+These files are documentation and assets only. They do not post to any platform, open browsers, upload images, make the release final, publish npm, or publish GitHub Marketplace. Any future posting must be manual, previewed, and recorded in the tracker.

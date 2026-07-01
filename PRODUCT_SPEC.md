@@ -37,9 +37,9 @@ Developers are connecting MCP servers to AI coding tools and agent environments.
 - Local self-contained HTML viewer.
 - GitHub Action quality gate.
 
-## Phase 9 Scope
+## Phase 10 Scope
 
-Phase 9 creates the public GitHub repository, verifies GitHub Actions, creates the `v0.1.0-preview` tag, prepares a draft prerelease, and records the remote launch state. It does not add scanner categories. The scanner remains local-first, static-only, and report-first.
+Phase 10 prepares a bilingual launch and feedback pack for `v0.1.0-preview`. It creates platform copy drafts, social SVG assets, release review checklists, posting trackers, feedback monitoring playbooks, issue triage guides, and Phase 11 review templates. It does not publish posts, make the draft prerelease final, add scanner categories, publish npm, or publish GitHub Marketplace. The scanner remains local-first, static-only, and report-first.
 
 Included now:
 
@@ -98,6 +98,9 @@ Included now:
 - `v0.1.0-preview` annotated tag.
 - Draft prerelease for `v0.1.0-preview`.
 - Remote launch state docs in English and Chinese.
+- Bilingual launch copy drafts under `launch/copy`.
+- Bilingual SVG social cards and release banners under `launch/assets`.
+- Release review checklist, posting tracker, platform limits, browser posting rules, feedback monitoring playbook, feedback-to-roadmap review template, and issue triage guide under `launch`.
 - Example configs and tests.
 
 Not included now:
@@ -122,3 +125,5 @@ Not included now:
 - Automatic modification of user config files.
 - Final GitHub release publication.
 - Social/community launch posts.
+- Automatic browser posting.
+- Making the draft prerelease final without human approval.

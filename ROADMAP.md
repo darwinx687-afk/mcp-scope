@@ -60,6 +60,8 @@ Status: implemented as a public GitHub repository with CI verification, `v0.1.0-
 
 Launch with English and Chinese docs and collect early feedback.
 
+Status: launch and feedback pack prepared in English and Chinese. No posts were published and the GitHub prerelease remains draft/prerelease only.
+
 ## Phase 11: Feedback-Driven Iteration
 
 Prioritize real user feedback while preserving local-first and security-honest boundaries.

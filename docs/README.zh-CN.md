@@ -14,6 +14,7 @@
 - [截图指南](SCREENSHOT_GUIDE.zh-CN.md)：安全截图来源和发布前检查规则。
 - [FAQ](FAQ.zh-CN.md)：常见问题的简短回答。
 - [示例索引](../examples/README.zh-CN.md)：安全的示例配置、工具元数据和报告。
+- [发布素材包](../launch/README.zh-CN.md)：准备好的文案、社交卡片、发布记录表和反馈手册。
 
 ## 项目协作
 
@@ -24,6 +25,7 @@
 - [反馈指南](FEEDBACK_GUIDE.zh-CN.md)
 - [发布后路线](ROADMAP_AFTER_LAUNCH.zh-CN.md)
 - [Release 草稿](RELEASE_DRAFT.zh-CN.md)
+- [发布素材包](../launch/README.zh-CN.md)
 
 ## English Docs
 
@@ -37,6 +39,7 @@
 - [Screenshot guide](SCREENSHOT_GUIDE.md)
 - [FAQ](FAQ.md)
 - [Examples index](../examples/README.md)
+- [Launch pack](../launch/README.md)
 
 ## 边界
 

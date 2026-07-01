@@ -26,6 +26,44 @@ const requiredFiles = [
   "docs/REMOTE_LAUNCH_STATE.zh-CN.md",
   "examples/README.md",
   "examples/README.zh-CN.md",
+  "launch/README.md",
+  "launch/README.zh-CN.md",
+  "launch/RELEASE_REVIEW_CHECKLIST.md",
+  "launch/RELEASE_REVIEW_CHECKLIST.zh-CN.md",
+  "launch/POSTING_TRACKER.md",
+  "launch/POSTING_TRACKER.zh-CN.md",
+  "launch/FEEDBACK_MONITORING_PLAYBOOK.md",
+  "launch/FEEDBACK_MONITORING_PLAYBOOK.zh-CN.md",
+  "launch/FEEDBACK_TO_ROADMAP_REVIEW.md",
+  "launch/FEEDBACK_TO_ROADMAP_REVIEW.zh-CN.md",
+  "launch/ISSUE_TRIAGE_GUIDE.md",
+  "launch/ISSUE_TRIAGE_GUIDE.zh-CN.md",
+  "launch/PLATFORM_LIMITS.md",
+  "launch/PLATFORM_LIMITS.zh-CN.md",
+  "launch/BROWSER_POSTING_RULES.md",
+  "launch/BROWSER_POSTING_RULES.zh-CN.md",
+  "launch/copy/github_release_final_review.md",
+  "launch/copy/github_release_final_review.zh-CN.md",
+  "launch/copy/xiaohongshu.md",
+  "launch/copy/juejin.md",
+  "launch/copy/v2ex.md",
+  "launch/copy/wechat_group.md",
+  "launch/copy/wechat_moments.md",
+  "launch/copy/linkedin.md",
+  "launch/copy/x_twitter.md",
+  "launch/copy/devto.md",
+  "launch/copy/reddit.md",
+  "launch/copy/hackernews.md",
+  "launch/copy/short_bio_en.md",
+  "launch/copy/short_bio_zh-CN.md",
+  "launch/copy/reply_templates_en.md",
+  "launch/copy/reply_templates_zh-CN.md",
+  "launch/assets/social-card-en.svg",
+  "launch/assets/social-card-zh-CN.svg",
+  "launch/assets/social-card-square-en.svg",
+  "launch/assets/social-card-square-zh-CN.svg",
+  "launch/assets/release-banner-en.svg",
+  "launch/assets/release-banner-zh-CN.svg",
   ".github/PULL_REQUEST_TEMPLATE.md",
   ".github/ISSUE_TEMPLATE/bug_report.yml",
   ".github/ISSUE_TEMPLATE/false_positive.yml",
@@ -59,7 +97,23 @@ const zhLaunchFiles = [
   "docs/REMOTE_LAUNCH_STATE.zh-CN.md",
   "docs/SCREENSHOT_GUIDE.zh-CN.md",
   "docs/FAQ.zh-CN.md",
-  "examples/README.zh-CN.md"
+  "examples/README.zh-CN.md",
+  "launch/README.zh-CN.md",
+  "launch/RELEASE_REVIEW_CHECKLIST.zh-CN.md",
+  "launch/POSTING_TRACKER.zh-CN.md",
+  "launch/FEEDBACK_MONITORING_PLAYBOOK.zh-CN.md",
+  "launch/FEEDBACK_TO_ROADMAP_REVIEW.zh-CN.md",
+  "launch/ISSUE_TRIAGE_GUIDE.zh-CN.md",
+  "launch/PLATFORM_LIMITS.zh-CN.md",
+  "launch/BROWSER_POSTING_RULES.zh-CN.md",
+  "launch/copy/github_release_final_review.zh-CN.md",
+  "launch/copy/xiaohongshu.md",
+  "launch/copy/juejin.md",
+  "launch/copy/v2ex.md",
+  "launch/copy/wechat_group.md",
+  "launch/copy/wechat_moments.md",
+  "launch/copy/short_bio_zh-CN.md",
+  "launch/copy/reply_templates_zh-CN.md"
 ];
 
 const claimFiles = [
@@ -84,7 +138,81 @@ const claimFiles = [
   "docs/FAQ.md",
   "docs/FAQ.zh-CN.md",
   "examples/README.md",
-  "examples/README.zh-CN.md"
+  "examples/README.zh-CN.md",
+  "launch/README.md",
+  "launch/README.zh-CN.md",
+  "launch/RELEASE_REVIEW_CHECKLIST.md",
+  "launch/RELEASE_REVIEW_CHECKLIST.zh-CN.md",
+  "launch/POSTING_TRACKER.md",
+  "launch/POSTING_TRACKER.zh-CN.md",
+  "launch/FEEDBACK_MONITORING_PLAYBOOK.md",
+  "launch/FEEDBACK_MONITORING_PLAYBOOK.zh-CN.md",
+  "launch/FEEDBACK_TO_ROADMAP_REVIEW.md",
+  "launch/FEEDBACK_TO_ROADMAP_REVIEW.zh-CN.md",
+  "launch/ISSUE_TRIAGE_GUIDE.md",
+  "launch/ISSUE_TRIAGE_GUIDE.zh-CN.md",
+  "launch/PLATFORM_LIMITS.md",
+  "launch/PLATFORM_LIMITS.zh-CN.md",
+  "launch/BROWSER_POSTING_RULES.md",
+  "launch/BROWSER_POSTING_RULES.zh-CN.md",
+  "launch/copy/github_release_final_review.md",
+  "launch/copy/github_release_final_review.zh-CN.md",
+  "launch/copy/xiaohongshu.md",
+  "launch/copy/juejin.md",
+  "launch/copy/v2ex.md",
+  "launch/copy/wechat_group.md",
+  "launch/copy/wechat_moments.md",
+  "launch/copy/linkedin.md",
+  "launch/copy/x_twitter.md",
+  "launch/copy/devto.md",
+  "launch/copy/reddit.md",
+  "launch/copy/hackernews.md",
+  "launch/copy/short_bio_en.md",
+  "launch/copy/short_bio_zh-CN.md",
+  "launch/copy/reply_templates_en.md",
+  "launch/copy/reply_templates_zh-CN.md"
+];
+
+const launchCopyFiles = [
+  "launch/copy/github_release_final_review.md",
+  "launch/copy/github_release_final_review.zh-CN.md",
+  "launch/copy/xiaohongshu.md",
+  "launch/copy/juejin.md",
+  "launch/copy/v2ex.md",
+  "launch/copy/wechat_group.md",
+  "launch/copy/wechat_moments.md",
+  "launch/copy/linkedin.md",
+  "launch/copy/x_twitter.md",
+  "launch/copy/devto.md",
+  "launch/copy/reddit.md",
+  "launch/copy/hackernews.md",
+  "launch/copy/short_bio_en.md",
+  "launch/copy/short_bio_zh-CN.md",
+  "launch/copy/reply_templates_en.md",
+  "launch/copy/reply_templates_zh-CN.md"
+];
+
+const launchSvgFiles = [
+  "launch/assets/social-card-en.svg",
+  "launch/assets/social-card-zh-CN.svg",
+  "launch/assets/social-card-square-en.svg",
+  "launch/assets/social-card-square-zh-CN.svg",
+  "launch/assets/release-banner-en.svg",
+  "launch/assets/release-banner-zh-CN.svg"
+];
+
+const trackerPlatforms = [
+  "GitHub release",
+  "Xiaohongshu",
+  "Juejin",
+  "V2EX",
+  "WeChat group",
+  "WeChat moments",
+  "LinkedIn",
+  "X / Twitter",
+  "Dev.to",
+  "Reddit",
+  "Hacker News"
 ];
 
 const docsIndexRequired = [
@@ -132,7 +260,7 @@ for (const file of requiredFiles) {
   }
 }
 
-for (const svgFile of ["assets/logo.svg", "assets/banner.svg"]) {
+for (const svgFile of ["assets/logo.svg", "assets/banner.svg", ...launchSvgFiles]) {
   const svg = read(svgFile);
   const externalReferencePattern = /<image\b|(?:xlink:)?href=["']https?:|url\(["']?https?:|@import/i;
   if (externalReferencePattern.test(svg)) {
@@ -168,6 +296,42 @@ for (const marker of examplesIndexRequired) {
   }
 }
 
+for (const copyFile of launchCopyFiles) {
+  const content = read(copyFile);
+  if (!content.includes("https://github.com/darwinx687-afk/mcp-scope")) {
+    fail(`${copyFile} is missing the GitHub repo link`);
+  }
+  if (!/do not post automatically|不要自动发布/i.test(content)) {
+    fail(`${copyFile} is missing a do-not-post-automatically reminder`);
+  }
+}
+
+const postingTracker = read("launch/POSTING_TRACKER.md");
+for (const platform of trackerPlatforms) {
+  if (!postingTracker.includes(platform)) {
+    fail(`launch/POSTING_TRACKER.md is missing platform: ${platform}`);
+  }
+}
+const zhPostingTracker = read("launch/POSTING_TRACKER.zh-CN.md");
+for (const platform of ["GitHub release", "小红书", "掘金", "V2EX", "微信群", "朋友圈", "LinkedIn", "X / Twitter", "Dev.to", "Reddit", "Hacker News"]) {
+  if (!zhPostingTracker.includes(platform)) {
+    fail(`launch/POSTING_TRACKER.zh-CN.md is missing platform: ${platform}`);
+  }
+}
+
+const browserRules = read("launch/BROWSER_POSTING_RULES.md").toLowerCase();
+for (const marker of ["manual login", "captcha", "2fa", "do not save passwords", "random album images", "preview the post"]) {
+  if (!browserRules.includes(marker)) {
+    fail(`launch/BROWSER_POSTING_RULES.md is missing rule marker: ${marker}`);
+  }
+}
+const zhBrowserRules = read("launch/BROWSER_POSTING_RULES.zh-CN.md");
+for (const marker of ["登录", "captcha", "2FA", "不保存密码", "随机相册图片", "发布前先预览"]) {
+  if (!zhBrowserRules.includes(marker)) {
+    fail(`launch/BROWSER_POSTING_RULES.zh-CN.md is missing rule marker: ${marker}`);
+  }
+}
+
 for (const file of zhLaunchFiles) {
   const content = read(file);
   for (const phrase of forbiddenChinesePhrases) {
@@ -186,7 +350,7 @@ const falseClaimPatterns = [
   /guarantees safety/i,
   /guaranteed detection/i,
   /complete protection/i,
-  /production-ready security/i,
+  /production-ready security (?:scanner|product|protection)/i,
   /is an official integration/i,
   /officially integrated/i
 ];

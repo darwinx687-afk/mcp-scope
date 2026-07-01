@@ -93,6 +93,17 @@ jobs:
 
 See [GitHub Action docs](docs/GITHUB_ACTION.md) for inputs, outputs, threshold behavior, job summaries, and artifact upload examples.
 
+## Launch / Feedback
+
+The public repository is available at [github.com/darwinx687-afk/mcp-scope](https://github.com/darwinx687-afk/mcp-scope). The `v0.1.0-preview` prerelease remains draft-only until maintainer review.
+
+- [Launch notes](LAUNCH_NOTES.md)
+- [Feedback guide](docs/FEEDBACK_GUIDE.md)
+- [Launch pack](launch/README.md)
+- [Remote launch state](docs/REMOTE_LAUNCH_STATE.md)
+
+Please redact secrets, private configs, internal paths, and sensitive report excerpts before opening issues.
+
 ## Docs
 
 - [Documentation index](docs/README.md)
@@ -104,6 +115,7 @@ See [GitHub Action docs](docs/GITHUB_ACTION.md) for inputs, outputs, threshold b
 - [Discovery](docs/DISCOVERY.md)
 - [Ecosystem compatibility](docs/ECOSYSTEM_COMPATIBILITY.md)
 - [Remote launch state](docs/REMOTE_LAUNCH_STATE.md)
+- [Launch pack](launch/README.md)
 - [Screenshot guide](docs/SCREENSHOT_GUIDE.md)
 - [FAQ](docs/FAQ.md)
 - [Security policy](SECURITY.md)

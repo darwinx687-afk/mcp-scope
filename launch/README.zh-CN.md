@@ -1,0 +1,27 @@
+# MCP Scope 发布素材包
+
+这里放的是 MCP Scope `v0.1.0-preview` 的发布准备材料。
+
+所有内容都只是草稿，不要自动发布。GitHub prerelease 仍然是 draft/prerelease，只有维护者明确确认后才可以转为正式发布。
+
+## 包含什么
+
+- `copy/`：不同平台的文案草稿和回复模板。
+- `assets/`：SVG 社交卡片和 release banner。使用这些图片，不要用个人照片或随机相册图片。
+- `RELEASE_REVIEW_CHECKLIST.md`：让 draft prerelease 转为正式发布前的检查清单。
+- `POSTING_TRACKER.md`：记录哪些平台已发、跳过或失败。
+- `FEEDBACK_MONITORING_PLAYBOOK.md`：前 24 小时、72 小时、7 天要看什么。
+- `FEEDBACK_TO_ROADMAP_REVIEW.md`：Phase 11 每周反馈复盘模板。
+- `ISSUE_TRIAGE_GUIDE.md`：issue 标签和回复模板。
+- `PLATFORM_LIMITS.md`：不同平台的表达方式提醒。
+- `BROWSER_POSTING_RULES.md`：未来手动或浏览器辅助发布时的安全规则。
+
+## 怎么用
+
+1. 先人工审查 GitHub draft prerelease 和 release notes。
+2. 先选一个平台试发，不要一次发满所有地方。
+3. 使用对应 copy 文件和建议 SVG 图片。
+4. 发布前手动预览。
+5. 把链接和反馈摘要记录到 `POSTING_TRACKER.md`。
+
+本轮不要发布 npm，不要发布 GitHub Marketplace，也不要用自动化发社交平台。

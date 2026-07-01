@@ -13,10 +13,10 @@ describe("core constants", () => {
     expect(PROJECT_VERSION).toBe("0.0.0");
   });
 
-  it("marks Phase 9 remote prerelease behavior as static-only", () => {
+  it("marks Phase 10 launch feedback behavior as static-only", () => {
     expect(FOUNDATION_STATUS).toMatchObject({
-      phase: 9,
-      status: "remote-prerelease-ready",
+      phase: 10,
+      status: "bilingual-launch-feedback-ready",
       scanner: "static-config-tool-metadata-ecosystem-discovery",
       externalApiCalls: false,
       serverExecution: false

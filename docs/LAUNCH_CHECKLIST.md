@@ -70,5 +70,7 @@ mcp, model-context-protocol, ai-security, agent-safety, tool-use, ai-agents, cli
 - Draft prerelease created as prerelease/draft only.
 - Tag CI verified.
 - npm and GitHub Marketplace remain unpublished.
+- Phase 10 bilingual launch pack prepared under `launch/`.
+- Posting tracker and feedback monitoring playbooks prepared.
 
 Do not make the draft release final, publish npm, publish GitHub Marketplace, or post launch announcements until human review is complete.

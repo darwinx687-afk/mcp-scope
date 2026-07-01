@@ -34,7 +34,7 @@ import {
 } from "../src/index.js";
 
 describe("renderFoundationStatusReport", () => {
-  it("renders honest Phase 9 status", () => {
+  it("renders honest Phase 10 status", () => {
     const report = renderFoundationStatusReport();
 
     expect(report).toContain("MCP Scope Foundation Status");

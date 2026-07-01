@@ -25,6 +25,7 @@ MCP tools can expose filesystem, network, credential, shell, and workflow capabi
 - Launch-ready README, docs indexes, examples indexes, issue templates, and release draft.
 - Public GitHub repository with CI verification.
 - `v0.1.0-preview` tag and draft prerelease.
+- Bilingual launch pack with platform copy drafts, SVG social cards, posting tracker, feedback monitoring playbook, and issue triage guide.
 
 ## Local-First Guarantees
 
@@ -44,6 +45,7 @@ MCP tools can expose filesystem, network, credential, shell, and workflow capabi
 - It is not an official integration with any MCP client.
 - It has not been published to npm or GitHub Marketplace.
 - The GitHub release is draft/prerelease only until a maintainer makes it final.
+- Social/community launch copy is prepared but not posted automatically.
 
 ## Known Limitations
 

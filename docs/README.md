@@ -14,6 +14,7 @@ MCP Scope documentation is organized around local transparency reports, static r
 - [Screenshot guide](SCREENSHOT_GUIDE.md): safe screenshot sources and review rules.
 - [FAQ](FAQ.md): short answers to common launch questions.
 - [Examples index](../examples/README.md): safe committed fixtures and generated sample reports.
+- [Launch pack](../launch/README.md): prepared copy, social cards, posting tracker, and feedback playbooks.
 
 ## Project And Community
 
@@ -24,6 +25,7 @@ MCP Scope documentation is organized around local transparency reports, static r
 - [Feedback guide](FEEDBACK_GUIDE.md)
 - [Roadmap after launch](ROADMAP_AFTER_LAUNCH.md)
 - [Release draft](RELEASE_DRAFT.md)
+- [Launch pack](../launch/README.md)
 
 ## Chinese Docs
 
@@ -37,6 +39,7 @@ MCP Scope documentation is organized around local transparency reports, static r
 - [截图指南](SCREENSHOT_GUIDE.zh-CN.md)
 - [FAQ](FAQ.zh-CN.md)
 - [示例索引](../examples/README.zh-CN.md)
+- [发布素材包](../launch/README.zh-CN.md)
 
 ## Boundaries
 

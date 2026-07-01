@@ -2,6 +2,8 @@
 
 This is the release-note source for the draft GitHub prerelease. The release remains draft/prerelease until a human maintainer explicitly publishes it.
 
+Launch copy and feedback tracking materials are prepared under `launch/`. They are drafts only and should not be posted automatically.
+
 ## Summary
 
 MCP Scope is an early local-first transparency and risk audit tool for MCP tool metadata, server configs, and AI agent tool permissions.

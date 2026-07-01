@@ -93,6 +93,17 @@ jobs:
 
 输入、输出、阈值、job summary 和 artifact 上传示例见 [GitHub Action 文档](docs/GITHUB_ACTION.zh-CN.md)。
 
+## 发布 / 反馈
+
+公开仓库在 [github.com/darwinx687-afk/mcp-scope](https://github.com/darwinx687-afk/mcp-scope)。`v0.1.0-preview` prerelease 仍是 draft，维护者审查前不会转为正式发布。
+
+- [发布说明](LAUNCH_NOTES.zh-CN.md)
+- [反馈指南](docs/FEEDBACK_GUIDE.zh-CN.md)
+- [发布素材包](launch/README.zh-CN.md)
+- [远程发布状态](docs/REMOTE_LAUNCH_STATE.zh-CN.md)
+
+开 issue 前请先脱敏 secret、私有配置、内部路径和敏感报告片段。
+
 ## 文档
 
 - [文档索引](docs/README.zh-CN.md)
@@ -104,6 +115,7 @@ jobs:
 - [Discovery](docs/DISCOVERY.zh-CN.md)
 - [客户端兼容说明](docs/ECOSYSTEM_COMPATIBILITY.zh-CN.md)
 - [远程发布状态](docs/REMOTE_LAUNCH_STATE.zh-CN.md)
+- [发布素材包](launch/README.zh-CN.md)
 - [截图指南](docs/SCREENSHOT_GUIDE.zh-CN.md)
 - [FAQ](docs/FAQ.zh-CN.md)
 - [安全政策](SECURITY.md)
