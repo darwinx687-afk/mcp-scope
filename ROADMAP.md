@@ -18,6 +18,8 @@ Status: implemented for local exported tool metadata files only.
 
 Generate reviewable local reports with clear warnings, evidence, and non-goal language.
 
+Status: implemented with stable JSON report model and bilingual Markdown rendering.
+
 ## Phase 4: Local Read-Only Viewer
 
 Provide a local viewer for generated reports. It must remain read-only.

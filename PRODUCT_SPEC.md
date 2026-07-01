@@ -35,9 +35,9 @@ Developers are connecting MCP servers to AI coding tools and agent environments.
 - Markdown and JSON reports.
 - GitHub Action quality gate.
 
-## Phase 2 Scope
+## Phase 3 Scope
 
-Phase 2 adds local exported MCP tool metadata analysis and a reusable static risk rule engine.
+Phase 3 refines Markdown and JSON transparency reports into a stable, readable report system.
 
 Included now:
 
@@ -53,7 +53,10 @@ Included now:
 - Server fingerprints for transport, command presence, args preview, env/header key names, URL host, capability hints, transparency notes, and risk level.
 - Tool metadata normalization for names, titles, descriptions, input schemas, output schemas, annotations, and parameters.
 - Conservative tool-level rules for metadata-injection signals, cross-tool manipulation, destructive actions, filesystem access, credential exposure, network access, schema quality, annotation trust, and permission mismatch.
-- Markdown and JSON report rendering.
+- Stable JSON report model with `reportVersion`, execution flags, summaries, findings, redaction guarantees, and limitations.
+- Bilingual Markdown report rendering with `--lang en` and `--lang zh-CN`.
+- Markdown reports suitable for GitHub PRs, issues, and review notes.
+- Curated report examples under `examples/reports`.
 - Example configs and tests.
 
 Not included now:
@@ -69,3 +72,4 @@ Not included now:
 - External AI APIs.
 - Login, database, billing, or cloud services.
 - Production-grade security claims.
+- Threshold or fail-on behavior.

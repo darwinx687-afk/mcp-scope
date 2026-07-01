@@ -11,7 +11,7 @@ MCP Scope starts as a small TypeScript pnpm monorepo.
 - `examples`: intentionally committed examples only.
 - `assets`: brand and visual assets later.
 
-## Phase 2 Runtime Boundaries
+## Phase 3 Runtime Boundaries
 
 - No external API calls in core checks.
 - No database, cloud service, or login by default.
@@ -23,7 +23,7 @@ MCP Scope starts as a small TypeScript pnpm monorepo.
 
 ## Current Scanner Direction
 
-The Phase 2 scanner is static-first. It reads local JSON config files with a top-level `mcpServers` object and local exported tool metadata files. It produces fingerprint and tool metadata reports without executing commands, connecting to MCP servers, sending `tools/list` requests, or calling external APIs.
+The Phase 3 scanner remains static-first. It reads local JSON config files with a top-level `mcpServers` object and local exported tool metadata files. It produces stable JSON reports and bilingual Markdown reports without executing commands, connecting to MCP servers, sending `tools/list` requests, or calling external APIs.
 
 The scanner redacts env/header values and reports only key names. URL query strings are redacted in displayed output. Tool metadata schemas are sanitized before rendering so obvious example secret values are not emitted.
 
@@ -37,6 +37,6 @@ Any future dynamic checks must be explicitly gated, documented, and visible to t
 
 `packages/core` owns stable names, shared types, MCP config parsing, local tool metadata parsing, static fingerprinting, rule evaluation, capability hints, risk levels, and transparency notes.
 
-`packages/report` owns rendering of status and transparency reports. It must avoid exposing raw env/header values or secret-like tool metadata examples.
+`packages/report` owns the stable report model, JSON rendering, and bilingual Markdown rendering. It must avoid exposing raw env/header values or secret-like tool metadata examples.
 
 `apps/cli` owns user commands, argument parsing, exit codes, and terminal output.

@@ -13,6 +13,7 @@ import {
   readMcpConfigFile
 } from "@mcp-scope/core";
 import {
+  type ReportLanguage,
   renderScanResultJson,
   renderScanResultMarkdown,
   renderToolMetadataJson,
@@ -36,10 +37,10 @@ Usage:
   mcp-scope --help
   mcp-scope --version
   mcp-scope status
-  mcp-scope scan --config <path> [--tools <path>] [--format markdown|json] [--output <path>]
-  mcp-scope inspect-tools --tools <path> [--format markdown|json] [--output <path>]
+  mcp-scope scan --config <path> [--tools <path>] [--format markdown|json] [--lang en|zh-CN] [--output <path>]
+  mcp-scope inspect-tools --tools <path> [--format markdown|json] [--lang en|zh-CN] [--output <path>]
 
-Phase 2 note:
+Phase 3 note:
   MCP Scope statically reads local JSON config and exported tool metadata files.
   It does not execute MCP servers, call tools/list, or call external APIs.
 `;
@@ -50,12 +51,14 @@ type ScanCommandOptions = {
   readonly configPath: string;
   readonly toolsPath?: string;
   readonly format: ScanFormat;
+  readonly lang: ReportLanguage;
   readonly outputPath?: string;
 };
 
 type InspectToolsOptions = {
   readonly toolsPath: string;
   readonly format: ScanFormat;
+  readonly lang: ReportLanguage;
   readonly outputPath?: string;
 };
 
@@ -108,7 +111,7 @@ async function runScanCommand(args: readonly string[], io: CliIO): Promise<numbe
     const parsedConfig = await readMcpConfigFile(options.configPath);
     const result = createMcpConfigFingerprint(parsedConfig, { toolMetadata });
     const rendered =
-      options.format === "json" ? renderScanResultJson(result) : renderScanResultMarkdown(result);
+      options.format === "json" ? renderScanResultJson(result) : renderScanResultMarkdown(result, { lang: options.lang });
 
     if (options.outputPath !== undefined) {
       await mkdir(dirname(options.outputPath), { recursive: true });
@@ -142,7 +145,7 @@ async function runInspectToolsCommand(args: readonly string[], io: CliIO): Promi
   try {
     const result = evaluateToolManifest(await readMcpToolMetadataFile(options.toolsPath));
     const rendered =
-      options.format === "json" ? renderToolMetadataJson(result) : renderToolMetadataMarkdown(result);
+      options.format === "json" ? renderToolMetadataJson(result) : renderToolMetadataMarkdown(result, { lang: options.lang });
 
     if (options.outputPath !== undefined) {
       await mkdir(dirname(options.outputPath), { recursive: true });
@@ -169,6 +172,7 @@ function parseScanArgs(args: readonly string[]): ScanCommandOptions | string {
   let configPath: string | undefined;
   let toolsPath: string | undefined;
   let format: ScanFormat = "markdown";
+  let lang: ReportLanguage = "en";
   let outputPath: string | undefined;
 
   for (let index = 0; index < args.length; index += 1) {
@@ -210,6 +214,18 @@ function parseScanArgs(args: readonly string[]): ScanCommandOptions | string {
       continue;
     }
 
+    if (arg === "--lang") {
+      const value = args[index + 1];
+
+      if (value !== "en" && value !== "zh-CN") {
+        return `Unsupported --lang "${value ?? ""}". Use "en" or "zh-CN".`;
+      }
+
+      lang = value;
+      index += 1;
+      continue;
+    }
+
     if (arg === "--output") {
       const value = args[index + 1];
 
@@ -237,6 +253,7 @@ function parseScanArgs(args: readonly string[]): ScanCommandOptions | string {
     configPath,
     toolsPath,
     format,
+    lang,
     outputPath
   };
 }
@@ -244,6 +261,7 @@ function parseScanArgs(args: readonly string[]): ScanCommandOptions | string {
 function parseInspectToolsArgs(args: readonly string[]): InspectToolsOptions | string {
   let toolsPath: string | undefined;
   let format: ScanFormat = "markdown";
+  let lang: ReportLanguage = "en";
   let outputPath: string | undefined;
 
   for (let index = 0; index < args.length; index += 1) {
@@ -269,6 +287,18 @@ function parseInspectToolsArgs(args: readonly string[]): InspectToolsOptions | s
       }
 
       format = nextFormat;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--lang") {
+      const value = args[index + 1];
+
+      if (value !== "en" && value !== "zh-CN") {
+        return `Unsupported --lang "${value ?? ""}". Use "en" or "zh-CN".`;
+      }
+
+      lang = value;
       index += 1;
       continue;
     }
@@ -299,6 +329,7 @@ function parseInspectToolsArgs(args: readonly string[]): InspectToolsOptions | s
   return {
     toolsPath,
     format,
+    lang,
     outputPath
   };
 }

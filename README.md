@@ -2,11 +2,11 @@
 
 A local-first transparency and risk audit tool for MCP tool metadata, server configs, and AI agent tool permissions.
 
-MCP Scope is in Phase 2 / early preview. It is not production-ready, does not make complete security claims, and does not execute MCP servers.
+MCP Scope is in Phase 3 / early preview. It is not production-ready, does not make complete security claims, and does not execute MCP servers.
 
 ## Current Guarantees
 
-- No external API calls in the core Phase 2 checks.
+- No external API calls in the core Phase 3 checks.
 - No login.
 - No database.
 - No cloud service by default.
@@ -15,6 +15,8 @@ MCP Scope is in Phase 2 / early preview. It is not production-ready, does not ma
 - No live `tools/list` requests.
 - Secret values from `env` and `headers` are redacted. Reports show key names only.
 - Tool metadata findings are static risk signals, not proof of compromise.
+- Markdown reports support `--lang en` and `--lang zh-CN`.
+- JSON reports keep stable English machine-readable keys.
 
 ## CLI
 
@@ -26,9 +28,10 @@ mcp-scope --version
 mcp-scope status
 mcp-scope scan --config <path>
 mcp-scope scan --config <path> --tools <path>
+mcp-scope scan --config <path> --tools <path> --lang zh-CN
 mcp-scope scan --config <path> --format json
 mcp-scope scan --config <path> --format markdown --output reports/mcp-scope-report.md
-mcp-scope inspect-tools --tools <path>
+mcp-scope inspect-tools --tools <path> --format markdown --lang zh-CN
 ```
 
 `mcp-scope status` reports the current static scanner state:
@@ -37,9 +40,9 @@ mcp-scope inspect-tools --tools <path>
 {
   "project": "mcp-scope",
   "name": "MCP Scope",
-  "phase": 2,
-  "status": "tool-metadata-rules-ready",
-  "scanner": "static-config-and-tool-metadata",
+  "phase": 3,
+  "status": "transparency-reports-ready",
+  "scanner": "static-config-tool-metadata-reports",
   "externalApiCalls": false,
   "serverExecution": false
 }
@@ -57,26 +60,41 @@ node apps/cli/dist/index.js scan --config examples/http-server-with-redacted-aut
 
 ## Inspect Local Tool Metadata
 
-Phase 2 supports local exported MCP tool metadata only. It can read a saved MCP `tools/list` JSON-RPC response or a portable local manifest with `serverName` and `tools`. MCP Scope does not send `tools/list` requests to live MCP servers yet.
+MCP Scope supports local exported MCP tool metadata only. It can read a saved MCP `tools/list` JSON-RPC response or a portable local manifest with `serverName` and `tools`. MCP Scope does not send `tools/list` requests to live MCP servers yet.
 
 ```bash
 node apps/cli/dist/index.js scan --config examples/claude-code-project.mcp.json --tools examples/tools/poisoned-description-tools.json
 node apps/cli/dist/index.js inspect-tools --tools examples/tools/credential-network-tools.json --format json
+node apps/cli/dist/index.js inspect-tools --tools examples/tools/poisoned-description-tools.json --format markdown --lang zh-CN
 ```
+
+## Reports
+
+Phase 3 reports include an executive summary, checked/not-checked sections, severity legend, config summary, tool metadata summary, sorted findings, redaction guarantees, and limitations.
 
 Example Markdown excerpt:
 
 ```markdown
 # MCP Scope Report
 
-- Source file: examples/http-server-with-redacted-auth.json
-- Server count: 1
-- Env/header values redacted: true
+- Early transparency report
+- Static analysis only
+- MCP server execution: false
 - External API calls: false
-- Server execution: false
+- Secret values redacted: true
+
+## Executive Summary
+
+- Server count: 1
 - Tool count: 2
 - Finding count: 4
 ```
+
+Report docs:
+
+- `docs/REPORT_SCHEMA.md`
+- `docs/REPORT_GUIDE.md`
+- `docs/REPORT_GUIDE.zh-CN.md`
 
 MCP Scope reports transparency notes and static risk signals. It does not prove compromise, prove safety, run MCP servers, or inspect live tool metadata.
 
@@ -91,6 +109,10 @@ MCP Scope reports transparency notes and static risk signals. It does not prove 
 - `examples/tools/credential-network-tools.json`
 - `examples/tools/schema-quality-tools.json`
 - `examples/tools/multi-tool-suspicious-fragments.json`
+- `examples/reports/sample-combined-report.md`
+- `examples/reports/sample-combined-report.zh-CN.md`
+- `examples/reports/sample-combined-report.json`
+- `examples/reports/sample-tools-only-report.md`
 
 ## Development
 
@@ -101,7 +123,6 @@ pnpm check
 
 ## Roadmap Preview
 
-- Phase 3: Markdown/JSON transparency reports.
 - Phase 4: local read-only viewer.
 - Phase 5: GitHub Action quality gate.
 - Phase 6: tool metadata diff and approval memory.

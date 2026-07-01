@@ -13,11 +13,11 @@ describe("core constants", () => {
     expect(PROJECT_VERSION).toBe("0.0.0");
   });
 
-  it("marks Phase 2 scanner behavior as static-only", () => {
+  it("marks Phase 3 report behavior as static-only", () => {
     expect(FOUNDATION_STATUS).toMatchObject({
-      phase: 2,
-      status: "tool-metadata-rules-ready",
-      scanner: "static-config-and-tool-metadata",
+      phase: 3,
+      status: "transparency-reports-ready",
+      scanner: "static-config-tool-metadata-reports",
       externalApiCalls: false,
       serverExecution: false
     });

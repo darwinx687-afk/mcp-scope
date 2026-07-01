@@ -21,3 +21,9 @@
 - Phase 2 supports local exported MCP tool metadata only and does not execute `tools/list` against live servers.
 - Tool metadata findings are static risk signals and warnings, not confirmed vulnerabilities.
 - Tool metadata schemas are sanitized before JSON/Markdown rendering to avoid emitting obvious secret example values.
+
+## 2026-07-01 Phase 3
+
+- Markdown reports support bilingual rendering through `--lang en` and `--lang zh-CN`.
+- JSON reports remain stable English machine-readable schema fields.
+- Curated report examples live under `examples/reports`; generated smoke reports remain ignored under `reports/`.

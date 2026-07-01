@@ -6,7 +6,9 @@ coverage/
 *.log
 
 # Local generated transparency reports are ignored unless intentionally moved into examples.
-reports/
+/reports/
+!examples/reports/
+!examples/reports/**
 mcp-scope-report*.md
 mcp-scope-report*.json
 *.mcp-scope-report.md

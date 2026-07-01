@@ -49,9 +49,9 @@ describe("mcp-scope CLI", () => {
     expect(parsed).toMatchObject({
       project: "mcp-scope",
       name: "MCP Scope",
-      phase: 2,
-      status: "tool-metadata-rules-ready",
-      scanner: "static-config-and-tool-metadata",
+      phase: 3,
+      status: "transparency-reports-ready",
+      scanner: "static-config-tool-metadata-reports",
       externalApiCalls: false,
       serverExecution: false
     });
@@ -65,6 +65,7 @@ describe("mcp-scope CLI", () => {
 
     expect(result.exitCode).toBe(0);
     expect(result.stdout).toContain('"serverCount": 1');
+    expect(result.stdout).toContain('"reportVersion": "0.3.0"');
     expect(result.stdout).toContain("Authorization");
     expect(result.stdout).toContain("[query-redacted]");
     expect(result.stdout).not.toContain("Bearer REDACTED_EXAMPLE_TOKEN");
@@ -81,9 +82,23 @@ describe("mcp-scope CLI", () => {
     const result = await runCli(["scan", "--config", configPath, "--tools", toolsPath, "--format", "json"]);
 
     expect(result.exitCode).toBe(0);
-    expect(result.stdout).toContain('"toolMetadata"');
+    expect(result.stdout).toContain('"tools"');
     expect(result.stdout).toContain("metadata_injection_phrase");
     expect(result.stdout).not.toContain("Bearer REDACTED_EXAMPLE_TOKEN");
+  });
+
+  it("runs combined scan with Chinese Markdown", async () => {
+    const configPath = fileURLToPath(
+      new URL("../../../examples/claude-desktop-filesystem.json", import.meta.url)
+    );
+    const toolsPath = fileURLToPath(
+      new URL("../../../examples/tools/filesystem-tools.json", import.meta.url)
+    );
+    const result = await runCli(["scan", "--config", configPath, "--tools", toolsPath, "--lang", "zh-CN"]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("## 执行摘要");
+    expect(result.stdout).toContain("## MCP Scope 检查了什么");
   });
 
   it("runs inspect-tools with a local tool metadata file", async () => {
@@ -95,6 +110,17 @@ describe("mcp-scope CLI", () => {
     expect(result.exitCode).toBe(0);
     expect(result.stdout).toContain("credential_exposure_signal");
     expect(result.stdout).not.toContain("example-api-key-do-not-use");
+  });
+
+  it("runs inspect-tools with Chinese Markdown", async () => {
+    const toolsPath = fileURLToPath(
+      new URL("../../../examples/tools/poisoned-description-tools.json", import.meta.url)
+    );
+    const result = await runCli(["inspect-tools", "--tools", toolsPath, "--format", "markdown", "--lang", "zh-CN"]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("## 执行摘要");
+    expect(result.stdout).toContain("静态风险信号");
   });
 
   it("errors clearly when a tool metadata file is missing", async () => {
