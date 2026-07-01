@@ -10,7 +10,7 @@ If you believe you found a security issue in MCP Scope itself, open a minimal pu
 
 ## Current Project State
 
-Phase 1 implements static local MCP config fingerprinting. It does not execute MCP servers and does not call external APIs.
+Phase 2 implements static local MCP config fingerprinting and local exported tool metadata analysis. It does not execute MCP servers, send live `tools/list` requests, or call external APIs.
 
 Future MCP Scope reports should be treated as transparency warnings and review evidence. They are not full vulnerability proof, and they are not a guarantee that a server, config, or tool is safe.
 

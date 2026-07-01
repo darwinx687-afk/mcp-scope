@@ -6,7 +6,8 @@ export type PhaseStatus =
   | "foundation-in-progress"
   | "foundation-ready"
   | "scanner-not-implemented"
-  | "config-fingerprint-ready";
+  | "config-fingerprint-ready"
+  | "tool-metadata-rules-ready";
 
 export type RiskLevel = "info" | "low" | "medium" | "high" | "unknown";
 
@@ -30,11 +31,12 @@ export type McpScopeTarget = {
 export const FOUNDATION_STATUS = {
   project: PROJECT_SLUG,
   name: PROJECT_NAME,
-  phase: 1,
-  status: "config-fingerprint-ready",
-  scanner: "static-config-fingerprint",
+  phase: 2,
+  status: "tool-metadata-rules-ready",
+  scanner: "static-config-and-tool-metadata",
   externalApiCalls: false,
   serverExecution: false
 } as const;
 
 export * from "./scan.js";
+export * from "./tool-metadata.js";

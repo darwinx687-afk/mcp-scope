@@ -4,12 +4,20 @@ import { dirname } from "node:path";
 import {
   FOUNDATION_STATUS,
   McpScopeConfigError,
+  McpToolMetadataError,
   PROJECT_NAME,
   PROJECT_VERSION,
   createMcpConfigFingerprint,
+  evaluateToolManifest,
+  readMcpToolMetadataFile,
   readMcpConfigFile
 } from "@mcp-scope/core";
-import { renderScanResultJson, renderScanResultMarkdown } from "@mcp-scope/report";
+import {
+  renderScanResultJson,
+  renderScanResultMarkdown,
+  renderToolMetadataJson,
+  renderToolMetadataMarkdown
+} from "@mcp-scope/report";
 
 export type CliWriter = {
   write(chunk: string): unknown;
@@ -28,16 +36,25 @@ Usage:
   mcp-scope --help
   mcp-scope --version
   mcp-scope status
-  mcp-scope scan --config <path> [--format markdown|json] [--output <path>]
+  mcp-scope scan --config <path> [--tools <path>] [--format markdown|json] [--output <path>]
+  mcp-scope inspect-tools --tools <path> [--format markdown|json] [--output <path>]
 
-Phase 1 note:
-  MCP Scope statically reads local MCP JSON config files. It does not execute MCP servers.
+Phase 2 note:
+  MCP Scope statically reads local JSON config and exported tool metadata files.
+  It does not execute MCP servers, call tools/list, or call external APIs.
 `;
 
 type ScanFormat = "markdown" | "json";
 
 type ScanCommandOptions = {
   readonly configPath: string;
+  readonly toolsPath?: string;
+  readonly format: ScanFormat;
+  readonly outputPath?: string;
+};
+
+type InspectToolsOptions = {
+  readonly toolsPath: string;
   readonly format: ScanFormat;
   readonly outputPath?: string;
 };
@@ -64,6 +81,10 @@ export async function handleCli(args = process.argv.slice(2), io: CliIO = proces
     return runScanCommand(args.slice(1), io);
   }
 
+  if (command === "inspect-tools") {
+    return runInspectToolsCommand(args.slice(1), io);
+  }
+
   io.stderr.write(`Unknown MCP Scope command: ${command}\n`);
   io.stderr.write(`Run "mcp-scope --help" for usage.\n`);
   return 1;
@@ -80,8 +101,12 @@ async function runScanCommand(args: readonly string[], io: CliIO): Promise<numbe
   }
 
   try {
+    const toolMetadata =
+      options.toolsPath === undefined
+        ? undefined
+        : evaluateToolManifest(await readMcpToolMetadataFile(options.toolsPath));
     const parsedConfig = await readMcpConfigFile(options.configPath);
-    const result = createMcpConfigFingerprint(parsedConfig);
+    const result = createMcpConfigFingerprint(parsedConfig, { toolMetadata });
     const rendered =
       options.format === "json" ? renderScanResultJson(result) : renderScanResultMarkdown(result);
 
@@ -95,7 +120,7 @@ async function runScanCommand(args: readonly string[], io: CliIO): Promise<numbe
     io.stdout.write(rendered.endsWith("\n") ? rendered : `${rendered}\n`);
     return 0;
   } catch (error) {
-    if (error instanceof McpScopeConfigError) {
+    if (error instanceof McpScopeConfigError || error instanceof McpToolMetadataError) {
       io.stderr.write(`${error.message}\n`);
       return 1;
     }
@@ -106,8 +131,43 @@ async function runScanCommand(args: readonly string[], io: CliIO): Promise<numbe
   }
 }
 
+async function runInspectToolsCommand(args: readonly string[], io: CliIO): Promise<number> {
+  const options = parseInspectToolsArgs(args);
+
+  if (typeof options === "string") {
+    io.stderr.write(`${options}\n`);
+    return 1;
+  }
+
+  try {
+    const result = evaluateToolManifest(await readMcpToolMetadataFile(options.toolsPath));
+    const rendered =
+      options.format === "json" ? renderToolMetadataJson(result) : renderToolMetadataMarkdown(result);
+
+    if (options.outputPath !== undefined) {
+      await mkdir(dirname(options.outputPath), { recursive: true });
+      await writeFile(options.outputPath, rendered, "utf8");
+      io.stdout.write(`Wrote MCP Scope ${options.format} tool metadata report to ${options.outputPath}\n`);
+      return 0;
+    }
+
+    io.stdout.write(rendered.endsWith("\n") ? rendered : `${rendered}\n`);
+    return 0;
+  } catch (error) {
+    if (error instanceof McpToolMetadataError) {
+      io.stderr.write(`${error.message}\n`);
+      return 1;
+    }
+
+    const message = error instanceof Error ? error.message : String(error);
+    io.stderr.write(`MCP Scope tool metadata inspection failed: ${message}\n`);
+    return 1;
+  }
+}
+
 function parseScanArgs(args: readonly string[]): ScanCommandOptions | string {
   let configPath: string | undefined;
+  let toolsPath: string | undefined;
   let format: ScanFormat = "markdown";
   let outputPath: string | undefined;
 
@@ -138,6 +198,18 @@ function parseScanArgs(args: readonly string[]): ScanCommandOptions | string {
       continue;
     }
 
+    if (arg === "--tools") {
+      const value = args[index + 1];
+
+      if (value === undefined || value.startsWith("--")) {
+        return 'Missing value for --tools <path>';
+      }
+
+      toolsPath = value;
+      index += 1;
+      continue;
+    }
+
     if (arg === "--output") {
       const value = args[index + 1];
 
@@ -163,6 +235,69 @@ function parseScanArgs(args: readonly string[]): ScanCommandOptions | string {
 
   return {
     configPath,
+    toolsPath,
+    format,
+    outputPath
+  };
+}
+
+function parseInspectToolsArgs(args: readonly string[]): InspectToolsOptions | string {
+  let toolsPath: string | undefined;
+  let format: ScanFormat = "markdown";
+  let outputPath: string | undefined;
+
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index];
+
+    if (arg === "--tools") {
+      const value = args[index + 1];
+
+      if (value === undefined || value.startsWith("--")) {
+        return 'Missing value for --tools <path>';
+      }
+
+      toolsPath = value;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--format") {
+      const nextFormat = args[index + 1];
+
+      if (nextFormat !== "json" && nextFormat !== "markdown") {
+        return `Unsupported --format "${nextFormat ?? ""}". Use "markdown" or "json".`;
+      }
+
+      format = nextFormat;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--output") {
+      const value = args[index + 1];
+
+      if (value === undefined || value.startsWith("--")) {
+        return 'Missing value for --output <path>';
+      }
+
+      outputPath = value;
+      index += 1;
+      continue;
+    }
+
+    return `Unknown inspect-tools option: ${arg ?? ""}`;
+  }
+
+  if (toolsPath === undefined || toolsPath.trim() === "") {
+    return 'Missing required option: --tools <path>';
+  }
+
+  if (outputPath !== undefined && outputPath.trim() === "") {
+    return 'Invalid empty value for --output <path>';
+  }
+
+  return {
+    toolsPath,
     format,
     outputPath
   };

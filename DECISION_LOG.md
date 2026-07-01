@@ -15,3 +15,9 @@
 - Phase 1 scanner is static-only and does not execute MCP servers.
 - Phase 1 supports only the common top-level `mcpServers` JSON object shape.
 - Env/header values are never rendered; reports show key names and redaction markers only.
+
+## 2026-07-01 Phase 2
+
+- Phase 2 supports local exported MCP tool metadata only and does not execute `tools/list` against live servers.
+- Tool metadata findings are static risk signals and warnings, not confirmed vulnerabilities.
+- Tool metadata schemas are sanitized before JSON/Markdown rendering to avoid emitting obvious secret example values.

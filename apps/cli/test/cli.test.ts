@@ -29,6 +29,7 @@ describe("mcp-scope CLI", () => {
       expect(result.exitCode).toBe(0);
       expect(result.stdout).toContain("mcp-scope status");
       expect(result.stdout).toContain("mcp-scope scan --config <path>");
+      expect(result.stdout).toContain("mcp-scope inspect-tools --tools <path>");
       expect(result.stdout).toContain("does not execute MCP servers");
     });
   });
@@ -48,9 +49,9 @@ describe("mcp-scope CLI", () => {
     expect(parsed).toMatchObject({
       project: "mcp-scope",
       name: "MCP Scope",
-      phase: 1,
-      status: "config-fingerprint-ready",
-      scanner: "static-config-fingerprint",
+      phase: 2,
+      status: "tool-metadata-rules-ready",
+      scanner: "static-config-and-tool-metadata",
       externalApiCalls: false,
       serverExecution: false
     });
@@ -68,6 +69,39 @@ describe("mcp-scope CLI", () => {
     expect(result.stdout).toContain("[query-redacted]");
     expect(result.stdout).not.toContain("Bearer REDACTED_EXAMPLE_TOKEN");
     expect(result.stdout).not.toContain("api_key=REDACTED_EXAMPLE_TOKEN");
+  });
+
+  it("runs combined scan with config and tools", async () => {
+    const configPath = fileURLToPath(
+      new URL("../../../examples/claude-code-project.mcp.json", import.meta.url)
+    );
+    const toolsPath = fileURLToPath(
+      new URL("../../../examples/tools/poisoned-description-tools.json", import.meta.url)
+    );
+    const result = await runCli(["scan", "--config", configPath, "--tools", toolsPath, "--format", "json"]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain('"toolMetadata"');
+    expect(result.stdout).toContain("metadata_injection_phrase");
+    expect(result.stdout).not.toContain("Bearer REDACTED_EXAMPLE_TOKEN");
+  });
+
+  it("runs inspect-tools with a local tool metadata file", async () => {
+    const toolsPath = fileURLToPath(
+      new URL("../../../examples/tools/credential-network-tools.json", import.meta.url)
+    );
+    const result = await runCli(["inspect-tools", "--tools", toolsPath, "--format", "json"]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("credential_exposure_signal");
+    expect(result.stdout).not.toContain("example-api-key-do-not-use");
+  });
+
+  it("errors clearly when a tool metadata file is missing", async () => {
+    const result = await runCli(["inspect-tools", "--tools", "examples/tools/not-found.json"]);
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain('Unable to read tool metadata file "examples/tools/not-found.json"');
   });
 
   it("errors when scan is missing --config", async () => {

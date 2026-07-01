@@ -13,11 +13,11 @@ describe("core constants", () => {
     expect(PROJECT_VERSION).toBe("0.0.0");
   });
 
-  it("marks Phase 1 scanner behavior as static-only", () => {
+  it("marks Phase 2 scanner behavior as static-only", () => {
     expect(FOUNDATION_STATUS).toMatchObject({
-      phase: 1,
-      status: "config-fingerprint-ready",
-      scanner: "static-config-fingerprint",
+      phase: 2,
+      status: "tool-metadata-rules-ready",
+      scanner: "static-config-and-tool-metadata",
       externalApiCalls: false,
       serverExecution: false
     });

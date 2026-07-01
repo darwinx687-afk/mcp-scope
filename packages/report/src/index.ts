@@ -1,5 +1,12 @@
 import { FOUNDATION_STATUS, PROJECT_NAME, PROJECT_SLUG } from "@mcp-scope/core";
-import type { McpScopeScanResult, McpServerFingerprint, TransparencyNote } from "@mcp-scope/core";
+import type {
+  McpScopeScanResult,
+  McpServerFingerprint,
+  ToolMetadataScanResult,
+  ToolMetadataToolResult,
+  ToolRiskFinding,
+  TransparencyNote
+} from "@mcp-scope/core";
 
 export function renderFoundationStatusReport(): string {
   return [
@@ -12,7 +19,7 @@ export function renderFoundationStatusReport(): string {
     `- scanner: ${FOUNDATION_STATUS.scanner}`,
     `- externalApiCalls: ${String(FOUNDATION_STATUS.externalApiCalls)}`,
     "",
-    "Phase 1 statically fingerprints local MCP config files. It does not execute MCP servers or call external APIs."
+    "Phase 2 statically fingerprints local MCP config files and local exported tool metadata. It does not execute MCP servers or call external APIs."
   ].join("\n");
 }
 
@@ -39,13 +46,31 @@ export function renderScanResultMarkdown(result: McpScopeScanResult): string {
     "## Server Details",
     "",
     ...result.servers.flatMap((server) => renderServerDetails(server)),
+    ...renderOptionalToolMetadataSection(result.toolMetadata),
     "## Footer",
     "",
-    "MCP Scope is an early transparency tool. Findings are risk notes, not proof of compromise."
+    "MCP Scope is an early transparency tool. Findings are static risk signals, not proof of compromise."
   ].join("\n");
 }
 
 export function renderScanResultJson(result: McpScopeScanResult): string {
+  return `${JSON.stringify(result, null, 2)}\n`;
+}
+
+export function renderToolMetadataMarkdown(result: ToolMetadataScanResult): string {
+  return [
+    "# MCP Scope Tool Metadata Report",
+    "",
+    ...renderToolMetadataSummary(result),
+    "",
+    ...renderToolMetadataDetails(result),
+    "## Footer",
+    "",
+    "MCP Scope is an early transparency tool. Findings are static risk signals, not proof of compromise."
+  ].join("\n");
+}
+
+export function renderToolMetadataJson(result: ToolMetadataScanResult): string {
   return `${JSON.stringify(result, null, 2)}\n`;
 }
 
@@ -97,6 +122,106 @@ function renderServerDetails(server: McpServerFingerprint): string[] {
     "",
     "Transparency notes:",
     ...renderNotes(server.transparencyNotes),
+    ""
+  ];
+}
+
+function renderOptionalToolMetadataSection(result?: ToolMetadataScanResult): string[] {
+  if (result === undefined) {
+    return [];
+  }
+
+  return [
+    ...renderToolMetadataSummary(result),
+    "",
+    ...renderToolMetadataDetails(result)
+  ];
+}
+
+function renderToolMetadataSummary(result: ToolMetadataScanResult): string[] {
+  return [
+    "## Tool Metadata Summary",
+    "",
+    `- Tool metadata source file: ${result.sourceFile ?? "unknown"}`,
+    `- Metadata source type: ${result.sourceType}`,
+    `- Tool count: ${result.toolCount}`,
+    `- Finding count: ${result.findingCount}`,
+    `- Highest tool risk level: ${result.highestSeverity}`,
+    `- External API calls: ${String(result.externalApiCalls)}`,
+    `- MCP server execution: ${String(result.serverExecution)}`,
+    `- tools/list request sent: ${String(result.toolsListRequestSent)}`
+  ];
+}
+
+function renderToolMetadataDetails(result: ToolMetadataScanResult): string[] {
+  return [
+    "## Tool Table",
+    "",
+    renderToolTable(result.tools),
+    "",
+    ...renderManifestFindings(result.manifestFindings),
+    "## Per-Tool Findings",
+    "",
+    ...result.tools.flatMap((tool) => renderToolDetails(tool))
+  ];
+}
+
+function renderToolTable(tools: readonly ToolMetadataToolResult[]): string {
+  if (tools.length === 0) {
+    return "No tool metadata entries found.";
+  }
+
+  return [
+    "| Tool name | Title | Capability hints | Finding count | Highest severity |",
+    "| --- | --- | --- | --- | --- |",
+    ...tools.map((tool) =>
+      [
+        tableCell(tool.name),
+        tableCell(tool.title ?? ""),
+        tableCell(tool.capabilityHints.join(", ")),
+        tableCell(String(tool.findingCount)),
+        tableCell(tool.highestSeverity)
+      ].join(" | ")
+    )
+  ].join("\n");
+}
+
+function renderManifestFindings(findings: readonly ToolRiskFinding[]): string[] {
+  if (findings.length === 0) {
+    return [];
+  }
+
+  return [
+    "## Manifest-Level Findings",
+    "",
+    ...findings.flatMap((finding) => renderFinding(finding)),
+    ""
+  ];
+}
+
+function renderToolDetails(tool: ToolMetadataToolResult): string[] {
+  return [
+    `### ${tool.name}`,
+    "",
+    `- Title: ${tool.title ?? "none"}`,
+    `- Capability hints: ${tool.capabilityHints.join(", ")}`,
+    `- Finding count: ${tool.findingCount}`,
+    `- Highest severity: ${tool.highestSeverity}`,
+    "",
+    ...(
+      tool.findings.length === 0
+        ? ["- info: No static tool metadata risk signals found.", ""]
+        : tool.findings.flatMap((finding) => renderFinding(finding))
+    )
+  ];
+}
+
+function renderFinding(finding: ToolRiskFinding): string[] {
+  return [
+    `- ${finding.severity} / ${finding.category}: ${finding.title}`,
+    `  - Message: ${finding.message}`,
+    `  - Evidence: ${finding.evidence}`,
+    `  - Recommendation: ${finding.recommendation}`,
     ""
   ];
 }

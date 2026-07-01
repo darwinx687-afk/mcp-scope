@@ -12,6 +12,8 @@ Read local MCP config files and produce a basic static fingerprint without execu
 
 Define tool metadata structures, risk rule inputs, and capability categories.
 
+Status: implemented for local exported tool metadata files only.
+
 ## Phase 3: Markdown/JSON Transparency Reports
 
 Generate reviewable local reports with clear warnings, evidence, and non-goal language.

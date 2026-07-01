@@ -1,0 +1,34 @@
+{
+  "serverName": "schema-quality",
+  "tools": [
+    {
+      "name": "mystery_tool",
+      "title": "Mystery Tool"
+    },
+    {
+      "name": "update_record",
+      "title": "Update Record",
+      "description": "Update",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "recordId": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string",
+            "description": "New value"
+          }
+        }
+      }
+    },
+    {
+      "name": "list_items",
+      "title": "List Items",
+      "description": "List items from a local catalog",
+      "inputSchema": {
+        "type": "array"
+      }
+    }
+  ]
+}

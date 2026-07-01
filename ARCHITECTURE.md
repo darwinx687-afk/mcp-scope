@@ -11,20 +11,21 @@ MCP Scope starts as a small TypeScript pnpm monorepo.
 - `examples`: intentionally committed examples only.
 - `assets`: brand and visual assets later.
 
-## Phase 1 Runtime Boundaries
+## Phase 2 Runtime Boundaries
 
 - No external API calls in core checks.
 - No database, cloud service, or login by default.
 - No MCP server execution.
+- No live `tools/list` requests.
 - No remote metadata fetching.
 - No web dashboard.
 - No background services.
 
 ## Current Scanner Direction
 
-The Phase 1 scanner is static-first. It reads local JSON config files with a top-level `mcpServers` object and produces a fingerprint report without executing commands, connecting to MCP servers, or calling external APIs.
+The Phase 2 scanner is static-first. It reads local JSON config files with a top-level `mcpServers` object and local exported tool metadata files. It produces fingerprint and tool metadata reports without executing commands, connecting to MCP servers, sending `tools/list` requests, or calling external APIs.
 
-The scanner redacts env/header values and reports only key names. URL query strings are redacted in displayed output.
+The scanner redacts env/header values and reports only key names. URL query strings are redacted in displayed output. Tool metadata schemas are sanitized before rendering so obvious example secret values are not emitted.
 
 ## Future Scanner Direction
 
@@ -34,8 +35,8 @@ Any future dynamic checks must be explicitly gated, documented, and visible to t
 
 ## Package Responsibilities
 
-`packages/core` owns stable names, shared types, MCP config parsing, static fingerprinting, capability hints, risk levels, and transparency notes.
+`packages/core` owns stable names, shared types, MCP config parsing, local tool metadata parsing, static fingerprinting, rule evaluation, capability hints, risk levels, and transparency notes.
 
-`packages/report` owns rendering of status and transparency reports. It must avoid exposing raw env/header values.
+`packages/report` owns rendering of status and transparency reports. It must avoid exposing raw env/header values or secret-like tool metadata examples.
 
 `apps/cli` owns user commands, argument parsing, exit codes, and terminal output.

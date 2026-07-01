@@ -2,6 +2,6 @@
 
 MCP Scope is not launched yet.
 
-Phase 1 adds an early local-only MCP config fingerprint command for JSON files with a top-level `mcpServers` object.
+Phase 2 adds local-only exported MCP tool metadata analysis and static risk rules for metadata transparency.
 
-Do not describe this project as production-ready. Do not claim that it detects all malicious MCP servers or guarantees safety. The scanner does not execute MCP servers and does not call external APIs.
+Do not describe this project as production-ready. Do not claim that it detects all malicious MCP servers or guarantees safety. The scanner does not execute MCP servers, send live `tools/list` requests, or call external APIs.

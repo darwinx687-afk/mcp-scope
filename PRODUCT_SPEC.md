@@ -35,18 +35,24 @@ Developers are connecting MCP servers to AI coding tools and agent environments.
 - Markdown and JSON reports.
 - GitHub Action quality gate.
 
-## Phase 1 Scope
+## Phase 2 Scope
 
-Phase 1 adds the first real local MCP configuration fingerprint.
+Phase 2 adds local exported MCP tool metadata analysis and a reusable static risk rule engine.
 
 Included now:
 
 - Governance documents.
 - TypeScript pnpm monorepo skeleton.
 - CLI command: `mcp-scope scan --config <path>`.
+- CLI command: `mcp-scope scan --config <path> --tools <path>`.
+- CLI command: `mcp-scope inspect-tools --tools <path>`.
 - Static parsing for JSON files with a top-level `mcpServers` object.
+- Static parsing for local exported MCP `tools/list` JSON-RPC responses.
+- Static parsing for MCP Scope portable local tool manifests.
 - Claude Desktop style inference where omitted `type` plus `command` means `stdio`.
 - Server fingerprints for transport, command presence, args preview, env/header key names, URL host, capability hints, transparency notes, and risk level.
+- Tool metadata normalization for names, titles, descriptions, input schemas, output schemas, annotations, and parameters.
+- Conservative tool-level rules for metadata-injection signals, cross-tool manipulation, destructive actions, filesystem access, credential exposure, network access, schema quality, annotation trust, and permission mismatch.
 - Markdown and JSON report rendering.
 - Example configs and tests.
 
@@ -54,6 +60,7 @@ Not included now:
 
 - Prompt-injection detection.
 - MCP server execution.
+- Live `tools/list` requests.
 - External MCP registry connections.
 - Remote metadata fetching.
 - Web dashboard.

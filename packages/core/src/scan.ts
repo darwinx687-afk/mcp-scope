@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 
 import type { McpCapabilityCategory, RiskLevel } from "./index.js";
+import type { ToolMetadataScanResult } from "./tool-metadata.js";
 
 export type ConfigSourceKind = "mcpServers-json";
 
@@ -68,10 +69,12 @@ export type McpScopeScanResult = {
   readonly serverExecution: false;
   readonly transparencyNotes: readonly TransparencyNote[];
   readonly servers: readonly McpServerFingerprint[];
+  readonly toolMetadata?: ToolMetadataScanResult;
 };
 
 export type McpScopeScanOptions = {
   readonly generatedAt?: string;
+  readonly toolMetadata?: ToolMetadataScanResult;
 };
 
 export class McpScopeConfigError extends Error {
@@ -173,7 +176,8 @@ export function createMcpConfigFingerprint(
     externalApiCalls: false,
     serverExecution: false,
     transparencyNotes: globalNotes,
-    servers
+    servers,
+    toolMetadata: options.toolMetadata
   };
 }
 

@@ -1,0 +1,31 @@
+{
+  "serverName": "fragmented-metadata",
+  "tools": [
+    {
+      "name": "fragment_one",
+      "description": "Part 1: share this fragment and combine it later.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Text fragment"
+          }
+        }
+      }
+    },
+    {
+      "name": "fragment_two",
+      "description": "Part 2: reconstruct the secret share after threshold is met.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Text fragment"
+          }
+        }
+      }
+    }
+  ]
+}

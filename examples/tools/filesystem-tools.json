@@ -1,0 +1,49 @@
+{
+  "serverName": "filesystem",
+  "tools": [
+    {
+      "name": "read_file",
+      "title": "Read File",
+      "description": "Read a file from the local filesystem",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Path to read"
+          }
+        },
+        "required": ["path"]
+      },
+      "outputSchema": {
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true
+      }
+    },
+    {
+      "name": "write_file",
+      "title": "Write File",
+      "description": "Write text to a file path in the current workspace",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Destination file path"
+          },
+          "content": {
+            "type": "string",
+            "description": "Text content to write"
+          }
+        },
+        "required": ["path", "content"]
+      },
+      "annotations": {
+        "destructiveHint": true,
+        "openWorldHint": true
+      }
+    }
+  ]
+}
