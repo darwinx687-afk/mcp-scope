@@ -8,7 +8,7 @@
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | GitHub release | en | posted | 2026-07-01 | https://github.com/darwinx687-afk/mcp-scope/releases/tag/v0.1.0-preview | none | `launch/copy/github_release_final_review.md` | 公开 prerelease；已有中英文文档；不是 npm；不是 GitHub Marketplace。 | 等待反馈 | no |
 | 掘金 | zh-CN | manual-needed | 2026-07-01 |  | `launch/assets/exports/release-banner-zh-CN.png` | `launch/copy/juejin.md` | 浏览器辅助已保存文字草稿并检查预览；仍需手动上传 PNG、最终预览并确认发布。 | 暂无反馈 | no |
-| 小红书 | zh-CN | posted | 2026-07-01 |  | `launch/assets/exports/social-card-square-zh-CN.png` | `launch/copy/xiaohongshu.md` | 浏览器辅助填写文案、人工上传 PNG 后已发布；小红书创作服务平台显示笔记审核中，公开链接暂不可用。 | 等待审核 | no |
+| 小红书 | zh-CN | posted | 2026-07-01 | https://www.xiaohongshu.com/explore/6a4550e9000000001603fad5 | `launch/assets/exports/social-card-square-zh-CN.png` | `launch/copy/xiaohongshu.md` | 审核已通过；已从小红书笔记页面获取公开链接。 | 等待反馈 | no |
 | 即刻 | zh-CN | manual-needed | TBD |  | `launch/assets/exports/social-card-zh-CN.png` | `launch/copy/jike.md` | 需要手动发布；只使用这张中文 PNG。 | 暂无反馈 | no |
 | 微信群 | zh-CN | manual-needed | TBD |  | `launch/assets/exports/social-card-zh-CN.png` | `launch/copy/wechat_group.md` | 私域群分享只能手动执行。 | 暂无反馈 | no |
 | 朋友圈 | zh-CN | manual-needed | TBD |  | `launch/assets/exports/social-card-square-zh-CN.png` | `launch/copy/wechat_moments.md` | 朋友圈发布只能手动执行。 | 暂无反馈 | no |
