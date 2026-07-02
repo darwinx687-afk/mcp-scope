@@ -36,14 +36,21 @@
 
 ## v0.2.0-preview Release Execution
 
-- 状态：本轮 release execution 已批准发布公开 prerelease。
+- 状态：已作为公开 prerelease 发布。
 - 主题：双语入口与使用体验完善版。
-- 计划 tag：`v0.2.0-preview`
-- 计划 prerelease URL：`https://github.com/darwinx687-afk/mcp-scope/releases/tag/v0.2.0-preview`
+- Tag：`v0.2.0-preview`
+- Tag 指向：`f2c97d112eb992d7bf3092bfa632b2e54f6c1190`
+- Prerelease URL：`https://github.com/darwinx687-afk/mcp-scope/releases/tag/v0.2.0-preview`
+- Draft 状态：`isDraft: false`
+- Prerelease 状态：`isPrerelease: true`
+- Published 状态：公开 prerelease；`publishedAt` 为 `2026-07-02T14:08:51Z`
+- `main` 上的 CI：已通过，run `28596477360`
+- `v0.2.0-preview` 上的 CI：已通过，run `28596494978`
 - npm 发布：false。
 - GitHub Marketplace 发布：false。
 - Phase 11 状态：等待真实可行动反馈。
-- 最终 tag 指向、发布时间和更新帖 URL 必须在发布后记录。
+- LinkedIn 更新帖：manual-needed，因为 in-app browser 控制面无法连接到可用标签页。
+- 小红书更新帖：manual-needed，因为 in-app browser 控制面无法连接到可用标签页。
 
 ## 仓库信息
 

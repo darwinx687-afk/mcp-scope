@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">MCP 透镜 v0.2 更新卡片</title>
+  <desc id="desc">双语入口与使用体验完善。</desc>
+  <rect width="1200" height="630" rx="36" fill="#f8fafc"/>
+  <rect x="32" y="32" width="1136" height="566" rx="32" fill="#ffffff" stroke="#d6e3f0" stroke-width="2"/>
+  <g transform="translate(84 76)">
+    <rect width="184" height="184" rx="28" fill="#eef6ff" stroke="#d6e3f0" stroke-width="2"/>
+    <circle cx="92" cy="92" r="42" fill="#ffffff" stroke="#0f766e" stroke-width="8"/>
+    <circle cx="92" cy="92" r="18" fill="#f8fafc" stroke="#2563eb" stroke-width="6"/>
+    <path d="M121 121l32 32" stroke="#0f766e" stroke-width="11" stroke-linecap="round"/>
+    <path d="M46 92h25M113 92h25M92 46v25M92 113v25" stroke="#2563eb" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="40" cy="92" r="7" fill="#f59e0b"/>
+    <circle cx="144" cy="92" r="7" fill="#f59e0b"/>
+  </g>
+  <text x="316" y="122" fill="#0f172a" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="72" font-weight="760">MCP 透镜 v0.2</text>
+  <text x="316" y="184" fill="#334155" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="31">双语入口与使用体验完善</text>
+  <text x="316" y="232" fill="#64748b" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="25">v0.2.0-preview · 公开 prerelease</text>
+  <g transform="translate(84 316)" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="28" fill="#0f172a">
+    <rect x="0" y="0" width="222" height="54" rx="12" fill="#ecfdf5" stroke="#99f6e4"/>
+    <text x="24" y="36">本地优先</text>
+    <rect x="252" y="0" width="222" height="54" rx="12" fill="#eff6ff" stroke="#bfdbfe"/>
+    <text x="276" y="36">静态分析</text>
+    <rect x="504" y="0" width="330" height="54" rx="12" fill="#fffbeb" stroke="#fde68a"/>
+    <text x="528" y="36">不执行 MCP server</text>
+    <rect x="0" y="82" width="286" height="54" rx="12" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="24" y="118">隐藏 secret 值</text>
+  </g>
+  <g transform="translate(86 500)" fill="none" stroke-linecap="round">
+    <path d="M0 0h156l34 34h236" stroke="#2563eb" stroke-width="6"/>
+    <path d="M0 58h240l30-30h350" stroke="#0f766e" stroke-width="6"/>
+    <circle cx="0" cy="0" r="8" fill="#ffffff" stroke="#2563eb" stroke-width="5"/>
+    <circle cx="0" cy="58" r="8" fill="#ffffff" stroke="#0f766e" stroke-width="5"/>
+  </g>
+  <text x="754" y="542" fill="#64748b" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="25">github.com/darwinx687-afk/mcp-scope</text>
+</svg>

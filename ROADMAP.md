@@ -60,7 +60,7 @@ Status: implemented as a public GitHub repository with CI verification, `v0.1.0-
 
 Launch with English and Chinese docs and collect early feedback.
 
-Status: launch and feedback pack prepared in English and Chinese. The public GitHub prerelease, LinkedIn post, and Xiaohongshu post are live, but there is no actionable feedback yet. v0.2.0-preview is prepared as a bilingual onboarding and limitation reduction public prerelease. No npm package or GitHub Marketplace listing exists.
+Status: launch and feedback pack prepared in English and Chinese. The v0.1 public GitHub prerelease, v0.2 public GitHub prerelease, LinkedIn launch post, and Xiaohongshu launch post are live, but there is no actionable feedback yet. No npm package or GitHub Marketplace listing exists.
 
 ## v0.2.0-preview Maintenance Plan
 
@@ -76,7 +76,7 @@ Planned improvements:
 - Clearer report limitation wording.
 - Versioned update-post workflow for LinkedIn and Xiaohongshu.
 
-Status: release execution approved for public prerelease publication. Keep Phase 11 waiting until real actionable feedback appears.
+Status: public prerelease published at `https://github.com/darwinx687-afk/mcp-scope/releases/tag/v0.2.0-preview`. LinkedIn and Xiaohongshu update posts are manual-needed; keep Phase 11 waiting until real actionable feedback appears.
 
 ## Phase 11: Feedback-Driven Iteration
 

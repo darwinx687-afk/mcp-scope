@@ -36,14 +36,21 @@ Updated on 2026-07-02 for `v0.2.0-preview` release execution approval.
 
 ## v0.2.0-preview Release Execution
 
-- Status: approved for public prerelease publication in the current release execution loop.
+- Status: published as a public prerelease.
 - Theme: bilingual onboarding and limitation reduction.
-- Planned tag: `v0.2.0-preview`
-- Planned prerelease URL: `https://github.com/darwinx687-afk/mcp-scope/releases/tag/v0.2.0-preview`
+- Tag: `v0.2.0-preview`
+- Tag target: `f2c97d112eb992d7bf3092bfa632b2e54f6c1190`
+- Prerelease URL: `https://github.com/darwinx687-afk/mcp-scope/releases/tag/v0.2.0-preview`
+- Draft status: `isDraft: false`
+- Prerelease status: `isPrerelease: true`
+- Published status: public prerelease; `publishedAt` is `2026-07-02T14:08:51Z`
+- CI on `main`: passed for run `28596477360`
+- CI on `v0.2.0-preview`: passed for run `28596494978`
 - npm publication: false.
 - GitHub Marketplace publication: false.
 - Phase 11 status: waiting for real actionable feedback.
-- Final tag target, published time, and update-post URLs must be recorded after publication.
+- LinkedIn update post: manual-needed because the in-app browser control surface could not attach to a usable tab.
+- Xiaohongshu update post: manual-needed because the in-app browser control surface could not attach to a usable tab.
 
 ## Repository Metadata
 
