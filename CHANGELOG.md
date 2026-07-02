@@ -10,7 +10,8 @@
 - Improved discovery Markdown and HTML reports with concrete next-step scan commands for parsed candidates.
 - Clarified report language that findings are static risk signals, not proof of compromise or proof of safety.
 - Added versioned update-post workflow drafts for LinkedIn and Xiaohongshu.
-- Kept the release unpublished: no tag, npm package, GitHub Marketplace listing, or production-ready security claim.
+- Added final v0.2.0-preview readiness review reports with a `ready` recommendation.
+- Kept the release unpublished: no tag, npm package, GitHub Marketplace listing, or security guarantee claim.
 
 ## v0.1.0-preview - Draft prerelease
 

@@ -24,7 +24,7 @@ v0.1 made MCP Scope publicly reviewable. v0.2 is planned to make the project eas
 - No external AI API calls.
 - No npm package claim.
 - No GitHub Marketplace claim.
-- No production-ready security claim.
+- No security guarantee claim.
 - Findings remain static risk signals, not proof of compromise or proof of safety.
 
 ## Publication State

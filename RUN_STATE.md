@@ -1,13 +1,13 @@
 # Run State
 
 - Current phase: Phase 10
-- Current status: v0.2.0-preview maintenance planning in progress as a bilingual onboarding and limitation reduction update; no actionable feedback yet
-- Next loop: review and validate the v0.2 maintenance docs/update workflow, then decide whether to publish a preview release only with explicit human approval; do not start Phase 11 unless real actionable feedback arrives
-- Current scope guard: maintenance planning and static docs/checks only; no MCP server execution, no live tools/list requests, no external APIs in scanning, no npm publish, no Marketplace claim, no production-grade security claim, no release/tag creation, no new social/community posts without explicit approval
+- Current status: v0.2.0-preview human review gate completed with release recommendation `ready`; no release, tag, or post has been published
+- Next loop: if a human approves, manually publish the v0.2.0-preview tag/prerelease; otherwise keep monitoring feedback and do not start Phase 11 unless real actionable feedback arrives
+- Current scope guard: maintenance planning and static docs/checks only; no MCP server execution, no live tools/list requests, no external APIs in scanning, no npm publish, no Marketplace claim, no security guarantee claim, no release/tag creation, no new social/community posts without explicit approval
 
 ## Latest Loop
 
-- Objective: prepare v0.2.0-preview as an unreleased bilingual onboarding and limitation reduction maintenance plan.
+- Objective: review whether the unreleased v0.2.0-preview maintenance update is ready for a human-approved preview release.
 - Scanner state: static config fingerprint plus local exported tool metadata analysis; config parsing now supports `mcpServers`, `projects[*].mcpServers`, `mcp.servers`, and top-level `servers`.
 - External API calls: false.
 - MCP server execution: false.
@@ -33,3 +33,4 @@
 - Publishing state: public GitHub source repository, public GitHub prerelease, LinkedIn post, and Xiaohongshu post exist; no npm package, Marketplace listing, Pages site, deployment, or final/stable release was published.
 - Feedback state: snapshots appended in `launch/FEEDBACK_SNAPSHOT.md` and `launch/FEEDBACK_SNAPSHOT.zh-CN.md`; exposure decision recorded in `launch/EXPOSURE_DECISION.md` and `launch/EXPOSURE_DECISION.zh-CN.md`; latest visible signals are GitHub 1 star/0 forks/0 issues/0 PRs, LinkedIn 1 reaction and 9 impressions, Xiaohongshu 40 views and 1 collect; no actionable feedback yet, so Phase 11 should wait.
 - v0.2 planning state: README language switch, repo metadata recommendations, limitations docs, tool metadata export guide, discovery next-step hints, clearer report limitation wording, and versioned update workflow are the current maintenance focus; `v0.2.0-preview` remains unreleased.
+- v0.2 review state: final review reports live under `launch/updates/v0.2.0-preview/FINAL_REVIEW.md` and `launch/updates/v0.2.0-preview/FINAL_REVIEW.zh-CN.md`; recommendation is `ready`, but no release/tag/post was published.

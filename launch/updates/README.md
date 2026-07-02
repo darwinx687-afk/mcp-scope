@@ -11,4 +11,4 @@ This folder contains versioned update-post materials for MCP Scope. These files 
 - Review release notes before any publication.
 - Preview social posts before publishing.
 - Record final URLs in the versioned posting tracker after manual publication.
-- Keep npm, Marketplace, official integration, and production-ready security claims out until those states are real.
+- Keep npm, Marketplace, official integration, and security guarantee claims out until those states are real.

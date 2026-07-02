@@ -76,7 +76,7 @@ Planned improvements:
 - Clearer report limitation wording.
 - Versioned update-post workflow for LinkedIn and Xiaohongshu.
 
-Status: in progress, unreleased. Do not create a tag or publish a release until a human explicitly approves.
+Status: human review gate completed with release recommendation `ready`, but still unreleased. Do not create a tag or publish a release until a human explicitly approves.
 
 ## Phase 11: Feedback-Driven Iteration
 

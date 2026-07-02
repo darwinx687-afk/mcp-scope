@@ -11,4 +11,4 @@
 - 发布前先人工审查 release notes。
 - 社交平台内容必须先预览再发布。
 - 人工发布后，把最终 URL 记录到对应版本的 posting tracker。
-- 在真实发布前，不要写 npm、Marketplace、官方集成或生产级安全保护声明。
+- 在真实发布前，不要写 npm、Marketplace、官方集成或安全保证声明。
