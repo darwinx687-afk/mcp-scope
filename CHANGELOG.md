@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.2.0-preview - Unreleased
+
+- Planned the next preview as a bilingual onboarding and limitation reduction maintenance release.
+- Added visible README language switches for English and Simplified Chinese.
+- Added repository metadata recommendations for GitHub description and topics.
+- Added limitations docs that separate current boundaries, v0.2 improvements, future-version candidates, and non-goals.
+- Added tool metadata export guidance for supported local JSON shapes.
+- Improved discovery Markdown and HTML reports with concrete next-step scan commands for parsed candidates.
+- Clarified report language that findings are static risk signals, not proof of compromise or proof of safety.
+- Added versioned update-post workflow drafts for LinkedIn and Xiaohongshu.
+- Kept the release unpublished: no tag, npm package, GitHub Marketplace listing, or production-ready security claim.
+
 ## v0.1.0-preview - Draft prerelease
 
 - Prepared the first public GitHub preview state for MCP Scope.

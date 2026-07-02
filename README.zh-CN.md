@@ -2,6 +2,8 @@
 
 # MCP Scope / MCP 透镜
 
+语言：简体中文 | [English](README.md)
+
 本地优先的 MCP 工具元数据、server 配置和 AI Agent 工具权限透明度审计报告工具。
 
 状态：早期预览。MCP Scope 适合本地审查和 CI 可见性检查，但它不是完整安全产品，也不做生产级安全保证。
@@ -107,6 +109,9 @@ jobs:
 ## 文档
 
 - [文档索引](docs/README.zh-CN.md)
+- [局限与路线图](docs/LIMITATIONS.zh-CN.md)
+- [工具元数据导出指南](docs/TOOL_METADATA_EXPORT_GUIDE.zh-CN.md)
+- [仓库元数据建议](docs/REPO_METADATA.zh-CN.md)
 - [示例索引](examples/README.zh-CN.md)
 - [报告指南](docs/REPORT_GUIDE.zh-CN.md)
 - [报告 schema](docs/REPORT_SCHEMA.md)

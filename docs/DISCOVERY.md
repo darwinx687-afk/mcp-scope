@@ -20,8 +20,10 @@ node apps/cli/dist/index.js scan --config <path>
 If you have exported tools/list metadata:
 
 ```bash
-node apps/cli/dist/index.js scan --config <path> --tools <tools-path>
+node apps/cli/dist/index.js scan --config <path> --tools <tools.json>
 ```
+
+Markdown and HTML discovery reports also show a concrete next command for each parsed candidate, for example `mcp-scope scan --config examples/clients/claude-code-project.mcp.json`.
 
 ## Candidate Matching
 

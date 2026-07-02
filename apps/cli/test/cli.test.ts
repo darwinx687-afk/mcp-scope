@@ -128,7 +128,8 @@ describe("mcp-scope CLI", () => {
     expect(result.stdout).toContain("# MCP Scope Discovery Report");
     expect(result.stdout).toContain("Static discovery only");
     expect(result.stdout).toContain("claude-code-project.mcp.json");
-    expect(result.stdout).toContain("mcp-scope scan --config <path>");
+    expect(result.stdout).toContain("mcp-scope scan --config claude-code-project.mcp.json");
+    expect(result.stdout).toContain("mcp-scope scan --config <path> --tools <tools.json>");
     expect(result.stdout).not.toContain("REDACTED_EXAMPLE_TOKEN");
   });
 
@@ -150,6 +151,7 @@ describe("mcp-scope CLI", () => {
     expect(result.exitCode).toBe(0);
     expect(result.stdout).toContain("## 摘要");
     expect(result.stdout).toContain("## 下一步");
+    expect(result.stdout).toContain("mcp-scope scan --config claude-code-project.mcp.json");
     expect(result.stdout).toContain("不代表官方集成");
   });
 

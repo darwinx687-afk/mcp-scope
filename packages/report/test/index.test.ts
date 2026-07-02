@@ -173,7 +173,7 @@ describe("scan result renderers", () => {
     expect(markdown).toContain("Secret values redacted: true");
     expect(markdown).toContain("Redaction");
     expect(markdown).toContain("Limitations");
-    expect(markdown).toContain("Findings are static risk signals, not proof of compromise.");
+    expect(markdown).toContain("Findings are static risk signals, not proof of compromise or proof of safety.");
   });
 
   it("renders JSON without secret values", () => {
@@ -357,7 +357,8 @@ describe("discovery report renderers", () => {
 
     expect(markdown).toContain("# MCP Scope Discovery Report");
     expect(markdown).toContain("Static discovery only");
-    expect(markdown).toContain("mcp-scope scan --config <path>");
+    expect(markdown).toContain("mcp-scope scan --config examples/clients/cursor-like.mcp.json");
+    expect(markdown).toContain("mcp-scope scan --config <path> --tools <tools.json>");
     expect(markdown).toContain("cursor-like");
   });
 
@@ -374,6 +375,7 @@ describe("discovery report renderers", () => {
 
     expect(html).toContain("<title>MCP Scope Discovery Report</title>");
     expect(html).toContain("仅做静态发现");
+    expect(html).toContain("mcp-scope scan --config examples/clients/cursor-like.mcp.json");
     expect(html).toContain("cursor-like.mcp.json");
     expect(html).not.toContain("<script");
   });

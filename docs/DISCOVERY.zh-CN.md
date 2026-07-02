@@ -20,8 +20,10 @@ node apps/cli/dist/index.js scan --config <path>
 如果你有已经导出的 tools/list metadata：
 
 ```bash
-node apps/cli/dist/index.js scan --config <path> --tools <tools-path>
+node apps/cli/dist/index.js scan --config <path> --tools <tools.json>
 ```
+
+Markdown 和 HTML discovery 报告也会给每个可解析候选文件显示具体下一步命令，例如 `mcp-scope scan --config examples/clients/claude-code-project.mcp.json`。
 
 ## 候选文件匹配
 

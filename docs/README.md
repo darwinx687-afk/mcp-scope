@@ -4,6 +4,8 @@ MCP Scope documentation is organized around local transparency reports, static r
 
 ## Start Here
 
+- [Limitations and roadmap](LIMITATIONS.md): current boundaries, v0.2 improvements, and future-version candidates.
+- [Tool metadata export guide](TOOL_METADATA_EXPORT_GUIDE.md): safe local JSON shapes for `--tools`.
 - [Report guide](REPORT_GUIDE.md): how to read Markdown, JSON, and HTML transparency reports.
 - [Report schema](REPORT_SCHEMA.md): stable JSON fields for automation and review.
 - [HTML viewer guide](VIEWER_GUIDE.md): self-contained local viewer output.
@@ -15,6 +17,7 @@ MCP Scope documentation is organized around local transparency reports, static r
 - [FAQ](FAQ.md): short answers to common launch questions.
 - [Examples index](../examples/README.md): safe committed fixtures and generated sample reports.
 - [Launch pack](../launch/README.md): prepared copy, social cards, posting tracker, and feedback playbooks.
+- [Repository metadata recommendation](REPO_METADATA.md): suggested GitHub description and topics.
 
 ## Project And Community
 
@@ -25,12 +28,15 @@ MCP Scope documentation is organized around local transparency reports, static r
 - [Feedback guide](FEEDBACK_GUIDE.md)
 - [Roadmap after launch](ROADMAP_AFTER_LAUNCH.md)
 - [Release draft](RELEASE_DRAFT.md)
+- [v0.2 update workflow](../launch/updates/README.md)
 - [Launch pack](../launch/README.md)
 
 ## Chinese Docs
 
 - [中文文档索引](README.zh-CN.md)
 - [报告指南](REPORT_GUIDE.zh-CN.md)
+- [局限与路线图](LIMITATIONS.zh-CN.md)
+- [工具元数据导出指南](TOOL_METADATA_EXPORT_GUIDE.zh-CN.md)
 - [HTML 查看器指南](VIEWER_GUIDE.zh-CN.md)
 - [GitHub Action](GITHUB_ACTION.zh-CN.md)
 - [审批记忆](APPROVAL_MEMORY.zh-CN.md)
@@ -40,6 +46,7 @@ MCP Scope documentation is organized around local transparency reports, static r
 - [FAQ](FAQ.zh-CN.md)
 - [示例索引](../examples/README.zh-CN.md)
 - [发布素材包](../launch/README.zh-CN.md)
+- [仓库元数据建议](REPO_METADATA.zh-CN.md)
 
 ## Boundaries
 

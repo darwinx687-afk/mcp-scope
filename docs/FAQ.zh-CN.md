@@ -31,3 +31,9 @@ Approval memory 是一次本地审查后的脱敏 snapshot。之后 `mcp-scope d
 ## 目前还不支持什么？
 
 MCP Scope 不执行 MCP server，不请求实时 `tools/list`，不抓取远程 registry，不发布 npm package，不提供托管 dashboard，也没有发布 GitHub Marketplace action。
+
+版本化边界见 [局限与路线图](LIMITATIONS.zh-CN.md)。
+
+## 怎么提供工具元数据？
+
+MCP Scope 用 `--tools <tools.json>` 分析本地已导出的工具元数据文件。支持形态和脱敏建议见 [工具元数据导出指南](TOOL_METADATA_EXPORT_GUIDE.zh-CN.md)。

@@ -60,7 +60,23 @@ Status: implemented as a public GitHub repository with CI verification, `v0.1.0-
 
 Launch with English and Chinese docs and collect early feedback.
 
-Status: launch and feedback pack prepared in English and Chinese. No posts were published and the GitHub prerelease remains draft/prerelease only.
+Status: launch and feedback pack prepared in English and Chinese. The public GitHub prerelease, LinkedIn post, and Xiaohongshu post are live, but there is no actionable feedback yet. v0.2.0-preview maintenance planning is in progress as a bilingual onboarding and limitation reduction update. No npm package or GitHub Marketplace listing exists.
+
+## v0.2.0-preview Maintenance Plan
+
+Positioning: bilingual onboarding and limitation reduction release.
+
+Planned improvements:
+
+- README language switch visible near the first screen.
+- Repository metadata recommendation documented before changing GitHub settings.
+- Limitations separated into current limits, reasons, v0.2 improvements, future versions, and non-goals.
+- Tool metadata export guide for local JSON shapes.
+- Discovery next-step hints for parsed candidates.
+- Clearer report limitation wording.
+- Versioned update-post workflow for LinkedIn and Xiaohongshu.
+
+Status: in progress, unreleased. Do not create a tag or publish a release until a human explicitly approves.
 
 ## Phase 11: Feedback-Driven Iteration
 

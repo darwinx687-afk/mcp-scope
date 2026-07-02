@@ -98,3 +98,9 @@ The `v0.1.0-preview` tag and draft prerelease are preview release management art
 Phase 10 adds static launch materials under `launch/`: platform copy drafts, social SVG assets, release review checklists, posting trackers, feedback monitoring playbooks, issue triage guides, browser posting rules, and Phase 11 feedback review templates.
 
 These files are documentation and assets only. They do not post to any platform, open browsers, upload images, make the release final, publish npm, or publish GitHub Marketplace. Any future posting must be manual, previewed, and recorded in the tracker.
+
+## v0.2 Maintenance Workflow Architecture
+
+The `v0.2.0-preview` maintenance workflow remains repository-local. It adds docs for bilingual entry, limitations, repository metadata recommendations, and local exported tool metadata shapes. It also adds versioned update-post drafts under `launch/updates/v0.2.0-preview/`.
+
+These files do not publish a release, create a tag, post to LinkedIn or Xiaohongshu, publish npm, or publish GitHub Marketplace. The only runtime behavior change in this planning loop is safer discovery report rendering: parsed candidates include a static next command suggestion for `mcp-scope scan --config <path>`. Discovery still does not execute MCP servers, send live `tools/list` requests, call external APIs, or auto-scan discovered candidates.

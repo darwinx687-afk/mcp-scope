@@ -10,6 +10,12 @@ const requiredFiles = [
   "assets/banner.svg",
   "docs/README.md",
   "docs/README.zh-CN.md",
+  "docs/REPO_METADATA.md",
+  "docs/REPO_METADATA.zh-CN.md",
+  "docs/LIMITATIONS.md",
+  "docs/LIMITATIONS.zh-CN.md",
+  "docs/TOOL_METADATA_EXPORT_GUIDE.md",
+  "docs/TOOL_METADATA_EXPORT_GUIDE.zh-CN.md",
   "docs/SCREENSHOT_GUIDE.md",
   "docs/SCREENSHOT_GUIDE.zh-CN.md",
   "docs/FAQ.md",
@@ -48,6 +54,16 @@ const requiredFiles = [
   "launch/PLATFORM_LIMITS.zh-CN.md",
   "launch/BROWSER_POSTING_RULES.md",
   "launch/BROWSER_POSTING_RULES.zh-CN.md",
+  "launch/updates/README.md",
+  "launch/updates/README.zh-CN.md",
+  "launch/updates/v0.2.0-preview/RELEASE_NOTES.md",
+  "launch/updates/v0.2.0-preview/RELEASE_NOTES.zh-CN.md",
+  "launch/updates/v0.2.0-preview/linkedin.md",
+  "launch/updates/v0.2.0-preview/xiaohongshu.md",
+  "launch/updates/v0.2.0-preview/UPDATE_POSTING_CHECKLIST.md",
+  "launch/updates/v0.2.0-preview/UPDATE_POSTING_CHECKLIST.zh-CN.md",
+  "launch/updates/v0.2.0-preview/UPDATE_POSTING_TRACKER.md",
+  "launch/updates/v0.2.0-preview/UPDATE_POSTING_TRACKER.zh-CN.md",
   "launch/copy/github_release_final_review.md",
   "launch/copy/github_release_final_review.zh-CN.md",
   "launch/copy/xiaohongshu.md",
@@ -103,6 +119,9 @@ const zhLaunchFiles = [
   "README.zh-CN.md",
   "LAUNCH_NOTES.zh-CN.md",
   "docs/README.zh-CN.md",
+  "docs/REPO_METADATA.zh-CN.md",
+  "docs/LIMITATIONS.zh-CN.md",
+  "docs/TOOL_METADATA_EXPORT_GUIDE.zh-CN.md",
   "docs/LAUNCH_CHECKLIST.zh-CN.md",
   "docs/FEEDBACK_GUIDE.zh-CN.md",
   "docs/ROADMAP_AFTER_LAUNCH.zh-CN.md",
@@ -122,6 +141,11 @@ const zhLaunchFiles = [
   "launch/ISSUE_TRIAGE_GUIDE.zh-CN.md",
   "launch/PLATFORM_LIMITS.zh-CN.md",
   "launch/BROWSER_POSTING_RULES.zh-CN.md",
+  "launch/updates/README.zh-CN.md",
+  "launch/updates/v0.2.0-preview/RELEASE_NOTES.zh-CN.md",
+  "launch/updates/v0.2.0-preview/xiaohongshu.md",
+  "launch/updates/v0.2.0-preview/UPDATE_POSTING_CHECKLIST.zh-CN.md",
+  "launch/updates/v0.2.0-preview/UPDATE_POSTING_TRACKER.zh-CN.md",
   "launch/copy/github_release_final_review.zh-CN.md",
   "launch/copy/xiaohongshu.md",
   "launch/copy/juejin.md",
@@ -140,6 +164,12 @@ const claimFiles = [
   "LAUNCH_NOTES.zh-CN.md",
   "docs/README.md",
   "docs/README.zh-CN.md",
+  "docs/REPO_METADATA.md",
+  "docs/REPO_METADATA.zh-CN.md",
+  "docs/LIMITATIONS.md",
+  "docs/LIMITATIONS.zh-CN.md",
+  "docs/TOOL_METADATA_EXPORT_GUIDE.md",
+  "docs/TOOL_METADATA_EXPORT_GUIDE.zh-CN.md",
   "docs/LAUNCH_CHECKLIST.md",
   "docs/LAUNCH_CHECKLIST.zh-CN.md",
   "docs/FEEDBACK_GUIDE.md",
@@ -178,6 +208,16 @@ const claimFiles = [
   "launch/PLATFORM_LIMITS.zh-CN.md",
   "launch/BROWSER_POSTING_RULES.md",
   "launch/BROWSER_POSTING_RULES.zh-CN.md",
+  "launch/updates/README.md",
+  "launch/updates/README.zh-CN.md",
+  "launch/updates/v0.2.0-preview/RELEASE_NOTES.md",
+  "launch/updates/v0.2.0-preview/RELEASE_NOTES.zh-CN.md",
+  "launch/updates/v0.2.0-preview/linkedin.md",
+  "launch/updates/v0.2.0-preview/xiaohongshu.md",
+  "launch/updates/v0.2.0-preview/UPDATE_POSTING_CHECKLIST.md",
+  "launch/updates/v0.2.0-preview/UPDATE_POSTING_CHECKLIST.zh-CN.md",
+  "launch/updates/v0.2.0-preview/UPDATE_POSTING_TRACKER.md",
+  "launch/updates/v0.2.0-preview/UPDATE_POSTING_TRACKER.zh-CN.md",
   "launch/copy/github_release_final_review.md",
   "launch/copy/github_release_final_review.zh-CN.md",
   "launch/copy/xiaohongshu.md",
@@ -273,6 +313,8 @@ const zhChineseTrackerRows = [
 ];
 
 const docsIndexRequired = [
+  "LIMITATIONS",
+  "TOOL_METADATA_EXPORT_GUIDE",
   "REPORT_GUIDE",
   "REPORT_SCHEMA",
   "VIEWER_GUIDE",
@@ -282,6 +324,7 @@ const docsIndexRequired = [
   "DISCOVERY",
   "SCREENSHOT_GUIDE",
   "FAQ",
+  "REPO_METADATA",
   "REMOTE_LAUNCH_STATE",
   "../SECURITY.md",
   "../CONTRIBUTING.md",
@@ -296,6 +339,19 @@ const examplesIndexRequired = [
   "discovery/",
   "snapshots/",
   "diffs/"
+];
+
+const v02UpdateFiles = [
+  "launch/updates/README.md",
+  "launch/updates/README.zh-CN.md",
+  "launch/updates/v0.2.0-preview/RELEASE_NOTES.md",
+  "launch/updates/v0.2.0-preview/RELEASE_NOTES.zh-CN.md",
+  "launch/updates/v0.2.0-preview/linkedin.md",
+  "launch/updates/v0.2.0-preview/xiaohongshu.md",
+  "launch/updates/v0.2.0-preview/UPDATE_POSTING_CHECKLIST.md",
+  "launch/updates/v0.2.0-preview/UPDATE_POSTING_CHECKLIST.zh-CN.md",
+  "launch/updates/v0.2.0-preview/UPDATE_POSTING_TRACKER.md",
+  "launch/updates/v0.2.0-preview/UPDATE_POSTING_TRACKER.zh-CN.md"
 ];
 
 function fail(message) {
@@ -350,10 +406,52 @@ for (const marker of docsIndexRequired) {
 }
 
 const zhDocsIndex = read("docs/README.zh-CN.md");
-for (const marker of ["SCREENSHOT_GUIDE", "FAQ", "REMOTE_LAUNCH_STATE", "../SECURITY.md", "../CONTRIBUTING.md", "../examples/README.zh-CN.md"]) {
+for (const marker of ["LIMITATIONS", "TOOL_METADATA_EXPORT_GUIDE", "REPO_METADATA", "SCREENSHOT_GUIDE", "FAQ", "REMOTE_LAUNCH_STATE", "../SECURITY.md", "../CONTRIBUTING.md", "../examples/README.zh-CN.md"]) {
   if (!zhDocsIndex.includes(marker)) {
     fail(`docs/README.zh-CN.md is missing ${marker}`);
   }
+}
+
+const readme = read("README.md");
+if (!readme.includes("Languages: English | [简体中文](README.zh-CN.md)")) {
+  fail("README.md is missing the top language switch");
+}
+const zhReadme = read("README.zh-CN.md");
+if (!zhReadme.includes("语言：简体中文 | [English](README.md)")) {
+  fail("README.zh-CN.md is missing the top language switch");
+}
+
+const limitationsDoc = read("docs/LIMITATIONS.md");
+for (const marker of ["Current Limitations", "What v0.2 Will Improve", "Future Version Candidates", "Still Non-Goals"]) {
+  if (!limitationsDoc.includes(marker)) {
+    fail(`docs/LIMITATIONS.md is missing ${marker}`);
+  }
+}
+const toolMetadataGuide = read("docs/TOOL_METADATA_EXPORT_GUIDE.md");
+for (const marker of ["JSON-RPC `tools/list` Response", "Portable Local Manifest", "mcp-scope scan --config <config> --tools <tools.json>", "Do not run unknown MCP servers"]) {
+  if (!toolMetadataGuide.includes(marker)) {
+    fail(`docs/TOOL_METADATA_EXPORT_GUIDE.md is missing ${marker}`);
+  }
+}
+const repoMetadata = read("docs/REPO_METADATA.md");
+for (const topic of ["Local-first MCP transparency reports | MCP 配置与工具元数据透明化报告", "model-context-protocol", "github-action", "local-first"]) {
+  if (!repoMetadata.includes(topic)) {
+    fail(`docs/REPO_METADATA.md is missing ${topic}`);
+  }
+}
+for (const file of v02UpdateFiles) {
+  const content = read(file);
+  if (!content.includes("v0.2.0-preview")) {
+    fail(`${file} is missing v0.2.0-preview`);
+  }
+}
+const v02Linkedin = read("launch/updates/v0.2.0-preview/linkedin.md");
+if (!v02Linkedin.includes("https://github.com/darwinx687-afk/mcp-scope") || !/Do not post automatically/i.test(v02Linkedin)) {
+  fail("v0.2 LinkedIn draft must include repo link and do-not-post reminder");
+}
+const v02Xiaohongshu = read("launch/updates/v0.2.0-preview/xiaohongshu.md");
+if (!v02Xiaohongshu.includes("https://github.com/darwinx687-afk/mcp-scope") || !v02Xiaohongshu.includes("不要自动发布")) {
+  fail("v0.2 Xiaohongshu draft must include repo link and do-not-post reminder");
 }
 
 const examplesIndex = read("examples/README.md");

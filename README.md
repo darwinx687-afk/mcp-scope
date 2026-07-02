@@ -2,6 +2,8 @@
 
 # MCP Scope
 
+Languages: English | [简体中文](README.zh-CN.md)
+
 Local-first transparency and risk audit reports for MCP tool metadata, server configs, and AI agent tool permissions.
 
 Status: early preview. MCP Scope is useful for local review and CI visibility, but it is not a complete security product and does not claim production-grade protection.
@@ -107,6 +109,9 @@ Please redact secrets, private configs, internal paths, and sensitive report exc
 ## Docs
 
 - [Documentation index](docs/README.md)
+- [Limitations and roadmap](docs/LIMITATIONS.md)
+- [Tool metadata export guide](docs/TOOL_METADATA_EXPORT_GUIDE.md)
+- [Repository metadata recommendation](docs/REPO_METADATA.md)
 - [Examples index](examples/README.md)
 - [Report guide](docs/REPORT_GUIDE.md)
 - [Report schema](docs/REPORT_SCHEMA.md)

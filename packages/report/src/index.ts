@@ -299,7 +299,7 @@ function buildReportModel(input: {
         "MCP Scope did not execute MCP servers or tools.",
         "MCP Scope did not connect to live tools/list endpoints.",
         "MCP Scope did not call external AI APIs or registries.",
-        "Findings are risk signals and warnings, not proof of compromise."
+        "Findings are risk signals and warnings, not proof of compromise or proof of safety."
       ]
     }
   };
@@ -349,7 +349,7 @@ function renderMarkdownEn(report: TransparencyReportModel): string {
     ...renderLimitationsSectionEn(report),
     "## Footer",
     "",
-    "MCP Scope is an early transparency tool. Findings are static risk signals, not proof of compromise."
+    "MCP Scope is an early transparency tool. Findings are static risk signals, not proof of compromise or proof of safety."
   ].join("\n");
 }
 

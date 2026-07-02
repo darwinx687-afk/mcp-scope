@@ -60,7 +60,7 @@ const TEXT: Record<ReportLanguage, ViewerText> = {
     notChecked: "What MCP Scope Did Not Check",
     redaction: "Redaction and Sharing Notice",
     limitations: "Limitations",
-    footer: "MCP Scope is an early transparency tool. Findings are static risk signals, not proof of compromise.",
+    footer: "MCP Scope is an early transparency tool. Findings are static risk signals, not proof of compromise or proof of safety.",
     none: "None",
     notProvided: "not provided",
     cards: {
@@ -85,7 +85,7 @@ const TEXT: Record<ReportLanguage, ViewerText> = {
       "No live tools/list request.",
       "No external AI API call.",
       "No exploit simulation.",
-      "No proof of compromise.",
+      "No proof of compromise or proof of safety.",
       "Not a replacement for security review."
     ],
     redactionItems: [

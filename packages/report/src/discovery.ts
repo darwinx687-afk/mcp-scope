@@ -118,8 +118,8 @@ function renderDiscoveryMarkdownEn(result: McpConfigDiscoveryResult): string {
     "",
     "## Next Steps",
     "",
-    "- Run `mcp-scope scan --config <path>` for a selected candidate.",
-    "- Add `--tools <path>` if you have a local exported tools/list metadata file.",
+    "- Parsed candidates include a concrete `mcp-scope scan --config ...` command in the table.",
+    "- If you have exported tools/list metadata, run `mcp-scope scan --config <path> --tools <tools.json>`.",
     "- Discovery does not auto-scan every candidate and does not modify config files.",
     "",
     "## Redaction",
@@ -163,8 +163,8 @@ function renderDiscoveryMarkdownZh(result: McpConfigDiscoveryResult): string {
     "",
     "## 下一步",
     "",
-    "- 选择一个候选路径后运行 `mcp-scope scan --config <path>`。",
-    "- 如果你已经导出了本地 tools/list metadata，可以额外加 `--tools <path>`。",
+    "- 可解析候选文件会在表格里显示具体的 `mcp-scope scan --config ...` 命令。",
+    "- 如果你已经导出了本地 tools/list metadata，可以运行 `mcp-scope scan --config <path> --tools <tools.json>`。",
     "- discovery 不会自动扫描每个候选文件，也不会修改配置。",
     "",
     "## 脱敏说明",
@@ -187,8 +187,8 @@ function renderCandidateTable(candidates: readonly McpConfigCandidate[]): string
   }
 
   return [
-    "| Path | Status | Shape | Profile | Servers | Risk | Notes |",
-    "| --- | --- | --- | --- | ---: | --- | --- |",
+    "| Path | Status | Shape | Profile | Servers | Risk | Next command | Notes |",
+    "| --- | --- | --- | --- | ---: | --- | --- | --- |",
     ...candidates.map((candidate) => [
       tableCell(candidate.pathDisplay),
       tableCell(candidate.parseStatus),
@@ -196,6 +196,7 @@ function renderCandidateTable(candidates: readonly McpConfigCandidate[]): string
       tableCell(candidate.clientProfile),
       String(candidate.serverCount),
       tableCell(candidate.riskPreview),
+      tableCell(nextCommand(candidate)),
       tableCell(candidate.notes.join(", ") || "none")
     ].join(" | "))
   ].join("\n");
@@ -204,11 +205,27 @@ function renderCandidateTable(candidates: readonly McpConfigCandidate[]): string
 function table(candidates: readonly McpConfigCandidate[]): string {
   return [
     '<div class="table-wrap"><table>',
-    "<thead><tr><th>Path</th><th>Status</th><th>Shape</th><th>Profile</th><th>Servers</th><th>Risk</th><th>Notes</th></tr></thead>",
+    "<thead><tr><th>Path</th><th>Status</th><th>Shape</th><th>Profile</th><th>Servers</th><th>Risk</th><th>Next command</th><th>Notes</th></tr></thead>",
     "<tbody>",
-    ...candidates.map((candidate) => `<tr><td>${escapeHtml(candidate.pathDisplay)}</td><td>${escapeHtml(candidate.parseStatus)}</td><td>${escapeHtml(candidate.detectedShape)}</td><td>${escapeHtml(candidate.clientProfile)}</td><td>${escapeHtml(candidate.serverCount)}</td><td>${escapeHtml(candidate.riskPreview)}</td><td>${escapeHtml(candidate.notes.join(", ") || "none")}</td></tr>`),
+    ...candidates.map((candidate) => `<tr><td>${escapeHtml(candidate.pathDisplay)}</td><td>${escapeHtml(candidate.parseStatus)}</td><td>${escapeHtml(candidate.detectedShape)}</td><td>${escapeHtml(candidate.clientProfile)}</td><td>${escapeHtml(candidate.serverCount)}</td><td>${escapeHtml(candidate.riskPreview)}</td><td><code>${escapeHtml(nextCommand(candidate))}</code></td><td>${escapeHtml(candidate.notes.join(", ") || "none")}</td></tr>`),
     "</tbody></table></div>"
   ].join("");
+}
+
+function nextCommand(candidate: McpConfigCandidate): string {
+  if (candidate.parseStatus !== "parsed") {
+    return "Fix or review candidate before scanning.";
+  }
+
+  return `mcp-scope scan --config ${shellQuote(candidate.pathDisplay)}`;
+}
+
+function shellQuote(value: string): string {
+  if (/^[A-Za-z0-9_./:@%+=,-]+$/.test(value)) {
+    return value;
+  }
+
+  return `'${value.replaceAll("'", "'\\''")}'`;
 }
 
 function keyValues(rows: readonly [string, unknown][]): string {

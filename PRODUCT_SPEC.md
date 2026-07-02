@@ -41,6 +41,8 @@ Developers are connecting MCP servers to AI coding tools and agent environments.
 
 Phase 10 prepares a bilingual launch and feedback pack for `v0.1.0-preview`. It creates platform copy drafts, social SVG assets, release review checklists, posting trackers, feedback monitoring playbooks, issue triage guides, and Phase 11 review templates. It does not publish posts, make the draft prerelease final, add scanner categories, publish npm, or publish GitHub Marketplace. The scanner remains local-first, static-only, and report-first.
 
+Phase 10 also prepares the unreleased `v0.2.0-preview` maintenance plan. That update is positioned as bilingual onboarding and limitation reduction: clearer README language switching, limitations docs, tool metadata export guidance, discovery next-step hints, clearer report boundaries, and repeatable update-post workflow drafts. It does not publish a release, create a tag, add live MCP execution, publish npm, or publish GitHub Marketplace.
+
 Included now:
 
 - Governance documents.
@@ -127,3 +129,4 @@ Not included now:
 - Social/community launch posts.
 - Automatic browser posting.
 - Making the draft prerelease final without human approval.
+- Publishing `v0.2.0-preview` without explicit human approval.

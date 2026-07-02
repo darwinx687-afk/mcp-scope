@@ -31,3 +31,9 @@ Approval memory is a local redacted snapshot of what was reviewed. Later, `mcp-s
 ## What is not supported yet?
 
 MCP Scope does not execute MCP servers, request live `tools/list`, fetch remote registries, publish npm packages, provide a hosted dashboard, or publish a GitHub Marketplace action.
+
+See [Limitations and roadmap](LIMITATIONS.md) for the versioned boundary list.
+
+## How do I provide tool metadata?
+
+MCP Scope analyzes local exported tool metadata files with `--tools <tools.json>`. See [Tool metadata export guide](TOOL_METADATA_EXPORT_GUIDE.md) for supported shapes and redaction guidance.
