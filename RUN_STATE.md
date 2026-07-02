@@ -1,8 +1,8 @@
 # Run State
 
 - Current phase: Phase 10
-- Current status: `v0.2.0-preview` is published as a public GitHub prerelease; the LinkedIn v0.2 update post is published, and the Xiaohongshu v0.2 update post was submitted from the Codex in-app browser with public URL pending review
-- Next loop: capture the Xiaohongshu public URL after review if it becomes available; keep monitoring feedback and do not start Phase 11 unless real actionable feedback arrives
+- Current status: `v0.2.0-preview` is published as a public GitHub prerelease; the LinkedIn and Xiaohongshu v0.2 update posts are published with public URLs recorded
+- Next loop: monitor v0.2 update feedback; do not start Phase 11 unless real actionable feedback arrives
 - Current scope guard: release tracking and approved update posting only; no MCP server execution, no live tools/list requests, no external APIs in scanning, no npm publish, no Marketplace claim, no security guarantee claim, no Phase 11 work, and no new social/community posts outside LinkedIn and Xiaohongshu
 
 ## Latest Loop
@@ -34,4 +34,4 @@
 - Feedback state: snapshots appended in `launch/FEEDBACK_SNAPSHOT.md` and `launch/FEEDBACK_SNAPSHOT.zh-CN.md`; exposure decision recorded in `launch/EXPOSURE_DECISION.md` and `launch/EXPOSURE_DECISION.zh-CN.md`; latest visible signals are GitHub 1 star/0 forks/0 issues/0 PRs, LinkedIn 1 reaction and 9 impressions, Xiaohongshu 40 views and 1 collect; no actionable feedback yet, so Phase 11 should wait.
 - v0.2 planning state: README language switch, repo metadata recommendations, limitations docs, tool metadata export guide, discovery next-step hints, clearer report limitation wording, and versioned update workflow are the maintenance release focus.
 - v0.2 review state: final review reports live under `launch/updates/v0.2.0-preview/FINAL_REVIEW.md` and `launch/updates/v0.2.0-preview/FINAL_REVIEW.zh-CN.md`; recommendation was `ready`, and the public prerelease is now live at `https://github.com/darwinx687-afk/mcp-scope/releases/tag/v0.2.0-preview`.
-- v0.2 update-post state: LinkedIn is posted at `https://www.linkedin.com/feed/update/urn:li:share:7478467002357985281/`; Xiaohongshu was submitted from the Codex in-app browser and is recorded as posted with public URL pending review. Image uploads and final LinkedIn text paste were completed manually in-browser where the Codex in-app browser could not complete those steps directly.
+- v0.2 update-post state: LinkedIn is posted at `https://www.linkedin.com/feed/update/urn:li:share:7478467002357985281/`; Xiaohongshu is posted at `https://www.xiaohongshu.com/discovery/item/6a4685a6000000000f007e10?source=webshare&xhsshare=pc_web&xsec_token=YBi1kzcVIQG15vJdsSk4KzmrbaNF6DEGZcUmxpllhvfNs=&xsec_source=pc_share`. Image uploads and final LinkedIn text paste were completed manually in-browser where the Codex in-app browser could not complete those steps directly.
