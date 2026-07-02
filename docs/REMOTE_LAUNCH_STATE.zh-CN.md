@@ -4,6 +4,8 @@
 
 更新时间：2026-07-01，`v0.1.0-preview` GitHub prerelease 已公开后。
 
+更新时间：2026-07-02，`v0.2.0-preview` release execution 已批准。
+
 ## 仓库
 
 - Repo 名称：`mcp-scope`
@@ -31,6 +33,17 @@
 - Draft 状态：`isDraft: false`
 - Prerelease 状态：`isPrerelease: true`
 - Published 状态：公开 prerelease；`publishedAt` 为 `2026-07-01T16:24:27Z`
+
+## v0.2.0-preview Release Execution
+
+- 状态：本轮 release execution 已批准发布公开 prerelease。
+- 主题：双语入口与使用体验完善版。
+- 计划 tag：`v0.2.0-preview`
+- 计划 prerelease URL：`https://github.com/darwinx687-afk/mcp-scope/releases/tag/v0.2.0-preview`
+- npm 发布：false。
+- GitHub Marketplace 发布：false。
+- Phase 11 状态：等待真实可行动反馈。
+- 最终 tag 指向、发布时间和更新帖 URL 必须在发布后记录。
 
 ## 仓库信息
 

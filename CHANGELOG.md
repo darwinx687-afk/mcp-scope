@@ -1,8 +1,8 @@
 # Changelog
 
-## v0.2.0-preview - Unreleased
+## v0.2.0-preview - 2026-07-02
 
-- Planned the next preview as a bilingual onboarding and limitation reduction maintenance release.
+- Released the next preview as a bilingual onboarding and limitation reduction maintenance release.
 - Added visible README language switches for English and Simplified Chinese.
 - Added repository metadata recommendations for GitHub description and topics.
 - Added limitations docs that separate current boundaries, v0.2 improvements, future-version candidates, and non-goals.
@@ -11,7 +11,7 @@
 - Clarified report language that findings are static risk signals, not proof of compromise or proof of safety.
 - Added versioned update-post workflow drafts for LinkedIn and Xiaohongshu.
 - Added final v0.2.0-preview readiness review reports with a `ready` recommendation.
-- Kept the release unpublished: no tag, npm package, GitHub Marketplace listing, or security guarantee claim.
+- Published as a public GitHub prerelease. No npm package, GitHub Marketplace listing, or security guarantee claim was added.
 
 ## v0.1.0-preview - Draft prerelease
 

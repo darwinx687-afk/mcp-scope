@@ -4,6 +4,8 @@ Recorded on 2026-07-01 after Phase 9 remote setup.
 
 Updated on 2026-07-01 after the `v0.1.0-preview` GitHub prerelease became public.
 
+Updated on 2026-07-02 for `v0.2.0-preview` release execution approval.
+
 ## Repository
 
 - Repo name: `mcp-scope`
@@ -31,6 +33,17 @@ Updated on 2026-07-01 after the `v0.1.0-preview` GitHub prerelease became public
 - Draft status: `isDraft: false`
 - Prerelease status: `isPrerelease: true`
 - Published status: public prerelease; `publishedAt` is `2026-07-01T16:24:27Z`
+
+## v0.2.0-preview Release Execution
+
+- Status: approved for public prerelease publication in the current release execution loop.
+- Theme: bilingual onboarding and limitation reduction.
+- Planned tag: `v0.2.0-preview`
+- Planned prerelease URL: `https://github.com/darwinx687-afk/mcp-scope/releases/tag/v0.2.0-preview`
+- npm publication: false.
+- GitHub Marketplace publication: false.
+- Phase 11 status: waiting for real actionable feedback.
+- Final tag target, published time, and update-post URLs must be recorded after publication.
 
 ## Repository Metadata
 

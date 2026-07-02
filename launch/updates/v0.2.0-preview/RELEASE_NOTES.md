@@ -1,6 +1,6 @@
 # v0.2.0-preview
 
-Status: draft, not published yet.
+Status: public prerelease.
 
 Theme: bilingual onboarding and limitation reduction.
 
@@ -15,7 +15,7 @@ Theme: bilingual onboarding and limitation reduction.
 
 ## Why It Matters
 
-v0.1 made MCP Scope publicly reviewable. v0.2 is planned to make the project easier to understand before adding larger features: clearer bilingual entry, clearer limitations, safer tool metadata guidance, and more obvious next steps after discovery.
+v0.1 made MCP Scope publicly reviewable. v0.2 makes the project easier to understand before adding larger features: clearer bilingual entry, clearer limitations, safer tool metadata guidance, and more obvious next steps after discovery.
 
 ## What Still Does Not Change
 
@@ -29,4 +29,7 @@ v0.1 made MCP Scope publicly reviewable. v0.2 is planned to make the project eas
 
 ## Publication State
 
-This is only a draft update note. Do not publish a release or create a tag from this file without explicit human approval.
+Public prerelease URL:
+https://github.com/darwinx687-afk/mcp-scope/releases/tag/v0.2.0-preview
+
+This is still a preview release, not a final/stable release. npm and GitHub Marketplace remain unpublished.
