@@ -1,13 +1,13 @@
 # Run State
 
-- Current phase: Phase 10
-- Current status: `v0.2.0-preview` is published as a public GitHub prerelease; the LinkedIn and Xiaohongshu v0.2 update posts are published with public URLs recorded
-- Next loop: monitor v0.2 update feedback; do not start Phase 11 unless real actionable feedback arrives
-- Current scope guard: release tracking and approved update posting only; no MCP server execution, no live tools/list requests, no external APIs in scanning, no npm publish, no Marketplace claim, no security guarantee claim, no Phase 11 work, and no new social/community posts outside LinkedIn and Xiaohongshu
+- Current phase: Phase 10 / v0.3.0-preview functional update
+- Current status: `v0.3.0-preview` implementation is in progress with SARIF output and one-command audit mode; no v0.3 tag, release, or social post exists yet
+- Next loop: finish v0.3 implementation verification, then prepare a human release review gate before any v0.3 publication
+- Current scope guard: static SARIF and audit implementation only; no MCP server execution, no live tools/list requests, no external APIs in scanning, no npm publish, no Marketplace claim, no security guarantee claim, no Phase 11 work, no new tag or release, and no social/community posting
 
 ## Latest Loop
 
-- Objective: publish the v0.2.0-preview maintenance release and prepare approved LinkedIn/Xiaohongshu update posts.
+- Objective: implement the v0.3.0-preview functional update direction: SARIF output and one-command audit mode.
 - Scanner state: static config fingerprint plus local exported tool metadata analysis; config parsing now supports `mcpServers`, `projects[*].mcpServers`, `mcp.servers`, and top-level `servers`.
 - External API calls: false.
 - MCP server execution: false.
@@ -27,7 +27,7 @@
 - Final human launch review: ready under `launch/FINAL_HUMAN_REVIEW.md` and `launch/FINAL_HUMAN_REVIEW.zh-CN.md`; no release or platform post was published automatically.
 - Remote: `https://github.com/darwinx687-afk/mcp-scope`.
 - Preview tags: `v0.1.0-preview`, `v0.2.0-preview`.
-- GitHub prereleases: public prerelease at `https://github.com/darwinx687-afk/mcp-scope/releases/tag/v0.1.0-preview`; public prerelease at `https://github.com/darwinx687-afk/mcp-scope/releases/tag/v0.2.0-preview`; neither is a final/stable release.
+- GitHub prereleases: public prerelease at `https://github.com/darwinx687-afk/mcp-scope/releases/tag/v0.1.0-preview`; public prerelease at `https://github.com/darwinx687-afk/mcp-scope/releases/tag/v0.2.0-preview`; neither is a final/stable release. No `v0.3.0-preview` tag or release exists yet.
 - PNG launch assets: exported under `launch/assets/exports/` from repository-local SVG sources.
 - Social channel state: LinkedIn and Xiaohongshu are posted; Juejin, Jike, WeChat group, WeChat moments, X / Twitter, and Dev.to remain manual-needed; Hacker News remains ready-to-post; V2EX and Reddit are skipped.
 - Publishing state: public GitHub source repository, v0.1 public GitHub prerelease, v0.2 public GitHub prerelease, LinkedIn launch post, and Xiaohongshu launch post exist; no npm package, Marketplace listing, Pages site, deployment, or final/stable release was published.
@@ -36,3 +36,4 @@
 - v0.2 review state: final review reports live under `launch/updates/v0.2.0-preview/FINAL_REVIEW.md` and `launch/updates/v0.2.0-preview/FINAL_REVIEW.zh-CN.md`; recommendation was `ready`, and the public prerelease is now live at `https://github.com/darwinx687-afk/mcp-scope/releases/tag/v0.2.0-preview`.
 - v0.2 update-post state: LinkedIn is posted at `https://www.linkedin.com/feed/update/urn:li:share:7478467002357985281/`; Xiaohongshu is posted at `https://www.xiaohongshu.com/discovery/item/6a4685a6000000000f007e10?source=webshare&xhsshare=pc_web&xsec_token=YBi1kzcVIQG15vJdsSk4KzmrbaNF6DEGZcUmxpllhvfNs=&xsec_source=pc_share`. Image uploads and final LinkedIn text paste were completed manually in-browser where the Codex in-app browser could not complete those steps directly.
 - v0.2 feedback state: first snapshot recorded under `launch/updates/v0.2.0-preview/FEEDBACK_SNAPSHOT.md` and `launch/updates/v0.2.0-preview/FEEDBACK_SNAPSHOT.zh-CN.md`; visible signals are GitHub 1 star/0 forks/0 issues/0 PRs, latest main CI run `28603137472` passed, LinkedIn 1 reaction and 12 impressions, and no visible Xiaohongshu comments; no actionable feedback yet, so Phase 11 should wait.
+- v0.3 implementation state: SARIF output and `mcp-scope audit --root <path>` are being added as a source-built preview capability. SARIF upload remains an explicit user workflow step; MCP Scope does not upload anything automatically.

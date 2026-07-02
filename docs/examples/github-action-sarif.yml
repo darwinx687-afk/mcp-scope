@@ -1,0 +1,28 @@
+name: MCP Scope SARIF
+
+on:
+  pull_request:
+  push:
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  mcp-scope:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: ./
+        with:
+          config: examples/clients/claude-code-project.mcp.json
+          tools: examples/tools/filesystem-tools.json
+          report-format: sarif
+          report-path: reports/mcp-scope.sarif
+          fail-on: none
+
+      - uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: reports/mcp-scope.sarif
+          category: mcp-scope

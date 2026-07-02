@@ -25,6 +25,17 @@ node apps/cli/dist/index.js scan --config <path> --tools <tools.json>
 
 Markdown and HTML discovery reports also show a concrete next command for each parsed candidate, for example `mcp-scope scan --config examples/clients/claude-code-project.mcp.json`.
 
+## One-Command Audit
+
+For a more convenient config-focused pass, use audit mode:
+
+```bash
+node apps/cli/dist/index.js audit --root examples/clients
+node apps/cli/dist/index.js audit --root examples/clients --format sarif --output reports/audit.sarif
+```
+
+Audit mode runs static discovery, scans parseable config candidates, and combines the summaries. It still does not execute MCP servers, call live `tools/list`, infer tool metadata, or modify files.
+
 ## Candidate Matching
 
 Discovery looks for likely MCP config filenames:

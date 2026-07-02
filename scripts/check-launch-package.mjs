@@ -14,6 +14,10 @@ const requiredFiles = [
   "docs/REPO_METADATA.zh-CN.md",
   "docs/LIMITATIONS.md",
   "docs/LIMITATIONS.zh-CN.md",
+  "docs/GITHUB_ACTION.md",
+  "docs/GITHUB_ACTION.zh-CN.md",
+  "docs/SARIF.md",
+  "docs/SARIF.zh-CN.md",
   "docs/TOOL_METADATA_EXPORT_GUIDE.md",
   "docs/TOOL_METADATA_EXPORT_GUIDE.zh-CN.md",
   "docs/SCREENSHOT_GUIDE.md",
@@ -66,6 +70,24 @@ const requiredFiles = [
   "launch/updates/v0.2.0-preview/UPDATE_POSTING_CHECKLIST.zh-CN.md",
   "launch/updates/v0.2.0-preview/UPDATE_POSTING_TRACKER.md",
   "launch/updates/v0.2.0-preview/UPDATE_POSTING_TRACKER.zh-CN.md",
+  "launch/updates/v0.3.0-preview/RELEASE_NOTES.md",
+  "launch/updates/v0.3.0-preview/RELEASE_NOTES.zh-CN.md",
+  "launch/updates/v0.3.0-preview/FINAL_REVIEW.md",
+  "launch/updates/v0.3.0-preview/FINAL_REVIEW.zh-CN.md",
+  "launch/updates/v0.3.0-preview/linkedin.md",
+  "launch/updates/v0.3.0-preview/xiaohongshu.md",
+  "launch/updates/v0.3.0-preview/UPDATE_POSTING_CHECKLIST.md",
+  "launch/updates/v0.3.0-preview/UPDATE_POSTING_CHECKLIST.zh-CN.md",
+  "launch/updates/v0.3.0-preview/UPDATE_POSTING_TRACKER.md",
+  "launch/updates/v0.3.0-preview/UPDATE_POSTING_TRACKER.zh-CN.md",
+  "launch/updates/v0.3.0-preview/assets/update-card-en.svg",
+  "launch/updates/v0.3.0-preview/assets/update-card-zh-CN.svg",
+  "launch/updates/v0.3.0-preview/assets/update-card-square-zh-CN.svg",
+  "launch/updates/v0.3.0-preview/assets/update-card-en.png",
+  "launch/updates/v0.3.0-preview/assets/update-card-zh-CN.png",
+  "launch/updates/v0.3.0-preview/assets/update-card-square-zh-CN.png",
+  "docs/examples/github-action-sarif.yml",
+  "docs/examples/github-action-audit-sarif.yml",
   "launch/copy/github_release_final_review.md",
   "launch/copy/github_release_final_review.zh-CN.md",
   "launch/copy/xiaohongshu.md",
@@ -123,6 +145,8 @@ const zhLaunchFiles = [
   "docs/README.zh-CN.md",
   "docs/REPO_METADATA.zh-CN.md",
   "docs/LIMITATIONS.zh-CN.md",
+  "docs/GITHUB_ACTION.zh-CN.md",
+  "docs/SARIF.zh-CN.md",
   "docs/TOOL_METADATA_EXPORT_GUIDE.zh-CN.md",
   "docs/LAUNCH_CHECKLIST.zh-CN.md",
   "docs/FEEDBACK_GUIDE.zh-CN.md",
@@ -149,6 +173,11 @@ const zhLaunchFiles = [
   "launch/updates/v0.2.0-preview/xiaohongshu.md",
   "launch/updates/v0.2.0-preview/UPDATE_POSTING_CHECKLIST.zh-CN.md",
   "launch/updates/v0.2.0-preview/UPDATE_POSTING_TRACKER.zh-CN.md",
+  "launch/updates/v0.3.0-preview/RELEASE_NOTES.zh-CN.md",
+  "launch/updates/v0.3.0-preview/FINAL_REVIEW.zh-CN.md",
+  "launch/updates/v0.3.0-preview/xiaohongshu.md",
+  "launch/updates/v0.3.0-preview/UPDATE_POSTING_CHECKLIST.zh-CN.md",
+  "launch/updates/v0.3.0-preview/UPDATE_POSTING_TRACKER.zh-CN.md",
   "launch/copy/github_release_final_review.zh-CN.md",
   "launch/copy/xiaohongshu.md",
   "launch/copy/juejin.md",
@@ -171,6 +200,10 @@ const claimFiles = [
   "docs/REPO_METADATA.zh-CN.md",
   "docs/LIMITATIONS.md",
   "docs/LIMITATIONS.zh-CN.md",
+  "docs/GITHUB_ACTION.md",
+  "docs/GITHUB_ACTION.zh-CN.md",
+  "docs/SARIF.md",
+  "docs/SARIF.zh-CN.md",
   "docs/TOOL_METADATA_EXPORT_GUIDE.md",
   "docs/TOOL_METADATA_EXPORT_GUIDE.zh-CN.md",
   "docs/LAUNCH_CHECKLIST.md",
@@ -223,6 +256,16 @@ const claimFiles = [
   "launch/updates/v0.2.0-preview/UPDATE_POSTING_CHECKLIST.zh-CN.md",
   "launch/updates/v0.2.0-preview/UPDATE_POSTING_TRACKER.md",
   "launch/updates/v0.2.0-preview/UPDATE_POSTING_TRACKER.zh-CN.md",
+  "launch/updates/v0.3.0-preview/RELEASE_NOTES.md",
+  "launch/updates/v0.3.0-preview/RELEASE_NOTES.zh-CN.md",
+  "launch/updates/v0.3.0-preview/FINAL_REVIEW.md",
+  "launch/updates/v0.3.0-preview/FINAL_REVIEW.zh-CN.md",
+  "launch/updates/v0.3.0-preview/linkedin.md",
+  "launch/updates/v0.3.0-preview/xiaohongshu.md",
+  "launch/updates/v0.3.0-preview/UPDATE_POSTING_CHECKLIST.md",
+  "launch/updates/v0.3.0-preview/UPDATE_POSTING_CHECKLIST.zh-CN.md",
+  "launch/updates/v0.3.0-preview/UPDATE_POSTING_TRACKER.md",
+  "launch/updates/v0.3.0-preview/UPDATE_POSTING_TRACKER.zh-CN.md",
   "launch/copy/github_release_final_review.md",
   "launch/copy/github_release_final_review.zh-CN.md",
   "launch/copy/xiaohongshu.md",
@@ -268,7 +311,10 @@ const launchSvgFiles = [
   "launch/assets/social-card-square-en.svg",
   "launch/assets/social-card-square-zh-CN.svg",
   "launch/assets/release-banner-en.svg",
-  "launch/assets/release-banner-zh-CN.svg"
+  "launch/assets/release-banner-zh-CN.svg",
+  "launch/updates/v0.3.0-preview/assets/update-card-en.svg",
+  "launch/updates/v0.3.0-preview/assets/update-card-zh-CN.svg",
+  "launch/updates/v0.3.0-preview/assets/update-card-square-zh-CN.svg"
 ];
 
 const launchPngFiles = [
@@ -277,7 +323,10 @@ const launchPngFiles = [
   "launch/assets/exports/social-card-square-en.png",
   "launch/assets/exports/social-card-square-zh-CN.png",
   "launch/assets/exports/release-banner-en.png",
-  "launch/assets/exports/release-banner-zh-CN.png"
+  "launch/assets/exports/release-banner-zh-CN.png",
+  "launch/updates/v0.3.0-preview/assets/update-card-en.png",
+  "launch/updates/v0.3.0-preview/assets/update-card-zh-CN.png",
+  "launch/updates/v0.3.0-preview/assets/update-card-square-zh-CN.png"
 ];
 
 const trackerPlatforms = [
@@ -324,6 +373,7 @@ const docsIndexRequired = [
   "REPORT_SCHEMA",
   "VIEWER_GUIDE",
   "GITHUB_ACTION",
+  "SARIF",
   "APPROVAL_MEMORY",
   "ECOSYSTEM_COMPATIBILITY",
   "DISCOVERY",
@@ -359,6 +409,21 @@ const v02UpdateFiles = [
   "launch/updates/v0.2.0-preview/UPDATE_POSTING_CHECKLIST.zh-CN.md",
   "launch/updates/v0.2.0-preview/UPDATE_POSTING_TRACKER.md",
   "launch/updates/v0.2.0-preview/UPDATE_POSTING_TRACKER.zh-CN.md"
+];
+
+const v03UpdateFiles = [
+  "launch/updates/README.md",
+  "launch/updates/README.zh-CN.md",
+  "launch/updates/v0.3.0-preview/RELEASE_NOTES.md",
+  "launch/updates/v0.3.0-preview/RELEASE_NOTES.zh-CN.md",
+  "launch/updates/v0.3.0-preview/FINAL_REVIEW.md",
+  "launch/updates/v0.3.0-preview/FINAL_REVIEW.zh-CN.md",
+  "launch/updates/v0.3.0-preview/linkedin.md",
+  "launch/updates/v0.3.0-preview/xiaohongshu.md",
+  "launch/updates/v0.3.0-preview/UPDATE_POSTING_CHECKLIST.md",
+  "launch/updates/v0.3.0-preview/UPDATE_POSTING_CHECKLIST.zh-CN.md",
+  "launch/updates/v0.3.0-preview/UPDATE_POSTING_TRACKER.md",
+  "launch/updates/v0.3.0-preview/UPDATE_POSTING_TRACKER.zh-CN.md"
 ];
 
 function fail(message) {
@@ -413,7 +478,7 @@ for (const marker of docsIndexRequired) {
 }
 
 const zhDocsIndex = read("docs/README.zh-CN.md");
-for (const marker of ["LIMITATIONS", "TOOL_METADATA_EXPORT_GUIDE", "REPO_METADATA", "SCREENSHOT_GUIDE", "FAQ", "REMOTE_LAUNCH_STATE", "../SECURITY.md", "../CONTRIBUTING.md", "../examples/README.zh-CN.md"]) {
+for (const marker of ["LIMITATIONS", "TOOL_METADATA_EXPORT_GUIDE", "SARIF", "REPO_METADATA", "SCREENSHOT_GUIDE", "FAQ", "REMOTE_LAUNCH_STATE", "../SECURITY.md", "../CONTRIBUTING.md", "../examples/README.zh-CN.md"]) {
   if (!zhDocsIndex.includes(marker)) {
     fail(`docs/README.zh-CN.md is missing ${marker}`);
   }
@@ -423,13 +488,23 @@ const readme = read("README.md");
 if (!readme.includes("Languages: English | [简体中文](README.zh-CN.md)")) {
   fail("README.md is missing the top language switch");
 }
+for (const marker of ["node apps/cli/dist/index.js audit --root examples/clients", "--format sarif --output reports/mcp-scope.sarif"]) {
+  if (!readme.includes(marker)) {
+    fail(`README.md is missing v0.3 marker: ${marker}`);
+  }
+}
 const zhReadme = read("README.zh-CN.md");
 if (!zhReadme.includes("语言：简体中文 | [English](README.md)")) {
   fail("README.zh-CN.md is missing the top language switch");
 }
+for (const marker of ["node apps/cli/dist/index.js audit --root examples/clients", "--format sarif --output reports/mcp-scope.sarif"]) {
+  if (!zhReadme.includes(marker)) {
+    fail(`README.zh-CN.md is missing v0.3 marker: ${marker}`);
+  }
+}
 
 const limitationsDoc = read("docs/LIMITATIONS.md");
-for (const marker of ["Current Limitations", "What v0.2 Will Improve", "Future Version Candidates", "Still Non-Goals"]) {
+for (const marker of ["Current Limitations", "What v0.2 Improved", "What v0.3 Is Adding", "Future Version Candidates", "Still Non-Goals"]) {
   if (!limitationsDoc.includes(marker)) {
     fail(`docs/LIMITATIONS.md is missing ${marker}`);
   }
@@ -452,6 +527,12 @@ for (const file of v02UpdateFiles) {
     fail(`${file} is missing v0.2.0-preview`);
   }
 }
+for (const file of v03UpdateFiles) {
+  const content = read(file);
+  if (!content.includes("v0.3.0-preview")) {
+    fail(`${file} is missing v0.3.0-preview`);
+  }
+}
 const v02Linkedin = read("launch/updates/v0.2.0-preview/linkedin.md");
 if (!v02Linkedin.includes("https://github.com/darwinx687-afk/mcp-scope") || !/Do not post automatically/i.test(v02Linkedin)) {
   fail("v0.2 LinkedIn draft must include repo link and do-not-post reminder");
@@ -459,6 +540,26 @@ if (!v02Linkedin.includes("https://github.com/darwinx687-afk/mcp-scope") || !/Do
 const v02Xiaohongshu = read("launch/updates/v0.2.0-preview/xiaohongshu.md");
 if (!v02Xiaohongshu.includes("https://github.com/darwinx687-afk/mcp-scope") || !v02Xiaohongshu.includes("不要自动发布")) {
   fail("v0.2 Xiaohongshu draft must include repo link and do-not-post reminder");
+}
+const v03Linkedin = read("launch/updates/v0.3.0-preview/linkedin.md");
+if (!v03Linkedin.includes("https://github.com/darwinx687-afk/mcp-scope") || !/Do not post automatically/i.test(v03Linkedin)) {
+  fail("v0.3 LinkedIn draft must include repo link and do-not-post reminder");
+}
+const v03Xiaohongshu = read("launch/updates/v0.3.0-preview/xiaohongshu.md");
+if (!v03Xiaohongshu.includes("https://github.com/darwinx687-afk/mcp-scope") || !v03Xiaohongshu.includes("不要自动发布")) {
+  fail("v0.3 Xiaohongshu draft must include repo link and do-not-post reminder");
+}
+const sarifDoc = read("docs/SARIF.md");
+for (const marker of ["SARIF 2.1.0", "github/codeql-action/upload-sarif", "security-events: write", "static risk signals"]) {
+  if (!sarifDoc.includes(marker)) {
+    fail(`docs/SARIF.md is missing ${marker}`);
+  }
+}
+const zhSarifDoc = read("docs/SARIF.zh-CN.md");
+for (const marker of ["SARIF 2.1.0", "github/codeql-action/upload-sarif", "security-events: write", "静态风险信号"]) {
+  if (!zhSarifDoc.includes(marker)) {
+    fail(`docs/SARIF.zh-CN.md is missing ${marker}`);
+  }
 }
 
 const examplesIndex = read("examples/README.md");

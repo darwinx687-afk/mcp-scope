@@ -32,6 +32,25 @@ You can also render a viewer from an existing JSON report:
 node apps/cli/dist/index.js view --report examples/reports/sample-combined-report.json --output reports/sample-viewer.html
 ```
 
+## Generate SARIF
+
+```bash
+node apps/cli/dist/index.js scan --config examples/clients/claude-code-project.mcp.json --tools examples/tools/filesystem-tools.json --format sarif --output reports/mcp-scope.sarif
+```
+
+SARIF is for optional GitHub Code Scanning upload and other SARIF-compatible review tools. SARIF output requires `--output`.
+
+## Run One-Command Audit
+
+```bash
+node apps/cli/dist/index.js audit --root examples/clients
+node apps/cli/dist/index.js audit --root examples/clients --format json
+node apps/cli/dist/index.js audit --root examples/clients --format html --output reports/audit.html
+node apps/cli/dist/index.js audit --root examples/clients --format sarif --output reports/audit.sarif
+```
+
+Audit mode combines static discovery with static config scans for parseable candidates. It does not infer tool metadata; use `scan --config <path> --tools <tools.json>` when you have exported local tool metadata.
+
 ## Generate Chinese Markdown
 
 ```bash

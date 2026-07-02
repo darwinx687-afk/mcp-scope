@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased - v0.3.0-preview
+
+- Added SARIF 2.1.0 output support for `scan`, `inspect-tools`, and `audit` when `--format sarif --output <path>` is used.
+- Added `mcp-scope audit --root <path>` for one-command static discovery plus config scanning.
+- Added SARIF and GitHub Code Scanning documentation plus example workflows.
+- Added a draft v0.3 update pack for LinkedIn and Xiaohongshu.
+- Kept v0.3 unreleased: no tag, release publication, npm package, GitHub Marketplace listing, or production-grade security claim.
+
 ## v0.2.0-preview - 2026-07-02
 
 - Released the next preview as a bilingual onboarding and limitation reduction maintenance release.

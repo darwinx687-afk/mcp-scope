@@ -8,6 +8,7 @@ MCP Scope documentation is organized around local transparency reports, static r
 - [Tool metadata export guide](TOOL_METADATA_EXPORT_GUIDE.md): safe local JSON shapes for `--tools`.
 - [Report guide](REPORT_GUIDE.md): how to read Markdown, JSON, and HTML transparency reports.
 - [Report schema](REPORT_SCHEMA.md): stable JSON fields for automation and review.
+- [SARIF output](SARIF.md): optional SARIF generation and GitHub Code Scanning upload.
 - [HTML viewer guide](VIEWER_GUIDE.md): self-contained local viewer output.
 - [GitHub Action](GITHUB_ACTION.md): local composite action usage for PR checks.
 - [Approval memory](APPROVAL_MEMORY.md): local redacted snapshots and static diffs.
@@ -39,6 +40,7 @@ MCP Scope documentation is organized around local transparency reports, static r
 - [工具元数据导出指南](TOOL_METADATA_EXPORT_GUIDE.zh-CN.md)
 - [HTML 查看器指南](VIEWER_GUIDE.zh-CN.md)
 - [GitHub Action](GITHUB_ACTION.zh-CN.md)
+- [SARIF 输出](SARIF.zh-CN.md)
 - [审批记忆](APPROVAL_MEMORY.zh-CN.md)
 - [客户端兼容说明](ECOSYSTEM_COMPATIBILITY.zh-CN.md)
 - [Discovery](DISCOVERY.zh-CN.md)

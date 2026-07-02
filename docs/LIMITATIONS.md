@@ -11,7 +11,7 @@ MCP Scope is an early local-first transparency tool. Its findings are static ris
 - No proof of compromise.
 - No npm package yet.
 - No GitHub Marketplace publication yet.
-- No SARIF output yet.
+- SARIF output is available from source in v0.3 work, but GitHub Code Scanning upload remains an explicit workflow step.
 - No complete coverage of every MCP client.
 - Tool metadata must be exported or provided locally.
 
@@ -22,7 +22,7 @@ MCP Scope is an early local-first transparency tool. Its findings are static ris
 - Honest scope: static evidence can show risk patterns, but it cannot prove runtime behavior.
 - Early preview stage: the project should reduce confusion before adding wider packaging or dynamic helpers.
 
-## What v0.2 Will Improve
+## What v0.2 Improved
 
 - Clearer bilingual entry from the first README screen.
 - Clearer docs navigation for limitations, reports, discovery, and exported tool metadata.
@@ -31,9 +31,15 @@ MCP Scope is an early local-first transparency tool. Its findings are static ris
 - Clearer report limitation wording.
 - Repeatable update-post workflow for LinkedIn and Xiaohongshu.
 
+## What v0.3 Is Adding
+
+- SARIF output for `scan`, `inspect-tools`, and `audit`.
+- One-command `audit --root <path>` mode that combines static discovery and static config scan summaries.
+- Optional GitHub Code Scanning upload examples using generated SARIF.
+- No change to static-only boundaries.
+
 ## Future Version Candidates
 
-- v0.3: SARIF output or stronger GitHub Action integration.
 - v0.4: policy packs for team-specific static review rules.
 - v0.5: optional explicit `tools/list` export helper, only with visible user consent.
 - Future: npm package, GitHub Marketplace action, and richer diff memory.

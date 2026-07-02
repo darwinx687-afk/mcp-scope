@@ -5,7 +5,7 @@ import path from "node:path";
 import { spawn } from "node:child_process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
-const FORMATS = new Set(["markdown", "json", "html"]);
+const FORMATS = new Set(["markdown", "json", "html", "sarif"]);
 const LANGS = new Set(["en", "zh-CN"]);
 const FAIL_ON = new Set(["none", "info", "low", "medium", "high"]);
 const SEVERITY_RANK = {
@@ -86,7 +86,7 @@ function parseOptions(env) {
   }
 
   if (!FORMATS.has(reportFormat)) {
-    throw new Error('Invalid report-format. Use "markdown", "json", or "html".');
+    throw new Error('Invalid report-format. Use "markdown", "json", "html", or "sarif".');
   }
 
   if (!LANGS.has(lang)) {
@@ -281,6 +281,10 @@ function defaultReportPath(format) {
 
   if (format === "html") {
     return "mcp-scope-report.html";
+  }
+
+  if (format === "sarif") {
+    return "mcp-scope-report.sarif";
   }
 
   return "mcp-scope-report.md";

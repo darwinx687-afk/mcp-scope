@@ -1,0 +1,42 @@
+name: MCP Scope Audit SARIF
+
+on:
+  pull_request:
+  push:
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  mcp-scope-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build MCP Scope
+        run: pnpm build
+
+      - name: Generate MCP Scope audit SARIF
+        run: |
+          node apps/cli/dist/index.js audit \
+            --root examples/clients \
+            --format sarif \
+            --output reports/mcp-scope-audit.sarif \
+            --fail-on none
+
+      - uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: reports/mcp-scope-audit.sarif
+          category: mcp-scope-audit

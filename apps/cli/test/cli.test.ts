@@ -33,6 +33,7 @@ describe("mcp-scope CLI", () => {
       expect(result.stdout).toContain("mcp-scope status");
       expect(result.stdout).toContain("mcp-scope scan --config <path>");
       expect(result.stdout).toContain("mcp-scope inspect-tools --tools <path>");
+      expect(result.stdout).toContain("mcp-scope audit --root <path>");
       expect(result.stdout).toContain("mcp-scope snapshot");
       expect(result.stdout).toContain("mcp-scope diff");
       expect(result.stdout).toContain("mcp-scope discover --root <path>");
@@ -174,6 +175,91 @@ describe("mcp-scope CLI", () => {
     }
   });
 
+  it("runs audit over client examples as Markdown and JSON", async () => {
+    const rootPath = fileURLToPath(new URL("../../../examples/clients", import.meta.url));
+    const markdown = await runCli(["audit", "--root", rootPath]);
+    const json = await runCli(["audit", "--root", rootPath, "--format", "json"]);
+    const parsed = JSON.parse(json.stdout) as {
+      auditVersion: string;
+      summary: { candidateCount: number; parsedConfigCount: number; serverCount: number };
+      staticOnly: boolean;
+      mcpServerExecution: boolean;
+      externalApiCalls: boolean;
+    };
+
+    expect(markdown.exitCode).toBe(0);
+    expect(markdown.stdout).toContain("# MCP Scope Audit Report");
+    expect(markdown.stdout).toContain("Static audit only");
+    expect(markdown.stdout).toContain("mcp-scope scan --config <path> --tools <tools.json>");
+    expect(json.exitCode).toBe(0);
+    expect(parsed.auditVersion).toBe("0.1.0");
+    expect(parsed.summary.candidateCount).toBeGreaterThanOrEqual(10);
+    expect(parsed.summary.parsedConfigCount).toBeGreaterThanOrEqual(10);
+    expect(parsed.summary.serverCount).toBeGreaterThanOrEqual(10);
+    expect(parsed.staticOnly).toBe(true);
+    expect(parsed.mcpServerExecution).toBe(false);
+    expect(parsed.externalApiCalls).toBe(false);
+    expect(json.stdout).not.toContain("REDACTED_EXAMPLE_TOKEN");
+  });
+
+  it("renders audit Chinese Markdown", async () => {
+    const rootPath = fileURLToPath(new URL("../../../examples/clients", import.meta.url));
+    const result = await runCli(["audit", "--root", rootPath, "--format", "markdown", "--lang", "zh-CN"]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("## 下一步");
+    expect(result.stdout).toContain("仅做静态审计");
+  });
+
+  it("writes audit HTML and SARIF to output files", async () => {
+    const rootPath = fileURLToPath(new URL("../../../examples/clients", import.meta.url));
+    const tempDir = await mkdtemp(join(tmpdir(), "mcp-scope-cli-"));
+    const htmlPath = join(tempDir, "audit.html");
+    const sarifPath = join(tempDir, "audit.sarif");
+
+    try {
+      const htmlResult = await runCli(["audit", "--root", rootPath, "--format", "html", "--output", htmlPath]);
+      const sarifResult = await runCli(["audit", "--root", rootPath, "--format", "sarif", "--output", sarifPath]);
+      const html = await readFile(htmlPath, "utf8");
+      const sarif = JSON.parse(await readFile(sarifPath, "utf8")) as { version: string; runs: unknown[] };
+
+      expect(htmlResult.exitCode).toBe(0);
+      expect(sarifResult.exitCode).toBe(0);
+      expect(html).toContain("<title>MCP Scope Audit Report</title>");
+      expect(html).not.toContain("<script");
+      expect(sarif.version).toBe("2.1.0");
+      expect(sarif.runs).toHaveLength(1);
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  it("applies audit fail-on thresholds after rendering output", async () => {
+    const tempDir = await mkdtemp(join(tmpdir(), "mcp-scope-cli-audit-"));
+
+    try {
+      await writeFile(join(tempDir, "risky.mcp.json"), JSON.stringify({
+        mcpServers: {
+          risky: {
+            command: "bash",
+            args: ["-lc", "cat ~/.ssh/id_rsa"]
+          }
+        }
+      }), "utf8");
+
+      const pass = await runCli(["audit", "--root", tempDir, "--format", "json", "--fail-on", "none"]);
+      const fail = await runCli(["audit", "--root", tempDir, "--format", "json", "--fail-on", "high"]);
+
+      expect(pass.exitCode).toBe(0);
+      expect(pass.stdout).toContain('"highestSeverity": "high"');
+      expect(fail.exitCode).toBe(1);
+      expect(fail.stdout).toContain('"highestSeverity": "high"');
+      expect(fail.stderr).toContain("MCP Scope fail-on threshold reached");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
   it("passes fail-on none even with high findings", async () => {
     const configPath = fileURLToPath(
       new URL("../../../examples/claude-code-project.mcp.json", import.meta.url)
@@ -265,6 +351,45 @@ describe("mcp-scope CLI", () => {
       expect(html).toContain("<title>MCP Scope Report</title>");
       expect(html).toContain("Summary");
       expect(html).toContain("Tool Metadata");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  it("requires output for scan SARIF and writes valid SARIF when provided", async () => {
+    const configPath = fileURLToPath(
+      new URL("../../../examples/clients/claude-code-project.mcp.json", import.meta.url)
+    );
+    const toolsPath = fileURLToPath(
+      new URL("../../../examples/tools/filesystem-tools.json", import.meta.url)
+    );
+    const missingOutput = await runCli(["scan", "--config", configPath, "--format", "sarif"]);
+    const tempDir = await mkdtemp(join(tmpdir(), "mcp-scope-cli-"));
+    const outputPath = join(tempDir, "scan.sarif");
+
+    try {
+      const result = await runCli([
+        "scan",
+        "--config",
+        configPath,
+        "--tools",
+        toolsPath,
+        "--format",
+        "sarif",
+        "--output",
+        outputPath
+      ]);
+      const sarif = JSON.parse(await readFile(outputPath, "utf8")) as {
+        version: string;
+        runs: Array<{ tool: { driver: { name: string } }; results: unknown[] }>;
+      };
+
+      expect(missingOutput.exitCode).toBe(1);
+      expect(missingOutput.stderr).toContain("SARIF format requires --output <path>");
+      expect(result.exitCode).toBe(0);
+      expect(sarif.version).toBe("2.1.0");
+      expect(sarif.runs[0]?.tool.driver.name).toBe("MCP Scope");
+      expect(JSON.stringify(sarif)).not.toContain("REDACTED_EXAMPLE_TOKEN");
     } finally {
       await rm(tempDir, { recursive: true, force: true });
     }
@@ -573,6 +698,29 @@ describe("mcp-scope CLI", () => {
     }
   });
 
+  it("writes inspect-tools SARIF to an output file", async () => {
+    const toolsPath = fileURLToPath(
+      new URL("../../../examples/tools/poisoned-description-tools.json", import.meta.url)
+    );
+    const tempDir = await mkdtemp(join(tmpdir(), "mcp-scope-cli-"));
+    const outputPath = join(tempDir, "tools.sarif");
+
+    try {
+      const result = await runCli(["inspect-tools", "--tools", toolsPath, "--format", "sarif", "--output", outputPath]);
+      const sarif = JSON.parse(await readFile(outputPath, "utf8")) as {
+        version: string;
+        runs: Array<{ results: Array<{ ruleId: string; level: string }> }>;
+      };
+
+      expect(result.exitCode).toBe(0);
+      expect(sarif.version).toBe("2.1.0");
+      expect(sarif.runs[0]?.results.map((item) => item.ruleId)).toContain("metadata_injection_phrase");
+      expect(sarif.runs[0]?.results.find((item) => item.ruleId === "metadata_injection_phrase")?.level).toBe("error");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
   it("renders an existing JSON report with view", async () => {
     const reportPath = fileURLToPath(
       new URL("../../../examples/reports/sample-combined-report.json", import.meta.url)
@@ -629,6 +777,13 @@ describe("mcp-scope CLI", () => {
 
     expect(result.exitCode).toBe(1);
     expect(result.stderr).toContain("HTML format requires --output <path>");
+  });
+
+  it("errors clearly when audit SARIF output is missing", async () => {
+    const result = await runCli(["audit", "--root", "examples/clients", "--format", "sarif"]);
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("SARIF format requires --output <path>");
   });
 
   it("errors clearly when view output is missing", async () => {

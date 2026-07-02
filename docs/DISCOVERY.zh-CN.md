@@ -25,6 +25,17 @@ node apps/cli/dist/index.js scan --config <path> --tools <tools.json>
 
 Markdown 和 HTML discovery 报告也会给每个可解析候选文件显示具体下一步命令，例如 `mcp-scope scan --config examples/clients/claude-code-project.mcp.json`。
 
+## 一条 audit 命令
+
+如果想更方便地先做 config-focused 检查，可以用 audit mode：
+
+```bash
+node apps/cli/dist/index.js audit --root examples/clients
+node apps/cli/dist/index.js audit --root examples/clients --format sarif --output reports/audit.sarif
+```
+
+Audit mode 会运行静态 discovery，扫描可解析的 config 候选文件，并合并摘要。它仍然不执行 MCP server，不请求实时 `tools/list`，不推断 tool metadata，也不修改文件。
+
 ## 候选文件匹配
 
 Discovery 会寻找这些常见文件名：

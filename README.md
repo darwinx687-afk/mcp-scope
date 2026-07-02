@@ -24,13 +24,16 @@ pnpm install
 pnpm build
 
 node apps/cli/dist/index.js discover --root examples/clients
+node apps/cli/dist/index.js audit --root examples/clients
 node apps/cli/dist/index.js scan --config examples/claude-desktop-filesystem.json --tools examples/tools/filesystem-tools.json
+node apps/cli/dist/index.js scan --config examples/clients/claude-code-project.mcp.json --tools examples/tools/filesystem-tools.json --format sarif --output reports/mcp-scope.sarif
 node apps/cli/dist/index.js diff --baseline examples/snapshots/filesystem-approved.snapshot.json --config examples/claude-desktop-filesystem.json --tools examples/tools/filesystem-tools.changed-description.json
 ```
 
-Three strong starting points:
+Four strong starting points:
 
 - `discover`: list likely local MCP config files without scanning or modifying them.
+- `audit`: run static discovery plus static config scans for parseable candidates in one command.
 - `scan`: inspect a local MCP config and optional exported tool metadata file.
 - `diff`: compare current local config/tool metadata against a redacted approval-memory snapshot.
 
@@ -50,7 +53,8 @@ Current capabilities:
 - Scan MCP config server entries.
 - Inspect local exported MCP tool metadata.
 - Detect static tool metadata risk signals.
-- Generate Markdown, JSON, and self-contained HTML reports.
+- Generate Markdown, JSON, self-contained HTML, and SARIF reports.
+- Run one-command static audit mode for discovered config candidates.
 - Render English and Chinese Markdown reports.
 - Create local approval-memory snapshots and static diffs.
 - Run as a local repository GitHub Action quality gate.
@@ -95,6 +99,8 @@ jobs:
 
 See [GitHub Action docs](docs/GITHUB_ACTION.md) for inputs, outputs, threshold behavior, job summaries, and artifact upload examples.
 
+Optional SARIF upload for GitHub Code Scanning is documented in [SARIF output](docs/SARIF.md). MCP Scope writes SARIF locally and does not upload it automatically.
+
 ## Launch / Feedback
 
 The public repository is available at [github.com/darwinx687-afk/mcp-scope](https://github.com/darwinx687-afk/mcp-scope). The `v0.1.0-preview` release is public as a prerelease, not a final/stable release.
@@ -115,6 +121,7 @@ Please redact secrets, private configs, internal paths, and sensitive report exc
 - [Examples index](examples/README.md)
 - [Report guide](docs/REPORT_GUIDE.md)
 - [Report schema](docs/REPORT_SCHEMA.md)
+- [SARIF output](docs/SARIF.md)
 - [HTML viewer guide](docs/VIEWER_GUIDE.md)
 - [Approval memory](docs/APPROVAL_MEMORY.md)
 - [Discovery](docs/DISCOVERY.md)

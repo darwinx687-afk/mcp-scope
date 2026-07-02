@@ -8,6 +8,7 @@
 - [工具元数据导出指南](TOOL_METADATA_EXPORT_GUIDE.zh-CN.md)：如何安全准备本地 `--tools` JSON。
 - [报告指南](REPORT_GUIDE.zh-CN.md)：如何阅读 Markdown、JSON 和 HTML 透明度报告。
 - [报告 schema](REPORT_SCHEMA.md)：给自动化和审查使用的稳定 JSON 字段。
+- [SARIF 输出](SARIF.zh-CN.md)：生成 SARIF，并可选上传到 GitHub Code Scanning。
 - [HTML 查看器指南](VIEWER_GUIDE.zh-CN.md)：本地自包含 HTML 查看器。
 - [GitHub Action](GITHUB_ACTION.zh-CN.md)：在 PR 检查中使用本仓库 composite action。
 - [审批记忆](APPROVAL_MEMORY.zh-CN.md)：本地脱敏 snapshot 和静态 diff。
@@ -39,6 +40,7 @@
 - [Tool metadata export guide](TOOL_METADATA_EXPORT_GUIDE.md)
 - [HTML viewer guide](VIEWER_GUIDE.md)
 - [GitHub Action](GITHUB_ACTION.md)
+- [SARIF output](SARIF.md)
 - [Approval memory](APPROVAL_MEMORY.md)
 - [Ecosystem compatibility](ECOSYSTEM_COMPATIBILITY.md)
 - [Discovery](DISCOVERY.md)

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">MCP Scope v0.3 中文更新卡片</title>
+  <desc id="desc">GitHub 原生报告与一键审计版。</desc>
+  <rect width="1200" height="630" rx="36" fill="#f8fafc"/>
+  <rect x="32" y="32" width="1136" height="566" rx="28" fill="#ffffff" stroke="#d6e3f0" stroke-width="2"/>
+  <g transform="translate(78 76)">
+    <rect width="188" height="188" rx="26" fill="#ecfdf5" stroke="#99f6e4" stroke-width="2"/>
+    <circle cx="84" cy="84" r="44" fill="#ffffff" stroke="#0f766e" stroke-width="8"/>
+    <circle cx="84" cy="84" r="18" fill="#f8fafc" stroke="#2563eb" stroke-width="6"/>
+    <path d="M114 114l38 38" stroke="#0f766e" stroke-width="11" stroke-linecap="round"/>
+    <path d="M38 84h25M105 84h25M84 38v25M84 105v25" stroke="#2563eb" stroke-width="5" stroke-linecap="round"/>
+    <rect x="122" y="22" width="54" height="42" rx="10" fill="#fffbeb" stroke="#f59e0b" stroke-width="4"/>
+    <text x="135" y="52" fill="#92400e" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" font-weight="800">{} </text>
+  </g>
+  <text x="316" y="120" fill="#0f172a" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="72" font-weight="760">MCP Scope v0.3</text>
+  <text x="316" y="184" fill="#334155" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="32">GitHub 原生报告与一键审计版</text>
+  <text x="316" y="232" fill="#64748b" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="25">v0.3.0-preview 草稿 · 仅做静态审查</text>
+  <g transform="translate(84 310)" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="28" fill="#0f172a">
+    <rect x="0" y="0" width="220" height="56" rx="12" fill="#ecfdf5" stroke="#99f6e4"/>
+    <text x="24" y="37">一条 audit 命令</text>
+    <rect x="250" y="0" width="210" height="56" rx="12" fill="#eff6ff" stroke="#bfdbfe"/>
+    <text x="274" y="37">SARIF 输出</text>
+    <rect x="490" y="0" width="350" height="56" rx="12" fill="#fffbeb" stroke="#fde68a"/>
+    <text x="514" y="37">Code Scanning 可选</text>
+    <rect x="0" y="86" width="284" height="56" rx="12" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="24" y="123">不执行 MCP server</text>
+  </g>
+  <g transform="translate(86 506)" fill="none" stroke-linecap="round">
+    <path d="M0 0h190l38 36h220" stroke="#2563eb" stroke-width="6"/>
+    <path d="M0 58h254l34-34h418" stroke="#0f766e" stroke-width="6"/>
+    <circle cx="0" cy="0" r="8" fill="#ffffff" stroke="#2563eb" stroke-width="5"/>
+    <circle cx="0" cy="58" r="8" fill="#ffffff" stroke="#0f766e" stroke-width="5"/>
+  </g>
+  <text x="754" y="544" fill="#64748b" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="25">github.com/darwinx687-afk/mcp-scope</text>
+</svg>

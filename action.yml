@@ -9,7 +9,7 @@ inputs:
     description: Path to local exported MCP tool metadata JSON, relative to working-directory unless absolute.
     required: false
   report-format:
-    description: "Report format to generate: markdown, json, or html."
+    description: "Report format to generate: markdown, json, html, or sarif."
     required: false
     default: markdown
   report-path:

@@ -5,6 +5,7 @@
 ## 当前更新包
 
 - [v0.2.0-preview](v0.2.0-preview/)：双语入口与使用体验完善版更新包。
+- [v0.3.0-preview](v0.3.0-preview/)：SARIF 与一条 audit 命令更新包草稿。
 
 ## 规则
 

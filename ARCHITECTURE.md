@@ -104,3 +104,13 @@ These files are documentation and assets only. They do not post to any platform,
 The `v0.2.0-preview` maintenance workflow remains repository-local. It adds docs for bilingual entry, limitations, repository metadata recommendations, and local exported tool metadata shapes. It also adds versioned update-post drafts under `launch/updates/v0.2.0-preview/`.
 
 These files do not publish a release, create a tag, post to LinkedIn or Xiaohongshu, publish npm, or publish GitHub Marketplace. The only runtime behavior change in this planning loop is safer discovery report rendering: parsed candidates include a static next command suggestion for `mcp-scope scan --config <path>`. Discovery still does not execute MCP servers, send live `tools/list` requests, call external APIs, or auto-scan discovered candidates.
+
+## v0.3 SARIF and Audit Architecture
+
+The `v0.3.0-preview` direction keeps MCP Scope static-only while adding GitHub-native reporting and a more convenient local entrypoint.
+
+SARIF rendering lives in `packages/report` and converts existing static report models into SARIF 2.1.0. SARIF results use stable rule IDs, safe artifact URIs, severity-to-level mapping, static-only properties, and redaction flags. SARIF output requires an explicit `--output` path so large machine-readable logs are not printed to stdout by default.
+
+The `audit` command lives in `apps/cli` and reuses `packages/core` discovery plus config fingerprint scanning. It walks only under the requested root, scans parseable supported config candidates, skips invalid or unsupported files, and produces combined Markdown, JSON, HTML, or SARIF reports. It does not infer tool metadata, execute MCP servers, call live `tools/list`, call external APIs, modify config files, or create approval snapshots.
+
+GitHub Code Scanning integration remains workflow-owned. MCP Scope can generate SARIF locally, but uploading SARIF requires an explicit user workflow step such as `github/codeql-action/upload-sarif`; MCP Scope itself does not upload artifacts or request write tokens.

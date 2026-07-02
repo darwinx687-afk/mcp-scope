@@ -32,6 +32,25 @@ HTML 适合本地审查和内部交接。它是自包含本地文件，使用内
 node apps/cli/dist/index.js view --report examples/reports/sample-combined-report.json --output reports/sample-viewer.html
 ```
 
+## 生成 SARIF
+
+```bash
+node apps/cli/dist/index.js scan --config examples/clients/claude-code-project.mcp.json --tools examples/tools/filesystem-tools.json --format sarif --output reports/mcp-scope.sarif
+```
+
+SARIF 适合可选上传到 GitHub Code Scanning 或其他支持 SARIF 的审查工具。SARIF 输出必须提供 `--output`。
+
+## 运行一条 audit 命令
+
+```bash
+node apps/cli/dist/index.js audit --root examples/clients
+node apps/cli/dist/index.js audit --root examples/clients --format json
+node apps/cli/dist/index.js audit --root examples/clients --format html --output reports/audit.html
+node apps/cli/dist/index.js audit --root examples/clients --format sarif --output reports/audit.sarif
+```
+
+Audit mode 会组合静态 discovery 和可解析 config 候选文件的静态扫描。它不会推断 tool metadata；如果你已经有本地导出的 tool metadata，请使用 `scan --config <path> --tools <tools.json>`。
+
 ## 生成中文 Markdown 报告
 
 ```bash

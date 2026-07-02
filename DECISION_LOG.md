@@ -82,3 +82,9 @@
 - The v0.2.0-preview human review gate recommends `ready` for a manually approved preview release.
 - The review did not create a tag, publish a GitHub release, post to social platforms, publish npm, or publish GitHub Marketplace.
 - Phase 11 remains blocked until real actionable feedback appears; low exposure and engagement-only signals are not enough to create roadmap work.
+
+## 2026-07-02 v0.3.0-preview Functional Update
+
+- `v0.3.0-preview` keeps MCP Scope static-only while adding SARIF output and one-command audit mode for GitHub-native review workflows.
+- SARIF upload is intentionally workflow-owned through explicit GitHub Actions steps; MCP Scope core checks do not upload artifacts, call external APIs, or request write tokens.
+- The `audit` command scans parseable discovered config candidates only and does not infer tool metadata, execute MCP servers, call live `tools/list`, or modify user files.

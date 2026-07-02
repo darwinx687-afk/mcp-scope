@@ -142,6 +142,25 @@ describe("GitHub action runner", () => {
       await rm(result.tempDir, { recursive: true, force: true });
     }
   });
+
+  it("supports SARIF as the requested action report format", async () => {
+    const result = await runActionRunner({
+      INPUT_CONFIG: "config.json",
+      INPUT_TOOLS: "tools.json",
+      INPUT_REPORT_FORMAT: "sarif",
+      INPUT_REPORT_PATH: "reports/mcp-scope.sarif",
+      INPUT_FAIL_ON: "none"
+    });
+
+    try {
+      expect(result.status).toBe(0);
+      expect(result.outputText).toContain("report-path=reports/mcp-scope.sarif");
+      expect(result.outputText).toContain("json-report-path=reports/mcp-scope.json");
+      expect(await readOptional(join(result.tempDir, "reports/mcp-scope.sarif"))).toContain("MCP Scope Report");
+    } finally {
+      await rm(result.tempDir, { recursive: true, force: true });
+    }
+  });
 });
 
 function spawnProcess(command: string, args: readonly string[], env: NodeJS.ProcessEnv) {

@@ -7,7 +7,7 @@ This is local repository usage. MCP Scope is not published to GitHub Marketplace
 ## What It Does
 
 - Reads local MCP config JSON and/or local exported MCP tool metadata JSON from the checked-out repository.
-- Generates a Markdown, JSON, or HTML report.
+- Generates a Markdown, JSON, HTML, or SARIF report.
 - Always generates a JSON report internally for CI outputs and threshold evaluation.
 - Optionally generates an HTML viewer next to the main report.
 - Writes action outputs such as finding count and highest severity.
@@ -58,7 +58,7 @@ jobs:
 | --- | --- | --- |
 | `config` | empty | Local MCP config JSON path. |
 | `tools` | empty | Local exported MCP tool metadata JSON path. |
-| `report-format` | `markdown` | `markdown`, `json`, or `html`. |
+| `report-format` | `markdown` | `markdown`, `json`, `html`, or `sarif`. |
 | `report-path` | by format | Output report path. |
 | `lang` | `en` | `en` or `zh-CN`. |
 | `fail-on` | `none` | `none`, `info`, `low`, `medium`, or `high`. |
@@ -105,6 +105,37 @@ The action never uploads anything automatically. Add `actions/upload-artifact` w
       mcp-scope-report.html
 ```
 
+## Optional SARIF Upload
+
+SARIF is useful when you want MCP Scope findings to appear in GitHub Code Scanning. MCP Scope only writes the SARIF file; upload remains an explicit workflow step.
+
+```yaml
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  mcp-scope:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: ./
+        with:
+          config: examples/clients/claude-code-project.mcp.json
+          tools: examples/tools/filesystem-tools.json
+          report-format: sarif
+          report-path: reports/mcp-scope.sarif
+          fail-on: none
+
+      - uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: reports/mcp-scope.sarif
+          category: mcp-scope
+```
+
+See [SARIF docs](SARIF.md) for local commands, Code Scanning notes, and an audit-mode SARIF workflow.
+
 ## What Not To Commit Publicly
 
 Do not commit or upload private MCP configs, live credentials, token values, private env/header values, sensitive local paths, or proprietary server metadata to public issues or repositories.
@@ -114,3 +145,5 @@ More examples:
 - `docs/examples/github-action-basic.yml`
 - `docs/examples/github-action-threshold-gate.yml`
 - `docs/examples/github-action-zh-CN.yml`
+- `docs/examples/github-action-sarif.yml`
+- `docs/examples/github-action-audit-sarif.yml`

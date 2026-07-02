@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">MCP Scope v0.3 update card</title>
+  <desc id="desc">SARIF output and one-command audit mode.</desc>
+  <rect width="1200" height="630" rx="36" fill="#f8fafc"/>
+  <rect x="32" y="32" width="1136" height="566" rx="28" fill="#ffffff" stroke="#d6e3f0" stroke-width="2"/>
+  <g transform="translate(78 76)">
+    <rect width="188" height="188" rx="26" fill="#ecfdf5" stroke="#99f6e4" stroke-width="2"/>
+    <circle cx="84" cy="84" r="44" fill="#ffffff" stroke="#0f766e" stroke-width="8"/>
+    <circle cx="84" cy="84" r="18" fill="#f8fafc" stroke="#2563eb" stroke-width="6"/>
+    <path d="M114 114l38 38" stroke="#0f766e" stroke-width="11" stroke-linecap="round"/>
+    <path d="M38 84h25M105 84h25M84 38v25M84 105v25" stroke="#2563eb" stroke-width="5" stroke-linecap="round"/>
+    <rect x="122" y="22" width="54" height="42" rx="10" fill="#fffbeb" stroke="#f59e0b" stroke-width="4"/>
+    <text x="135" y="52" fill="#92400e" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" font-weight="800">{} </text>
+  </g>
+  <text x="316" y="120" fill="#0f172a" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="72" font-weight="760">MCP Scope v0.3</text>
+  <text x="316" y="184" fill="#334155" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="32">SARIF + one-command audit mode</text>
+  <text x="316" y="232" fill="#64748b" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="25">v0.3.0-preview draft · static review only</text>
+  <g transform="translate(84 310)" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="28" fill="#0f172a">
+    <rect x="0" y="0" width="220" height="56" rx="12" fill="#ecfdf5" stroke="#99f6e4"/>
+    <text x="24" y="37">audit --root</text>
+    <rect x="250" y="0" width="232" height="56" rx="12" fill="#eff6ff" stroke="#bfdbfe"/>
+    <text x="274" y="37">SARIF output</text>
+    <rect x="512" y="0" width="332" height="56" rx="12" fill="#fffbeb" stroke="#fde68a"/>
+    <text x="536" y="37">Code Scanning optional</text>
+    <rect x="0" y="86" width="326" height="56" rx="12" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="24" y="123">No server execution</text>
+  </g>
+  <g transform="translate(86 506)" fill="none" stroke-linecap="round">
+    <path d="M0 0h190l38 36h220" stroke="#2563eb" stroke-width="6"/>
+    <path d="M0 58h254l34-34h418" stroke="#0f766e" stroke-width="6"/>
+    <circle cx="0" cy="0" r="8" fill="#ffffff" stroke="#2563eb" stroke-width="5"/>
+    <circle cx="0" cy="58" r="8" fill="#ffffff" stroke="#0f766e" stroke-width="5"/>
+  </g>
+  <text x="754" y="544" fill="#64748b" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="25">github.com/darwinx687-afk/mcp-scope</text>
+</svg>

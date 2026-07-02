@@ -1,6 +1,6 @@
 # MCP Scope Report Schema
 
-MCP Scope reports use a stable JSON shape for automation, localized Markdown for human review, self-contained HTML for local read-only viewing, GitHub Action threshold evaluation, approval-memory diffing, and static discovery reports.
+MCP Scope reports use a stable JSON shape for automation, localized Markdown for human review, self-contained HTML for local read-only viewing, SARIF for optional GitHub Code Scanning upload, GitHub Action threshold evaluation, approval-memory diffing, static discovery reports, and one-command audit reports.
 
 ## Version Fields
 
@@ -234,6 +234,71 @@ Each `candidates` item includes:
 
 Discovery reports must not print file contents, env values, header values, or secret-like values.
 
+## Audit Report Model
+
+`mcp-scope audit --root <path>` combines static discovery with static config scans for parseable discovered candidates. JSON audit files currently use:
+
+- `auditVersion: "0.1.0"`
+- `schemaVersion: 1`
+
+Top-level audit shape:
+
+```json
+{
+  "auditVersion": "0.1.0",
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-02T00:00:00.000Z",
+  "rootPathDisplay": "examples/clients",
+  "maxDepth": 4,
+  "includeHome": false,
+  "maxFileSizeBytes": 1048576,
+  "staticOnly": true,
+  "externalApiCalls": false,
+  "mcpServerExecution": false,
+  "toolsListRequestSent": false,
+  "secretValuesRedacted": true,
+  "discovery": {},
+  "summary": {},
+  "scannedConfigs": [],
+  "skippedCandidates": [],
+  "nextSteps": [],
+  "limitations": {}
+}
+```
+
+Audit mode does not infer tool metadata. It only scans parseable local config candidates and suggests running `scan --config <path> --tools <tools.json>` when exported tool metadata is available.
+
+## SARIF Report Model
+
+`scan`, `inspect-tools`, and `audit` can render SARIF 2.1.0 with `--format sarif --output <path>`.
+
+SARIF output includes:
+
+- `version: "2.1.0"`
+- `$schema: "https://json.schemastore.org/sarif-2.1.0.json"`
+- `runs[0].tool.driver.name: "MCP Scope"`
+- `runs[0].tool.driver.semanticVersion`
+- stable rule IDs from MCP Scope findings
+- result locations with `artifactLocation.uri`
+- `partialFingerprints.mcpScopeStableId`
+- result properties:
+  - `mcpScopeSeverity`
+  - `category`
+  - `target`
+  - `sourceKind`
+  - `staticOnly: true`
+  - `secretValuesRedacted: true`
+  - `notProofOfCompromise: true`
+
+Severity mapping:
+
+- `high` -> `error`
+- `medium` -> `warning`
+- `low` -> `warning`
+- `info` -> `note`
+
+SARIF output requires `--output` so large SARIF files are not printed to stdout by default.
+
 ## Limitations Model
 
 `limitations` includes:
@@ -247,6 +312,6 @@ Discovery reports must not print file contents, env values, header values, or se
 
 ## Compatibility Expectations
 
-Future GitHub Action, approval-memory, and discovery work should treat `reportVersion`, `snapshotVersion`, `diffVersion`, `schemaVersion`, `scan`, `summary`, `findings`, `changes`, `candidates`, `redaction`, and `limitations` as compatibility-sensitive fields.
+Future GitHub Action, SARIF, audit, approval-memory, and discovery work should treat `reportVersion`, `auditVersion`, `snapshotVersion`, `diffVersion`, `schemaVersion`, `scan`, `summary`, `findings`, `changes`, `candidates`, `redaction`, and `limitations` as compatibility-sensitive fields.
 
 New fields may be added in later phases, but existing keys should remain stable unless `reportVersion` changes.

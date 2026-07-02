@@ -5,6 +5,7 @@ This folder contains versioned update-post materials for MCP Scope. These files 
 ## Available Packs
 
 - [v0.2.0-preview](v0.2.0-preview/): bilingual onboarding and limitation reduction update pack.
+- [v0.3.0-preview](v0.3.0-preview/): draft SARIF and one-command audit mode update pack.
 
 ## Rules
 

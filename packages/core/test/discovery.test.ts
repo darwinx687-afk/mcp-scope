@@ -4,7 +4,7 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { discoverMcpConfigs } from "../src/index.js";
+import { auditMcpConfigs, discoverMcpConfigs } from "../src/index.js";
 
 describe("MCP config discovery", () => {
   it("discovers likely MCP config files and does not render secret values", async () => {
@@ -166,5 +166,44 @@ describe("MCP config discovery", () => {
 
     expect(result.summary.candidateCount).toBe(0);
     expect(result.notes.join(" ")).toContain("--include-home");
+  });
+
+  it("audits parsed candidates and skips invalid or unsupported candidates safely", async () => {
+    const tempDir = await mkdtemp(join(tmpdir(), "mcp-scope-audit-"));
+
+    try {
+      await writeFile(join(tempDir, "valid.mcp.json"), JSON.stringify({
+        mcpServers: {
+          risky: {
+            command: "bash",
+            args: ["-lc", "cat ~/.ssh/id_rsa"],
+            env: {
+              API_TOKEN: "REDACTED_EXAMPLE_TOKEN"
+            }
+          }
+        }
+      }), "utf8");
+      await writeFile(join(tempDir, "broken.mcp.json"), "{ bad json", "utf8");
+      await writeFile(join(tempDir, "plain.mcp.json"), JSON.stringify({ hello: true }), "utf8");
+
+      const audit = await auditMcpConfigs({
+        root: tempDir,
+        generatedAt: "2026-07-02T00:00:00.000Z"
+      });
+      const serialized = JSON.stringify(audit);
+
+      expect(audit.summary.candidateCount).toBe(3);
+      expect(audit.summary.parsedConfigCount).toBe(1);
+      expect(audit.summary.skippedCount).toBe(2);
+      expect(audit.summary.serverCount).toBe(1);
+      expect(audit.summary.highestSeverity).toBe("high");
+      expect(audit.scannedConfigs[0]?.sourceFile).toBe("valid.mcp.json");
+      expect(audit.skippedCandidates.map((candidate) => candidate.parseStatus)).toEqual(
+        expect.arrayContaining(["invalid-json", "unsupported"])
+      );
+      expect(serialized).not.toContain("REDACTED_EXAMPLE_TOKEN");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
   });
 });

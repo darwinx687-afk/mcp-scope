@@ -36,12 +36,16 @@ Developers are connecting MCP servers to AI coding tools and agent environments.
 - Markdown and JSON reports.
 - Local self-contained HTML viewer.
 - GitHub Action quality gate.
+- SARIF output for GitHub-native review workflows.
+- One-command static audit mode.
 
 ## Phase 10 Scope
 
 Phase 10 prepares a bilingual launch and feedback pack for `v0.1.0-preview`. It creates platform copy drafts, social SVG assets, release review checklists, posting trackers, feedback monitoring playbooks, issue triage guides, and Phase 11 review templates. It does not publish posts, make the draft prerelease final, add scanner categories, publish npm, or publish GitHub Marketplace. The scanner remains local-first, static-only, and report-first.
 
 Phase 10 also prepares the unreleased `v0.2.0-preview` maintenance plan. That update is positioned as bilingual onboarding and limitation reduction: clearer README language switching, limitations docs, tool metadata export guidance, discovery next-step hints, clearer report boundaries, and repeatable update-post workflow drafts. It does not publish a release, create a tag, add live MCP execution, publish npm, or publish GitHub Marketplace.
+
+The `v0.3.0-preview` functional update is in progress. It adds SARIF output and `mcp-scope audit --root <path>` so users can try a static repository audit and optionally upload SARIF through their own GitHub workflow. It does not create a v0.3 release, publish npm, publish GitHub Marketplace, execute MCP servers, call live `tools/list`, call external APIs, or claim production-grade security protection.
 
 Included now:
 
@@ -53,6 +57,7 @@ Included now:
 - CLI command: `mcp-scope snapshot [--config <path>] [--tools <path>] --output <path> [--label <text>]`.
 - CLI command: `mcp-scope diff --baseline <snapshot-path> [--config <path>] [--tools <path>]`.
 - CLI command: `mcp-scope discover --root <path>`.
+- CLI command: `mcp-scope audit --root <path>`.
 - Static parsing for JSON files with a top-level `mcpServers` object.
 - Static parsing for local JSON files with `projects[*].mcpServers`, `mcp.servers`, and top-level `servers`.
 - Client profile labels for common local config styles, including `cursor-like`, `cline-like`, `continue-like`, `gemini-cli-like`, and `plugin-like`.
@@ -86,6 +91,8 @@ Included now:
 - Bilingual diff Markdown with `--lang en` and `--lang zh-CN`.
 - Static discovery reports in Markdown, JSON, and self-contained HTML.
 - Bilingual discovery Markdown with `--lang en` and `--lang zh-CN`.
+- SARIF reports for scan, inspect-tools, and audit when `--format sarif --output <path>` is used.
+- One-command audit reports in Markdown, JSON, HTML, and SARIF.
 - Safe path display for home-like nested project paths.
 - Curated client examples under `examples/clients`.
 - Curated discovery examples under `examples/discovery`.
@@ -130,3 +137,5 @@ Not included now:
 - Automatic browser posting.
 - Making the draft prerelease final without human approval.
 - Publishing `v0.2.0-preview` without explicit human approval.
+- Publishing `v0.3.0-preview` without explicit human approval.
+- Automatic SARIF upload from MCP Scope core checks.

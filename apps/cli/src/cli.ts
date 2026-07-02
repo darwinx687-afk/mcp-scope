@@ -7,6 +7,7 @@ import {
   McpToolMetadataError,
   PROJECT_NAME,
   PROJECT_VERSION,
+  auditMcpConfigs,
   createMcpConfigFingerprint,
   discoverMcpConfigs,
   evaluateToolManifest,
@@ -23,6 +24,10 @@ import {
   type TransparencyReportModel,
   isFailOnThreshold,
   parseMcpScopeSnapshotJson,
+  renderAuditHtml,
+  renderAuditJson,
+  renderAuditMarkdown,
+  renderAuditSarif,
   renderDiffHtml,
   renderDiffJson,
   renderDiffMarkdown,
@@ -31,6 +36,7 @@ import {
   renderDiscoveryMarkdown,
   renderHtmlFromJsonReport,
   renderHtmlViewer,
+  renderSarifReport,
   renderTransparencyReportMarkdown,
   shouldFailOnDiffSeverity,
   shouldFailOnSeverity,
@@ -54,8 +60,9 @@ Usage:
   mcp-scope --help
   mcp-scope --version
   mcp-scope status
-  mcp-scope scan --config <path> [--tools <path>] [--format markdown|json|html] [--lang en|zh-CN] [--output <path>] [--fail-on none|info|low|medium|high]
-  mcp-scope inspect-tools --tools <path> [--format markdown|json|html] [--lang en|zh-CN] [--output <path>] [--fail-on none|info|low|medium|high]
+  mcp-scope scan --config <path> [--tools <path>] [--format markdown|json|html|sarif] [--lang en|zh-CN] [--output <path>] [--fail-on none|info|low|medium|high]
+  mcp-scope inspect-tools --tools <path> [--format markdown|json|html|sarif] [--lang en|zh-CN] [--output <path>] [--fail-on none|info|low|medium|high]
+  mcp-scope audit --root <path> [--format markdown|json|html|sarif] [--lang en|zh-CN] [--output <path>] [--max-depth <number>] [--include-home] [--fail-on none|info|low|medium|high]
   mcp-scope view --report <path> --output <path> [--lang en|zh-CN]
   mcp-scope snapshot [--config <path>] [--tools <path>] --output <path> [--label <text>]
   mcp-scope diff --baseline <snapshot-path> [--config <path>] [--tools <path>] [--format markdown|json|html] [--lang en|zh-CN] [--output <path>] [--fail-on-change none|info|low|medium|high]
@@ -68,13 +75,15 @@ Phase 10 note:
 `;
 
 type ScanFormat = "markdown" | "json" | "html";
+type ReportFormat = ScanFormat | "sarif";
+type AuditFormat = ReportFormat;
 type DiffFormat = ScanFormat;
 type DiscoveryFormat = ScanFormat;
 
 type ScanCommandOptions = {
   readonly configPath: string;
   readonly toolsPath?: string;
-  readonly format: ScanFormat;
+  readonly format: ReportFormat;
   readonly lang: ReportLanguage;
   readonly outputPath?: string;
   readonly failOn: FailOnThreshold;
@@ -82,7 +91,7 @@ type ScanCommandOptions = {
 
 type InspectToolsOptions = {
   readonly toolsPath: string;
-  readonly format: ScanFormat;
+  readonly format: ReportFormat;
   readonly lang: ReportLanguage;
   readonly outputPath?: string;
   readonly failOn: FailOnThreshold;
@@ -120,6 +129,16 @@ type DiscoverCommandOptions = {
   readonly includeHome: boolean;
 };
 
+type AuditCommandOptions = {
+  readonly rootPath: string;
+  readonly format: AuditFormat;
+  readonly lang: ReportLanguage;
+  readonly outputPath?: string;
+  readonly maxDepth: number;
+  readonly includeHome: boolean;
+  readonly failOn: FailOnThreshold;
+};
+
 export async function handleCli(args = process.argv.slice(2), io: CliIO = process): Promise<number> {
   const [command] = args;
 
@@ -144,6 +163,10 @@ export async function handleCli(args = process.argv.slice(2), io: CliIO = proces
 
   if (command === "inspect-tools") {
     return runInspectToolsCommand(args.slice(1), io);
+  }
+
+  if (command === "audit") {
+    return runAuditCommand(args.slice(1), io);
   }
 
   if (command === "view") {
@@ -182,6 +205,11 @@ async function runScanCommand(args: readonly string[], io: CliIO): Promise<numbe
     return 1;
   }
 
+  if (options.format === "sarif" && options.outputPath === undefined) {
+    io.stderr.write("SARIF format requires --output <path>.\n");
+    return 1;
+  }
+
   try {
     const toolMetadata =
       options.toolsPath === undefined
@@ -193,9 +221,11 @@ async function runScanCommand(args: readonly string[], io: CliIO): Promise<numbe
     const rendered =
       options.format === "json"
         ? `${JSON.stringify(report, null, 2)}\n`
-        : options.format === "html"
-          ? renderHtmlViewer(report, { lang: options.lang })
-          : renderTransparencyReportMarkdown(report, { lang: options.lang });
+        : options.format === "sarif"
+          ? renderSarifReport(report)
+          : options.format === "html"
+            ? renderHtmlViewer(report, { lang: options.lang })
+            : renderTransparencyReportMarkdown(report, { lang: options.lang });
 
     if (options.outputPath !== undefined) {
       await mkdir(dirname(options.outputPath), { recursive: true });
@@ -231,15 +261,22 @@ async function runInspectToolsCommand(args: readonly string[], io: CliIO): Promi
     return 1;
   }
 
+  if (options.format === "sarif" && options.outputPath === undefined) {
+    io.stderr.write("SARIF format requires --output <path>.\n");
+    return 1;
+  }
+
   try {
     const result = evaluateToolManifest(await readMcpToolMetadataFile(options.toolsPath));
     const report = buildToolMetadataReportModel(result);
     const rendered =
       options.format === "json"
         ? `${JSON.stringify(report, null, 2)}\n`
-        : options.format === "html"
-          ? renderHtmlViewer(report, { lang: options.lang })
-          : renderTransparencyReportMarkdown(report, { lang: options.lang });
+        : options.format === "sarif"
+          ? renderSarifReport(report)
+          : options.format === "html"
+            ? renderHtmlViewer(report, { lang: options.lang })
+            : renderTransparencyReportMarkdown(report, { lang: options.lang });
 
     if (options.outputPath !== undefined) {
       await mkdir(dirname(options.outputPath), { recursive: true });
@@ -262,6 +299,55 @@ async function runInspectToolsCommand(args: readonly string[], io: CliIO): Promi
   }
 }
 
+async function runAuditCommand(args: readonly string[], io: CliIO): Promise<number> {
+  const options = parseAuditArgs(args);
+
+  if (typeof options === "string") {
+    io.stderr.write(`${options}\n`);
+    return 1;
+  }
+
+  if (options.format === "html" && options.outputPath === undefined) {
+    io.stderr.write("HTML format requires --output <path>.\n");
+    return 1;
+  }
+
+  if (options.format === "sarif" && options.outputPath === undefined) {
+    io.stderr.write("SARIF format requires --output <path>.\n");
+    return 1;
+  }
+
+  try {
+    const audit = await auditMcpConfigs({
+      root: options.rootPath,
+      maxDepth: options.maxDepth,
+      includeHome: options.includeHome
+    });
+    const rendered =
+      options.format === "json"
+        ? renderAuditJson(audit)
+        : options.format === "sarif"
+          ? renderAuditSarif(audit)
+          : options.format === "html"
+            ? renderAuditHtml(audit, { lang: options.lang })
+            : renderAuditMarkdown(audit, { lang: options.lang });
+
+    if (options.outputPath !== undefined) {
+      await mkdir(dirname(options.outputPath), { recursive: true });
+      await writeFile(options.outputPath, rendered, "utf8");
+      io.stdout.write(`Wrote MCP Scope ${options.format} audit report to ${options.outputPath}\n`);
+      return applyAuditFailOn(audit, options.failOn, io);
+    }
+
+    io.stdout.write(rendered.endsWith("\n") ? rendered : `${rendered}\n`);
+    return applyAuditFailOn(audit, options.failOn, io);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    io.stderr.write(`MCP Scope audit failed: ${message}\n`);
+    return 1;
+  }
+}
+
 function applyFailOn(report: TransparencyReportModel, threshold: FailOnThreshold, io: CliIO): number {
   if (threshold === "none") {
     return 0;
@@ -276,6 +362,27 @@ function applyFailOn(report: TransparencyReportModel, threshold: FailOnThreshold
 
   io.stderr.write(
     `MCP Scope fail-on threshold reached: highest severity ${summary.highestSeverity} meets ${threshold} (${summary.findingCount} finding(s)).\n`
+  );
+  return 1;
+}
+
+function applyAuditFailOn(
+  audit: Awaited<ReturnType<typeof auditMcpConfigs>>,
+  threshold: FailOnThreshold,
+  io: CliIO
+): number {
+  if (threshold === "none") {
+    return 0;
+  }
+
+  const failed = shouldFailOnSeverity(audit.summary.highestSeverity, threshold, audit.summary.findingCount);
+
+  if (!failed) {
+    return 0;
+  }
+
+  io.stderr.write(
+    `MCP Scope fail-on threshold reached: highest severity ${audit.summary.highestSeverity} meets ${threshold} (${audit.summary.findingCount} finding(s)).\n`
   );
   return 1;
 }
@@ -476,7 +583,7 @@ async function buildReportFromSources(options: {
 function parseScanArgs(args: readonly string[]): ScanCommandOptions | string {
   let configPath: string | undefined;
   let toolsPath: string | undefined;
-  let format: ScanFormat = "markdown";
+  let format: ReportFormat = "markdown";
   let lang: ReportLanguage = "en";
   let outputPath: string | undefined;
   let failOn: FailOnThreshold = "none";
@@ -499,8 +606,8 @@ function parseScanArgs(args: readonly string[]): ScanCommandOptions | string {
     if (arg === "--format") {
       const nextFormat = args[index + 1];
 
-      if (nextFormat !== "json" && nextFormat !== "markdown" && nextFormat !== "html") {
-        return `Unsupported --format "${nextFormat ?? ""}". Use "markdown", "json", or "html".`;
+      if (nextFormat !== "json" && nextFormat !== "markdown" && nextFormat !== "html" && nextFormat !== "sarif") {
+        return `Unsupported --format "${nextFormat ?? ""}". Use "markdown", "json", "html", or "sarif".`;
       }
 
       format = nextFormat;
@@ -583,7 +690,7 @@ function parseScanArgs(args: readonly string[]): ScanCommandOptions | string {
 
 function parseInspectToolsArgs(args: readonly string[]): InspectToolsOptions | string {
   let toolsPath: string | undefined;
-  let format: ScanFormat = "markdown";
+  let format: ReportFormat = "markdown";
   let lang: ReportLanguage = "en";
   let outputPath: string | undefined;
   let failOn: FailOnThreshold = "none";
@@ -606,8 +713,8 @@ function parseInspectToolsArgs(args: readonly string[]): InspectToolsOptions | s
     if (arg === "--format") {
       const nextFormat = args[index + 1];
 
-      if (nextFormat !== "json" && nextFormat !== "markdown" && nextFormat !== "html") {
-        return `Unsupported --format "${nextFormat ?? ""}". Use "markdown", "json", or "html".`;
+      if (nextFormat !== "json" && nextFormat !== "markdown" && nextFormat !== "html" && nextFormat !== "sarif") {
+        return `Unsupported --format "${nextFormat ?? ""}". Use "markdown", "json", "html", or "sarif".`;
       }
 
       format = nextFormat;
@@ -734,6 +841,122 @@ function parseViewArgs(args: readonly string[]): ViewCommandOptions | string {
     reportPath,
     outputPath,
     lang
+  };
+}
+
+function parseAuditArgs(args: readonly string[]): AuditCommandOptions | string {
+  let rootPath: string | undefined;
+  let format: AuditFormat = "markdown";
+  let lang: ReportLanguage = "en";
+  let outputPath: string | undefined;
+  let maxDepth = 4;
+  let includeHome = false;
+  let failOn: FailOnThreshold = "none";
+
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index];
+
+    if (arg === "--root") {
+      const value = args[index + 1];
+
+      if (value === undefined || value.startsWith("--")) {
+        return 'Missing value for --root <path>';
+      }
+
+      rootPath = value;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--format") {
+      const value = args[index + 1];
+
+      if (value !== "json" && value !== "markdown" && value !== "html" && value !== "sarif") {
+        return `Unsupported --format "${value ?? ""}". Use "markdown", "json", "html", or "sarif".`;
+      }
+
+      format = value;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--lang") {
+      const value = args[index + 1];
+
+      if (value !== "en" && value !== "zh-CN") {
+        return `Unsupported --lang "${value ?? ""}". Use "en" or "zh-CN".`;
+      }
+
+      lang = value;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--output") {
+      const value = args[index + 1];
+
+      if (value === undefined || value.startsWith("--")) {
+        return 'Missing value for --output <path>';
+      }
+
+      outputPath = value;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--max-depth") {
+      const value = args[index + 1];
+      const parsed = Number(value);
+
+      if (value === undefined || value.startsWith("--") || !Number.isInteger(parsed) || parsed < 0) {
+        return 'Invalid value for --max-depth <number>';
+      }
+
+      maxDepth = parsed;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--include-home") {
+      includeHome = true;
+      continue;
+    }
+
+    if (arg === "--fail-on") {
+      const value = args[index + 1];
+
+      if (value === undefined || value.startsWith("--")) {
+        return 'Missing value for --fail-on <none|info|low|medium|high>';
+      }
+
+      if (!isFailOnThreshold(value)) {
+        return `Unsupported --fail-on "${value}". Use "none", "info", "low", "medium", or "high".`;
+      }
+
+      failOn = value;
+      index += 1;
+      continue;
+    }
+
+    return `Unknown audit option: ${arg ?? ""}`;
+  }
+
+  if (rootPath === undefined || rootPath.trim() === "") {
+    return 'Missing required option: --root <path>';
+  }
+
+  if (outputPath !== undefined && outputPath.trim() === "") {
+    return 'Invalid empty value for --output <path>';
+  }
+
+  return {
+    rootPath,
+    format,
+    lang,
+    outputPath,
+    maxDepth,
+    includeHome,
+    failOn
   };
 }
 

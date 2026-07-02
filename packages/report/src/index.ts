@@ -14,8 +14,18 @@ import type {
   ToolRiskFinding,
   TransparencyNote
 } from "@mcp-scope/core";
+import { renderSarifReport } from "./sarif.js";
 import { renderHtmlViewer } from "./html.js";
 
+export {
+  renderAuditHtml,
+  renderAuditJson,
+  renderAuditMarkdown
+} from "./audit.js";
+export {
+  renderAuditSarif,
+  renderSarifReport
+} from "./sarif.js";
 export {
   buildMcpScopeSnapshot,
   diffMcpScopeSnapshot,
@@ -194,6 +204,12 @@ export function renderScanResultJson(result: McpScopeScanResult): string {
   return `${JSON.stringify(buildScanReportModel(result), null, 2)}\n`;
 }
 
+export function renderScanResultSarif(
+  result: McpScopeScanResult
+): string {
+  return renderSarifReport(buildScanReportModel(result));
+}
+
 export function renderToolMetadataMarkdown(
   result: ToolMetadataScanResult,
   options: ReportRenderOptions = {}
@@ -210,6 +226,10 @@ export function renderToolMetadataHtml(
 
 export function renderToolMetadataJson(result: ToolMetadataScanResult): string {
   return `${JSON.stringify(buildToolMetadataReportModel(result), null, 2)}\n`;
+}
+
+export function renderToolMetadataSarif(result: ToolMetadataScanResult): string {
+  return renderSarifReport(buildToolMetadataReportModel(result));
 }
 
 export function renderTransparencyReportMarkdown(
